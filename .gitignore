@@ -1,0 +1,13 @@
+# Exclude anything that reflects the developer's editor / tooling
+.idea/
+.vscode/
+
+### Secrets — never commit ###
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+### Runtime ###
+uploads/

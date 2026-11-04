@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Templates – EuodooCraft</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@400;700&family=Nunito:wght@400;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/resume.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo"><span class="logo-mark">E</span>EuodooCraft</a>
+      <button class="nav-toggle" aria-label="Open menu">☰</button>
+      <nav class="nav-links">
+        <a href="/dashboard" class="btn btn-outline btn-sm">← Dashboard</a>
+        <a href="index.html">Home</a>
+        <a href="templates.html">Templates</a>
+        <a href="builder.html">Builder</a>
+        <a href="start.html" class="btn btn-primary btn-sm">Create Resume</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <h1>Resume Templates</h1>
+        <p>Professionally designed, recruiter-approved templates. Pick one and start building.</p>
+        <div class="gallery-tools">
+          <div class="filters" id="filters"></div>
+          <input type="search" id="search" class="search" placeholder="Search templates…" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="template-grid" id="galleryGrid"></div>
+        <p class="empty" id="emptyMsg" hidden>No templates match your search.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Preview modal -->
+  <div class="modal" id="previewModal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalTitle"></h3>
+          <p id="modalDesc" class="muted"></p>
+        </div>
+        <div class="modal-actions">
+          <a id="modalUse" class="btn btn-primary">Use This Template</a>
+          <button class="icon-btn" data-close aria-label="Close">✕</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="thumb modal-thumb" id="modalThumb"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> EuodooCraft. All rights reserved.</span>
+      <nav><a href="templates.html">Templates</a><a href="builder.html">Builder</a></nav>
+    </div>
+  </footer>
+
+  <script src="/js/templates.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/gallery.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+package com.euodoo.hire.model;
+
+public enum SubmissionStatus {
+    DRAFT,
+    SUBMITTED_TO_ADMIN,
+    UNDER_ADMIN_REVIEW,
+    APPROVED,
+    REJECTED,
+    RESUBMISSION_REQUIRED,
+    RELEASED_TO_AGENCY,
+    SENT_TO_RECRUITER,
+    INTERVIEW_SCHEDULED,
+    SELECTED,
+    NOT_SELECTED,
+    PLACED,
+    WITHDRAWN,
+    ON_HOLD
+}

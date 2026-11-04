@@ -1,0 +1,120 @@
+/* ============ Resume page styles (A4 @ 96dpi = 794 x 1123) ============ */
+.resume {
+  --accent: #2563eb;
+  --r-ink: #1f2937;
+  --r-muted: #6b7280;
+  width: 794px;
+  min-height: 1123px;
+  background: #fff;
+  color: var(--r-ink);
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+  text-align: left;
+}
+.resume * { box-sizing: border-box; }
+.resume h1, .resume h2, .resume h3, .resume p { margin: 0; }
+.resume ul { margin: 4px 0 0; padding-left: 18px; }
+.resume li { margin-bottom: 2px; }
+
+/* Fonts */
+.resume.f-serif   { font-family: "Merriweather", Georgia, serif; font-size: 12.5px; }
+.resume.f-rounded { font-family: "Nunito", sans-serif; font-size: 13.5px; }
+.resume.f-mono .r-name, .resume.f-mono .r-h { font-family: "JetBrains Mono", monospace; }
+
+/* Common blocks */
+.r-name { font-size: 34px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; }
+.r-title { font-size: 16px; color: var(--accent); font-weight: 600; margin-top: 4px; }
+.r-contact { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 10px; color: var(--r-muted); font-size: 12px; }
+.r-section { margin-top: 22px; }
+.r-h {
+  font-size: 12.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--accent); padding-bottom: 6px; margin-bottom: 10px; border-bottom: 1.5px solid var(--accent);
+}
+.r-item { margin-bottom: 12px; break-inside: avoid; }
+.r-item-head { display: flex; justify-content: space-between; gap: 10px; }
+.r-item-head strong { font-size: 13.5px; }
+.r-date { color: var(--r-muted); font-size: 12px; white-space: nowrap; }
+.r-sub { color: var(--r-muted); font-weight: 600; font-size: 12.5px; }
+.r-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.r-chip { padding: 3px 10px; border-radius: 4px; background: color-mix(in srgb, var(--accent) 12%, #fff); color: var(--r-ink); font-size: 12px; }
+.r-list-plain { list-style: none; padding: 0; margin: 0; }
+.r-list-plain li { margin-bottom: 6px; }
+
+/* ---- Layout: single column ---- */
+.l-single { padding: 56px 60px; }
+.l-single .r-header { padding-bottom: 6px; }
+
+/* ---- Layout: sidebar ---- */
+.l-sidebar { display: grid; grid-template-columns: 260px 1fr; }
+.l-sidebar .r-side { background: var(--accent); color: #fff; padding: 48px 28px; }
+.l-sidebar .r-main { padding: 48px 40px; }
+.l-sidebar .r-avatar {
+  width: 96px; height: 96px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 34px; font-weight: 800; background: rgba(255,255,255,.18); border: 3px solid rgba(255,255,255,.5);
+  margin-bottom: 28px;
+}
+.l-sidebar .r-side .r-h { color: #fff; border-color: rgba(255,255,255,.45); }
+.l-sidebar .r-side .r-section:first-of-type { margin-top: 0; }
+.l-sidebar .r-side .r-chip { background: rgba(255,255,255,.16); color: #fff; }
+.l-sidebar .r-side .r-list-plain { font-size: 12px; word-break: break-word; }
+.l-sidebar .r-side .r-list-plain small { display: block; opacity: .7; text-transform: uppercase; letter-spacing: .08em; font-size: 10px; }
+
+/* ---- Layout: header band ---- */
+.l-header .r-band { background: var(--accent); color: #fff; padding: 48px 56px 40px; }
+.l-header .r-band .r-title { color: rgba(255,255,255,.85); }
+.l-header .r-band .r-contact { color: rgba(255,255,255,.85); }
+.l-header .r-body { display: grid; grid-template-columns: 1fr 220px; gap: 36px; padding: 18px 56px 48px; }
+
+/* ================== Template themes ================== */
+/* Classic – centered, serif, thin rules */
+.tpl-classic .r-header { text-align: center; }
+.tpl-classic .r-contact { justify-content: center; }
+.tpl-classic .r-title { color: var(--r-muted); font-weight: 400; font-style: italic; }
+.tpl-classic .r-h { color: var(--r-ink); border-bottom: 1px solid #cbd5e1; text-align: center; letter-spacing: .2em; }
+.tpl-classic .r-name { font-weight: 700; }
+
+/* Modern – sidebar, rounded chips */
+.tpl-modern .r-name { font-size: 36px; }
+.tpl-modern .r-main .r-h { border: 0; padding: 0; position: relative; padding-left: 14px; }
+.tpl-modern .r-main .r-h::before { content: ""; position: absolute; left: 0; top: 1px; bottom: 1px; width: 4px; border-radius: 2px; background: var(--accent); }
+.tpl-modern .r-chip { border-radius: 999px; }
+
+/* Executive – header band, serif */
+.tpl-executive .r-name { font-size: 38px; letter-spacing: .02em; }
+.tpl-executive .r-h { border-bottom-width: 2px; }
+
+/* Creative – sidebar, rounded font, soft main headings */
+.tpl-creative .r-avatar { border-radius: 24px !important; transform: rotate(-4deg); }
+.tpl-creative .r-main .r-h { border: 0; background: color-mix(in srgb, var(--accent) 12%, #fff); padding: 6px 12px; border-radius: 8px; display: inline-block; }
+.tpl-creative .r-name { font-size: 40px; color: var(--accent); }
+.tpl-creative .r-title { color: var(--r-ink); }
+
+/* Minimal – no color blocks, lots of air */
+.tpl-minimal.l-single { padding: 70px 72px; }
+.tpl-minimal .r-name { font-weight: 300; font-size: 40px; letter-spacing: -0.02em; }
+.tpl-minimal .r-title { color: var(--r-muted); font-weight: 400; }
+.tpl-minimal .r-h { color: var(--r-ink); border: 0; font-weight: 600; letter-spacing: .2em; font-size: 11px; }
+.tpl-minimal .r-chip { background: none; padding: 0; }
+.tpl-minimal .r-chip:not(:last-child)::after { content: " ·"; color: var(--r-muted); }
+
+/* Developer – sidebar, mono headings, code-ish chips */
+.tpl-tech .r-side { background: #0f172a !important; }
+.tpl-tech .r-side .r-h { color: var(--accent) !important; }
+.tpl-tech .r-avatar { border-color: var(--accent) !important; color: var(--accent); background: transparent !important; }
+.tpl-tech .r-name::before { content: "> "; color: var(--accent); }
+.tpl-tech .r-main .r-h { border-bottom-style: dashed; }
+.tpl-tech .r-side .r-chip { font-family: "JetBrains Mono", monospace; font-size: 11px; border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent); background: transparent; color: #e2e8f0; }
+
+/* Elegant – header band with gradient, serif */
+.tpl-elegant .r-band { background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 55%, #000)); text-align: center; }
+.tpl-elegant .r-band .r-contact { justify-content: center; }
+.tpl-elegant .r-name { font-weight: 400; letter-spacing: .06em; }
+.tpl-elegant .r-h { border: 0; text-align: left; position: relative; }
+.tpl-elegant .r-h::after { content: ""; display: block; width: 36px; height: 2px; background: var(--accent); margin-top: 6px; }
+
+/* Fresher – single column, accent top bar, education first */
+.tpl-fresher { border-top: 10px solid var(--accent); }
+.tpl-fresher .r-header { display: flex; justify-content: space-between; align-items: end; gap: 20px; border-bottom: 1px solid #e5e7eb; padding-bottom: 18px; }
+.tpl-fresher .r-contact { flex-direction: column; align-items: flex-end; text-align: right; gap: 2px; margin: 0; }
+.tpl-fresher .r-h { border: 0; padding: 0; }

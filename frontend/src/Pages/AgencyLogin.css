@@ -1,0 +1,593 @@
+/* ==========================================================================
+   EUODOO HIRE - Agency Login Stylesheet
+   Modern Teal / Emerald Theme with Clean 50/50 Split Viewport
+   ========================================================================== */
+
+.agency-login-page {
+  min-height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: 'Plus Jakarta Sans', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Home Button */
+.agency-login-page .admin-home-button {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.agency-login-page .admin-home-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.agency-login-page .admin-home-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ==========================================================================
+   LEFT BRAND PANEL
+   ========================================================================== */
+.agency-login-page .login-brand-panel {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  height: 100%;
+  padding: clamp(32px, 5vw, 64px);
+  box-sizing: border-box;
+  color: #ffffff;
+  background: linear-gradient(145deg, #009e8c 0%, #007f71 45%, #005a50 100%);
+  overflow: hidden;
+}
+
+/* Radial circles background effect */
+.agency-login-page .login-brand-panel::before {
+  content: "";
+  position: absolute;
+  inset: -100px;
+  z-index: -1;
+  opacity: 0.2;
+  background-image: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.8) 0, transparent 40%),
+                    radial-gradient(circle at 70% 80%, rgba(167, 243, 208, 0.5) 0, transparent 50%),
+                    repeating-radial-gradient(circle at 25% 45%, transparent 0, transparent 40px, rgba(255, 255, 255, 0.1) 41px, transparent 42px);
+  pointer-events: none;
+}
+
+/* Floating soft glows */
+.agency-login-page .login-orb-one {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(2, 186, 157, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.agency-login-page .login-orb-two {
+  position: absolute;
+  bottom: -60px;
+  left: -60px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 229, 189, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Brand header */
+.agency-brand-top {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 1;
+}
+
+.agency-auth-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.agency-auth-logo-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #008777;
+  font-size: 22px;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.agency-auth-logo strong {
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.agency-auth-logo em {
+  font-style: normal;
+  color: #a7f3d0;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.agency-auth-pill {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.agency-auth-brand-content h1 {
+  margin: 10px 0 12px 0;
+  font-size: clamp(28px, 2.8vw, 40px);
+  line-height: 1.18;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+}
+
+.agency-auth-brand-content p {
+  margin: 0;
+  max-width: 440px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Benefits Checklist at bottom */
+.agency-auth-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1;
+}
+
+.agency-auth-benefits li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.agency-auth-benefits li .check-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   RIGHT FORM PANEL
+   ========================================================================== */
+.agency-login-page .agency-form-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  height: 100%;
+  padding: clamp(24px, 4vw, 48px);
+  box-sizing: border-box;
+  background: #f8fafc;
+  overflow-y: auto;
+}
+
+.agency-login-page .agency-login-card {
+  width: 100%;
+  max-width: 440px;
+  margin: auto;
+  padding: 38px 36px 32px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 12px 36px -4px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.03);
+  box-sizing: border-box;
+  animation: agencyFadeUp 0.4s ease-out;
+}
+
+@keyframes agencyFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.agency-login-card .form-header {
+  margin-bottom: 22px;
+}
+
+.agency-login-card .form-title {
+  margin: 0 0 6px 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.agency-login-card .form-subtitle {
+  margin: 0;
+  font-size: 13.5px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* Form layout */
+.agency-login-card .login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.agency-login-card .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+}
+
+.agency-login-card .form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.agency-login-card .required-star {
+  color: #ef4444;
+}
+
+.agency-login-card .input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.agency-login-card .form-input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 46px;
+  padding: 10px 14px;
+  border: 1.5px solid #dbe2ea;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.agency-login-card .form-input::placeholder {
+  color: #94a3b8;
+}
+
+.agency-login-card .form-input:focus {
+  border-color: #009e8c;
+  box-shadow: 0 0 0 3px rgba(0, 158, 140, 0.15);
+}
+
+.agency-login-card .password-input-wrapper .form-input {
+  padding-right: 68px;
+}
+
+.agency-login-card .password-toggle-btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  padding: 5px 10px;
+  border: 0;
+  background: transparent;
+  color: #64748b;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.agency-login-card .password-toggle-btn:hover {
+  color: #0f172a;
+  background: #f1f5f9;
+}
+
+/* Live Status Pill */
+.agency-live-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 7px 11px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.agency-live-status-pill.pending {
+  background: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.agency-live-status-pill.approved {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.agency-live-status-pill.rejected {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* Form options: Remember Me + Forgot Password */
+.agency-login-card .form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -2px;
+  font-size: 13px;
+}
+
+.agency-login-card .remember-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #475569;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.agency-login-card .remember-label input {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  accent-color: #009e8c;
+  cursor: pointer;
+}
+
+.agency-login-card .forgot-link-btn {
+  color: #008777;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.agency-login-card .forgot-link-btn:hover {
+  color: #006658;
+  text-decoration: underline;
+}
+
+/* Submit Button */
+.agency-login-card .submit-btn {
+  width: 100%;
+  height: 48px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #00ad99 0%, #008577 100%);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 142, 126, 0.28);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.agency-login-card .submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 142, 126, 0.36);
+  background: linear-gradient(135deg, #02baa5 0%, #008f80 100%);
+}
+
+.agency-login-card .submit-btn:active {
+  transform: translateY(0);
+}
+
+.agency-login-card .submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Alerts and Banner */
+.agency-login-card .form-alert {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.agency-login-card .form-alert.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.agency-login-card .form-alert.warning {
+  background: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.agency-login-card .form-alert.info {
+  background: #f0fdfa;
+  color: #0f766e;
+  border: 1px solid #ccfbf1;
+}
+
+/* Under Admin Review Box */
+.agency-approval-card {
+  margin-top: 6px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-left: 4px solid #f59e0b;
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.agency-approval-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #92400e;
+  background: #fef3c7;
+  padding: 3px 8px;
+  border-radius: 999px;
+  margin-bottom: 6px;
+}
+
+.agency-approval-badge .approval-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+
+.agency-approval-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #78350f;
+  margin: 0 0 4px 0;
+  line-height: 1.35;
+}
+
+.agency-approval-desc {
+  font-size: 12.5px;
+  color: #92400e;
+  line-height: 1.5;
+  margin: 0 0 8px 0;
+}
+
+.agency-approval-footer {
+  font-size: 11.5px;
+  color: #b45309;
+  border-top: 1px dashed #fde68a;
+  padding-top: 6px;
+}
+
+/* Footer Switch Link */
+.agency-login-card .form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+  color: #64748b;
+  font-size: 13.5px;
+}
+
+.agency-login-card .register-link-btn {
+  color: #008777;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.agency-login-card .register-link-btn:hover {
+  color: #006658;
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .agency-login-page {
+    grid-template-columns: 1fr;
+  }
+
+  .agency-login-page .login-brand-panel {
+    min-height: auto;
+    padding: 40px 24px;
+  }
+
+  .agency-login-page .login-brand-panel::before {
+    display: none;
+  }
+
+  .agency-auth-benefits {
+    margin-top: 20px;
+  }
+
+  .agency-login-page .agency-form-panel {
+    min-height: auto;
+    padding: 36px 20px 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .agency-login-card {
+    padding: 28px 20px 24px;
+    border-radius: 16px;
+  }
+
+  .agency-login-card .form-title {
+    font-size: 23px;
+  }
+}

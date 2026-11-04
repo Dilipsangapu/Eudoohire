@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Subscriptions | Euodoo Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/admin.css}" href="/css/admin.css" rel="stylesheet">
+</head>
+<body data-title="Subscriptions">
+<main class="page mx-auto">
+    <div class="strip" role="list">
+        <div class="metric" role="listitem"><i class="bi bi-credit-card"></i>
+            <div>
+                <div class="num" data-sub="total">0</div>
+                <div class="lbl">Total Subscriptions</div>
+            </div>
+        </div>
+        <div class="metric" role="listitem"><i class="bi bi-check-circle"></i>
+            <div>
+                <div class="num" data-sub="active">0</div>
+                <div class="lbl">Active Subscriptions</div>
+            </div>
+        </div>
+        <div class="metric" role="listitem"><i class="bi bi-person-badge"></i>
+            <div>
+                <div class="num" data-sub="rec">0</div>
+                <div class="lbl">Recruiter Plans (₹999)</div>
+            </div>
+        </div>
+        <div class="metric" role="listitem"><i class="bi bi-person"></i>
+            <div>
+                <div class="num" data-sub="cand">0</div>
+                <div class="lbl">Candidate Plans (₹499)</div>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="toolbar">
+            <h2 class="h-sec me-auto">All Subscriptions & Transactions</h2>
+            <input class="form-control form-control-sm" type="search" placeholder="Search user, email or plan" aria-label="Search subscriptions" data-search="t-sub">
+            <select class="form-select form-select-sm" aria-label="Filter by status" data-status="t-sub">
+                <option>All statuses</option>
+                <option>Active</option>
+                <option>Pending</option>
+                <option>Expired</option>
+                <option>Failed</option>
+                <option>Cancelled</option>
+            </select>
+            <button class="btn btn-sm btn-line" data-action="export"><i class="bi bi-download me-1"></i>Export CSV</button>
+        </div>
+        <div class="tbl-wrap">
+            <table class="tbl" id="t-sub">
+                <thead>
+                <tr>
+                    <th>User / Email</th>
+                    <th>Role</th>
+                    <th>Plan</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Activated</th>
+                    <th>Expires</th>
+                    <th class="text-end">Details</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="empty" id="t-sub-empty">No subscriptions match your filters.</div>
+        </div>
+    </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/admin.js}" src="/js/admin.js"></script>
+</body>
+</html>

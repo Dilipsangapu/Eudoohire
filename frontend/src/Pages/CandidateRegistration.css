@@ -1,0 +1,2609 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+.candidate-registration {
+
+  --cr-ink: #14243d;
+
+  --cr-muted: #718096;
+
+  --cr-line: #e2e8f0;
+
+  --cr-soft: #f4f6f9;
+
+  --cr-teal: #078f83;
+
+  --cr-teal-dark: #08776f;
+
+  display: grid;
+
+  grid-template-columns: minmax(275px, 30%) minmax(0, 1fr);
+
+  min-height: 100vh;
+
+  color: var(--cr-ink);
+
+  background: #f5f7fa;
+
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+}
+
+.candidate-registration * { box-sizing: border-box; }
+
+.cr-sidebar {
+
+  position: sticky;
+
+  top: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-height: 100vh;
+
+  height: 100vh;
+
+  overflow: hidden;
+
+  padding: 38px clamp(24px, 3.2vw, 56px) 25px;
+
+  color: #fff;
+
+  background: linear-gradient(150deg, #13b9aa 0%, #0a9589 48%, #08776f 100%);
+
+}
+
+.cr-sidebar::after {
+
+  position: absolute;
+
+  right: -110px;
+
+  bottom: 12%;
+
+  width: 310px;
+
+  height: 310px;
+
+  border: 1px solid rgba(255,255,255,.12);
+
+  border-radius: 50%;
+
+  content: "";
+
+  pointer-events: none;
+
+}
+
+.cr-brand { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 11px; color: #fff; text-decoration: none; font-size: 16px; letter-spacing: -.02em; }
+
+.cr-brand-mark { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 11px; background: #fff; box-shadow: 0 5px 15px #005f5b1c; }
+
+.cr-brand-mark span { width: 15px; height: 15px; border: 2px solid var(--cr-teal); border-radius: 4px; }
+
+.cr-sidebar-intro { position: relative; z-index: 1; margin-top: clamp(45px, 8vh); }
+
+.cr-sidebar-kicker { color: #d5fffa; font-size: 10px; font-weight: 800; letter-spacing: .16em; }
+
+.cr-sidebar-intro h1 { margin: 13px 0 10px; color: #fff; font-size: clamp(27px, 2.4vw, 36px); line-height: 1.15; letter-spacing: -.045em; }
+
+.cr-sidebar-intro p { max-width: 300px; margin: 0; color: #d8fffa; font-size: 13px; line-height: 1.75; }
+
+.cr-step-list { position: relative; z-index: 1; display: grid; gap: 0; margin-top: 30px; }
+
+.cr-step-list::before { position: absolute; top: 22px; bottom: 22px; left: 16px; width: 1px; background: #ffffff36; content: ""; }
+
+.cr-step-link { position: relative; display: flex; align-items: center; gap: 13px; min-height: 61px; color: #fff; text-decoration: none; transition: transform .2s ease; }
+
+.cr-step-link:hover { transform: translateX(3px); }
+
+.cr-step-number { position: relative; z-index: 1; display: grid; flex: 0 0 33px; width: 33px; height: 33px; place-items: center; border: 1px solid #ffffff4a; border-radius: 50%; background: #ffffff1c; font-size: 12px; font-weight: 700; }
+
+.cr-step-number.current { border-color: #fff; background: #fff; color: var(--cr-teal-dark); box-shadow: 0 5px 16px #005e5730; }
+
+.cr-step-link strong, .cr-step-link small { display: block; }
+
+.cr-step-link strong { font-size: 12px; font-weight: 700; }
+
+.cr-step-link small { margin-top: 3px; color: #d3fffa; font-size: 10px; }
+
+.cr-help-card { position: relative; z-index: 1; margin-top: auto; padding: 17px; border: 1px solid #ffffff30; border-radius: 15px; background: #ffffff0d; backdrop-filter: blur(8px); }
+
+.cr-help-icon { display: grid; width: 34px; height: 34px; margin-bottom: 12px; place-items: center; border-radius: 10px; background: #ffffff20; color: #fff; }
+
+.cr-help-card strong { display: block; font-size: 12px; }
+
+.cr-help-card p { margin: 7px 0 13px; color: #d9fffb; font-size: 11px; line-height: 1.7; }
+
+.cr-help-card a { display: inline-flex; align-items: center; gap: 7px; color: #fff; font-size: 11px; font-weight: 700; text-decoration: none; }
+
+.cr-sidebar-bottom { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; margin-top: 20px; color: #c9fff7; font-size: 10px; }
+
+.cr-status-dot { width: 6px; height: 6px; border-radius: 50%; background: #a7f3d0; box-shadow: 0 0 0 4px #a7f3d01c; }
+
+.cr-sidebar-orb { position: absolute; border-radius: 50%; background: #ffffff09; pointer-events: none; }
+
+.cr-sidebar-orb-one { top: 27%; right: -95px; width: 210px; height: 210px; }
+
+.cr-sidebar-orb-two { top: 34%; right: 40px; width: 65px; height: 65px; border: 1px solid #ffffff1b; animation: crFloat 8s ease-in-out infinite; }
+
+.cr-main { width: 100%; max-width: 1120px; margin: 0 auto; padding: clamp(28px, 4vw, 58px) clamp(22px, 4.2vw, 60px) 24px; background: #fff; }
+
+.cr-page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 23px; }
+
+.cr-eyebrow { color: var(--cr-teal-dark); font-size: 10px; font-weight: 800; letter-spacing: .15em; }
+
+.cr-page-header h2 { margin: 10px 0 8px; color: #111827; font-size: clamp(27px, 3vw, 36px); line-height: 1.15; letter-spacing: -.045em; }
+
+.cr-page-header p { max-width: 690px; margin: 0; color: #718096; font-size: 12px; line-height: 1.75; }
+
+.cr-page-header p b { color: #0f172a; }
+
+.cr-exit-button { display: inline-flex; align-items: center; gap: 12px; padding: 8px 11px; border: 1px solid var(--cr-line); border-radius: 9px; background: #fff; color: #66758b; font: inherit; font-size: 11px; cursor: pointer; }
+
+.cr-exit-button span { font-size: 18px; line-height: 1; }
+
+.cr-progress-meta { display: flex; justify-content: space-between; margin: 0 0 8px; color: #8793a5; font-size: 10px; }
+
+.cr-progress-meta strong { color: var(--cr-teal-dark); }
+
+.cr-progress-track { height: 4px; overflow: hidden; margin-bottom: 22px; border-radius: 999px; background: #e8edf2; }
+
+.cr-progress-track span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #08776f, #19d4bd); transition: width .35s ease; }
+
+.cr-form { display: grid; gap: 20px; }
+
+.cr-section-card { scroll-margin-top: 20px; padding: 25px 27px 27px; border: 1px solid #e1e7ee; border-radius: 17px; background: #fff; transition: border-color .2s ease, box-shadow .2s ease; }
+
+.cr-section-card:focus-within { border-color: #c5e9e4; box-shadow: 0 7px 25px #0c8c8010; }
+
+.cr-section-heading { display: flex; align-items: center; gap: 13px; padding-bottom: 19px; margin-bottom: 20px; border-bottom: 1px solid #e8edf2; }
+
+.cr-section-number { display: grid; flex: 0 0 32px; width: 32px; height: 32px; place-items: center; border-radius: 50%; background: #e4f9f5; color: var(--cr-teal-dark); font-size: 12px; font-weight: 800; }
+
+.cr-section-heading h3 { margin: 0 0 4px; color: #172033; font-size: 14px; font-weight: 800; letter-spacing: -.015em; }
+
+.cr-section-heading p { margin: 0; color: #7c8799; font-size: 11px; line-height: 1.5; }
+
+.cr-form-grid { display: grid; gap: 19px 17px; }
+
+.cr-form-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.cr-field { display: flex; min-width: 0; flex-direction: column; gap: 8px; }
+
+.cr-field > label, .cr-upload-label { color: #172033; font-size: 11px; font-weight: 600; }
+
+.cr-required { color: #e05e66; }
+
+.cr-field input, .cr-field select { width: 100%; min-width: 0; height: 41px; padding: 0 13px; border: 1px solid #e4e8ee; border-radius: 9px; outline: none; background: #f2f4f7; color: #172033; font: inherit; font-size: 11px; transition: border-color .2s ease, box-shadow .2s ease, background .2s ease; }
+
+.cr-field input::placeholder { color: #9aa5b5; }
+
+.cr-field input:focus, .cr-field select:focus { border-color: #12b7a6; background: #fff; box-shadow: 0 0 0 3px #12b7a61a; }
+
+.cr-field select { appearance: auto; color: #5c687a; }
+
+.cr-span-2 { grid-column: 1 / -1; }
+
+.cr-phone-input, .cr-suffix-input { display: flex; align-items: center; min-width: 0; height: 41px; padding: 0 12px; border: 1px solid #e4e8ee; border-radius: 9px; background: #f2f4f7; }
+
+.cr-phone-input:focus-within, .cr-suffix-input:focus-within { border-color: #12b7a6; background: #fff; box-shadow: 0 0 0 3px #12b7a61a; }
+
+.cr-phone-input > span { flex: 0 0 auto; padding-right: 10px; border-right: 1px solid #d8dee7; color: #344257; font-size: 11px; font-weight: 700; }
+
+.cr-phone-input input, .cr-suffix-input input { height: 100%; padding: 0 0 0 10px; border: 0; outline: 0; background: transparent; box-shadow: none !important; }
+
+.cr-suffix-input span { flex: 0 0 auto; color: #8b96a8; font-size: 10px; }
+
+.cr-choice-group { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.cr-choice-group:has(.cr-choice:nth-child(3)) { padding: 3px; border-radius: 10px; background: #f1f3f6; gap: 3px; }
+
+.cr-choice { min-height: 34px; padding: 0 13px; border: 1px solid #dce3eb; border-radius: 999px; background: #fff; color: #59677b; font: inherit; font-size: 10px; cursor: pointer; transition: border-color .18s ease, background .18s ease, color .18s ease, transform .18s ease; }
+
+.cr-choice:hover { transform: translateY(-1px); border-color: #8dded4; }
+
+.cr-choice-group:has(.cr-choice:nth-child(3)) .cr-choice { flex: 1; min-width: 0; border-color: transparent; border-radius: 7px; background: transparent; }
+
+.cr-choice.is-active { border-color: #a4e7df; background: #e5faf6; color: #087c73; font-weight: 700; }
+
+.cr-choice-group:has(.cr-choice:nth-child(3)) .cr-choice.is-active { border-color: #fff; background: #fff; box-shadow: 0 1px 3px #10233a12; }
+
+.cr-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: -6px; }
+
+.cr-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 30px; padding: 0 11px; border: 1px solid #80ded3; border-radius: 999px; background: #e6faf6; color: #087d73; font: inherit; font-size: 10px; cursor: pointer; transition: background .2s ease; }
+
+.cr-chip:hover { background: #d4f6ef; }
+
+.cr-chip span { font-size: 15px; line-height: 1; }
+
+.cr-upload-field { display: flex; min-width: 0; flex-direction: column; gap: 9px; }
+
+.cr-upload-label { display: block; }
+
+.cr-upload-box { position: relative; display: flex; min-height: 145px; flex-direction: column; align-items: center; justify-content: center; gap: 7px; padding: 18px; overflow: hidden; border: 1px dashed #cbd7df; border-radius: 12px; background: #fafcfc; text-align: center; cursor: pointer; transition: border-color .2s ease, background .2s ease, transform .2s ease; }
+
+.cr-upload-box:hover, .cr-upload-box.is-dragging { border-color: #0fb7a6; background: #f0fcf9; }
+
+.cr-upload-box.has-file { border-color: #76d8cb; background: #f2fcfa; }
+
+.cr-upload-box input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; clip-path: inset(50%); }
+
+.cr-upload-icon { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 50%; background: #e1f9f4; color: var(--cr-teal); }
+
+.cr-upload-box strong { max-width: 100%; overflow-wrap: anywhere; color: #1b2638; font-size: 11px; }
+
+.cr-upload-box > span:not(.cr-upload-icon) { color: #7c8799; font-size: 10px; }
+
+.cr-upload-box em { color: var(--cr-teal); font-style: normal; }
+
+.cr-upload-box small { color: #9aa5b5; font-size: 9px; }
+
+.cr-remove-file { align-self: flex-start; padding: 0; border: 0; background: transparent; color: #087c73; font: inherit; font-size: 10px; cursor: pointer; }
+
+.cr-form-footer { padding: 0 3px; }
+
+.cr-agreement { display: flex; align-items: flex-start; gap: 9px; color: #6f7d91; font-size: 10px; line-height: 1.7; }
+
+.cr-agreement input { flex: 0 0 auto; width: 16px; height: 16px; margin: 1px 0 0; accent-color: var(--cr-teal); }
+
+.cr-agreement a { color: #087c73; text-decoration: none; }
+
+.cr-agreement a:hover { text-decoration: underline; }
+
+.cr-status { margin-top: 12px; color: #b45309; font-size: 11px; line-height: 1.6; }
+
+.cr-status.success { color: #087c73; }
+
+.cr-success-card { display: flex; gap: 12px; align-items: flex-start; margin-top: 15px; padding: 14px; border: 1px solid #b7e9df; border-radius: 12px; background: #effcf8; }
+
+.cr-success-card > span { display: grid; flex: 0 0 28px; width: 28px; height: 28px; place-items: center; border-radius: 50%; background: #d4f7ee; color: #087c73; }
+
+.cr-success-card strong { font-size: 12px; }
+
+.cr-success-card p { margin: 5px 0 0; color: #63758a; font-size: 11px; line-height: 1.6; }
+
+.cr-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 19px; }
+
+.cr-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 43px; padding: 0 19px; border: 1px solid transparent; border-radius: 10px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+
+.cr-button:hover { transform: translateY(-1px); }
+
+.cr-button-secondary { border-color: #d5dde6; background: #fff; color: #263449; }
+
+.cr-button-secondary:hover { background: #f8fafc; }
+
+.cr-button-primary { background: linear-gradient(110deg, #08776f, #11a992); color: #fff; box-shadow: 0 6px 15px #0b928421; }
+
+.cr-button-primary:hover { box-shadow: 0 9px 20px #0b928433; }
+
+.cr-footer { display: flex; justify-content: space-between; gap: 15px; margin-top: 30px; padding-top: 18px; border-top: 1px solid #edf0f4; color: #a0aaba; font-size: 10px; }
+
+@keyframes crFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+@media (min-width: 1450px) { .cr-main { max-width: 1220px; } }
+
+@media (max-width: 980px) {
+
+  .candidate-registration { grid-template-columns: 245px minmax(0, 1fr); }
+
+  .cr-sidebar { padding: 28px 22px 22px; }
+
+  .cr-section-card { padding: 21px 20px; }
+
+  .cr-form-grid.two { gap: 16px 13px; }
+
+}
+
+@media (max-width: 760px) {
+
+  .candidate-registration { display: block; }
+
+  .cr-sidebar { position: relative; height: auto; min-height: auto; padding: 22px 22px 24px; }
+
+  .cr-sidebar-intro { margin-top: 25px; }
+
+  .cr-sidebar-intro h1 { font-size: 29px; }
+
+  .cr-step-list { grid-template-columns: repeat(5, minmax(0,1fr)); gap: 5px; margin-top: 24px; }
+
+  .cr-step-list::before { display: none; }
+
+  .cr-step-link { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 7px; min-height: 0; }
+
+  .cr-step-link strong { font-size: 9px; line-height: 1.35; }
+
+  .cr-step-link small { display: none; }
+
+  .cr-step-number { width: 29px; height: 29px; flex-basis: 29px; }
+
+  .cr-help-card, .cr-sidebar-bottom { display: none; }
+
+  .cr-main { padding: 27px 18px 22px; }
+
+}
+
+@media (max-width: 520px) {
+
+  .cr-page-header h2 { font-size: 28px; }
+
+  .cr-page-header p { font-size: 11px; }
+
+  .cr-form-grid.two { grid-template-columns: minmax(0,1fr); }
+
+  .cr-span-2 { grid-column: auto; }
+
+  .cr-section-card { padding: 18px 15px; border-radius: 14px; }
+
+  .cr-section-heading { gap: 10px; padding-bottom: 15px; margin-bottom: 16px; }
+
+  .cr-section-heading h3 { font-size: 13px; }
+
+  .cr-section-heading p { font-size: 10px; }
+
+  .cr-choice { padding: 0 10px; }
+
+  .cr-actions { flex-direction: column-reverse; }
+
+  .cr-button { width: 100%; }
+
+  .cr-footer { flex-direction: column; gap: 6px; }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .cr-sidebar-orb-two { animation: none; }
+
+  .cr-step-link, .cr-section-card, .cr-progress-track span, .cr-choice, .cr-upload-box, .cr-chip, .cr-button { transition: none; }
+
+}
+
+/* ===== Registration carousel layout fix ===== */
+
+.candidate-registration {
+
+  display: grid;
+
+  grid-template-columns: minmax(280px, 30%) minmax(0, 1fr);
+
+  align-items: start;
+
+  width: 100%;
+
+  min-height: 100vh;
+
+  height: auto;
+
+  overflow: visible;
+
+}
+
+/* Keep the sidebar visible without cutting its content */
+
+.cr-sidebar {
+
+  position: sticky;
+
+  top: 0;
+
+  align-self: start;
+
+  height: 100vh;
+
+  min-height: 0;
+
+  overflow-x: hidden;
+
+  overflow-y: auto;
+
+}
+
+/* Allow the page to grow and scroll naturally */
+
+.cr-main {
+
+  display: flex;
+
+  flex-direction: column;
+
+  width: 100%;
+
+  max-width: none;
+
+  min-width: 0;
+
+  height: auto;
+
+  min-height: 100vh;
+
+  overflow: visible;
+
+  padding-bottom: 40px;
+
+}
+
+/* Do not shrink the active form section */
+
+.cr-form {
+
+  display: flex;
+
+  flex-direction: column;
+
+  flex: initial;
+
+  min-height: auto;
+
+  gap: 20px;
+
+  overflow: visible;
+
+}
+
+.cr-slide {
+
+  flex: none;
+
+  width: 100%;
+
+  min-width: 0;
+
+  min-height: 0;
+
+  height: auto;
+
+  overflow: visible;
+
+  animation: crSlideIn 0.28s ease both;
+
+}
+
+.cr-section-card {
+
+  height: auto;
+
+  min-height: 0;
+
+  padding: 28px;
+
+  overflow: visible;
+
+}
+
+/* Larger, easier-to-read text */
+
+.cr-page-header h2 {
+
+  font-size: clamp(30px, 3vw, 40px);
+
+}
+
+.cr-page-header p {
+
+  font-size: 15px;
+
+  line-height: 1.7;
+
+}
+
+.cr-eyebrow,
+
+.cr-sidebar-kicker {
+
+  font-size: 12px;
+
+}
+
+.cr-section-heading h3 {
+
+  font-size: 18px;
+
+}
+
+.cr-section-heading p {
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+}
+
+.cr-field > label,
+
+.cr-upload-label {
+
+  font-size: 14px;
+
+}
+
+.cr-field input,
+
+.cr-field select,
+
+.cr-phone-input > span,
+
+.cr-choice {
+
+  font-size: 14px;
+
+}
+
+.cr-field input,
+
+.cr-field select,
+
+.cr-phone-input,
+
+.cr-suffix-input {
+
+  min-height: 46px;
+
+}
+
+.cr-choice {
+
+  min-height: 40px;
+
+}
+
+.cr-button {
+
+  min-height: 48px;
+
+  padding: 0 22px;
+
+  font-size: 14px;
+
+}
+
+.cr-carousel-controls {
+
+  position: static;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  flex-wrap: wrap;
+
+  gap: 16px;
+
+  width: 100%;
+
+  padding: 18px 0;
+
+  margin-top: 0;
+
+  border-top: 1px solid #e2e8f0;
+
+  background: transparent;
+
+}
+
+.cr-carousel-indicators {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  font-size: 13px;
+
+}
+
+.cr-carousel-dot {
+
+  width: 10px;
+
+  height: 10px;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 999px;
+
+  background: #d7e1e7;
+
+  cursor: pointer;
+
+}
+
+.cr-carousel-dot.is-active {
+
+  width: 26px;
+
+  background: #0b9b8d;
+
+}
+
+.cr-status {
+
+  margin: 10px 0;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+}
+
+.cr-form-footer {
+
+  padding: 0 3px;
+
+}
+
+.cr-form-footer .cr-actions {
+
+  justify-content: flex-start;
+
+}
+
+/* Sidebar text also needs to be readable */
+
+.cr-brand {
+
+  font-size: 18px;
+
+}
+
+.cr-step-link strong {
+
+  font-size: 14px;
+
+}
+
+.cr-step-link small {
+
+  font-size: 12px;
+
+}
+
+.cr-sidebar-intro p {
+
+  font-size: 14px;
+
+}
+
+.cr-help-card strong {
+
+  font-size: 14px;
+
+}
+
+.cr-help-card p,
+
+.cr-help-card a {
+
+  font-size: 13px;
+
+}
+
+/* Tablet and mobile */
+
+@media (max-width: 980px) {
+
+  .candidate-registration {
+
+    grid-template-columns: 240px minmax(0, 1fr);
+
+  }
+
+  .cr-section-card {
+
+    padding: 22px;
+
+  }
+
+}
+
+@media (max-width: 760px) {
+
+  .candidate-registration {
+
+    display: flex;
+
+    flex-direction: column;
+
+    height: auto;
+
+    min-height: 100vh;
+
+  }
+
+  .cr-sidebar {
+
+    position: relative;
+
+    top: auto;
+
+    width: 100%;
+
+    height: auto;
+
+    min-height: 0;
+
+    overflow: visible;
+
+    padding: 24px;
+
+  }
+
+  .cr-sidebar-intro {
+
+    margin-top: 25px;
+
+  }
+
+  .cr-step-list {
+
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    gap: 8px;
+
+  }
+
+  .cr-step-list::before {
+
+    display: none;
+
+  }
+
+  .cr-step-link {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 7px;
+
+  }
+
+  .cr-step-link strong {
+
+    font-size: 11px;
+
+  }
+
+  .cr-step-link small {
+
+    display: none;
+
+  }
+
+  .cr-help-card,
+
+  .cr-sidebar-bottom {
+
+    display: none;
+
+  }
+
+  .cr-main {
+
+    width: 100%;
+
+    min-height: 0;
+
+    padding: 28px 18px;
+
+  }
+
+  .cr-form-grid.two {
+
+    grid-template-columns: minmax(0, 1fr);
+
+  }
+
+  .cr-span-2 {
+
+    grid-column: auto;
+
+  }
+
+  .cr-carousel-controls {
+
+    flex-wrap: wrap;
+
+  }
+
+  .cr-carousel-indicators {
+
+    order: -1;
+
+    width: 100%;
+
+  }
+
+  .cr-carousel-controls > .cr-button {
+
+    flex: 1;
+
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .cr-slide {
+
+    animation: none;
+
+  }
+
+}
+
+.cr-status {
+
+  padding: 12px 16px;
+
+  margin: 0 0 16px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 10px;
+
+  background: #fef2f2;
+
+  color: #b91c1c;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  line-height: 1.5;
+
+}
+
+.cr-status.success {
+
+  border-color: #b7e9df;
+
+  background: #effcf8;
+
+  color: #08776f;
+
+}
+
+/* ===== Slightly smaller, balanced typography ===== */
+
+.cr-page-header h2 {
+
+  font-size: clamp(26px, 2.5vw, 34px);
+
+}
+
+.cr-page-header p {
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+}
+
+.cr-eyebrow,
+
+.cr-sidebar-kicker {
+
+  font-size: 10px;
+
+}
+
+.cr-section-heading h3 {
+
+  font-size: 15px;
+
+}
+
+.cr-section-heading p {
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+}
+
+.cr-field > label,
+
+.cr-upload-label {
+
+  font-size: 12px;
+
+}
+
+.cr-field input,
+
+.cr-field select,
+
+.cr-phone-input > span,
+
+.cr-choice {
+
+  font-size: 12px;
+
+}
+
+.cr-field input,
+
+.cr-field select,
+
+.cr-phone-input,
+
+.cr-suffix-input {
+
+  min-height: 41px;
+
+}
+
+.cr-choice {
+
+  min-height: 36px;
+
+}
+
+.cr-button {
+
+  min-height: 43px;
+
+  padding: 0 18px;
+
+  font-size: 12px;
+
+}
+
+.cr-status {
+
+  font-size: 12px;
+
+}
+
+.cr-brand {
+
+  font-size: 16px;
+
+}
+
+.cr-step-link strong {
+
+  font-size: 12px;
+
+}
+
+.cr-step-link small {
+
+  font-size: 10px;
+
+}
+
+.cr-sidebar-intro h1 {
+
+  font-size: clamp(25px, 2.2vw, 32px);
+
+}
+
+.cr-sidebar-intro p {
+
+  font-size: 12px;
+
+}
+
+.cr-help-card strong {
+
+  font-size: 12px;
+
+}
+
+.cr-help-card p,
+
+.cr-help-card a {
+
+  font-size: 11px;
+
+}
+
+.cr-carousel-indicators {
+
+  font-size: 11px;
+
+}
+
+.cr-status {
+
+  padding: 10px 14px;
+
+}
+
+
+
+
+
+/* ===== Skeleton loading and polished registration interactions ===== */
+
+.candidate-registration { animation: crPageEnter .45s ease both; }
+
+.cr-loading-shell { animation: none; }
+
+.cr-skeleton-sidebar { overflow: hidden; }
+
+.cr-skeleton { display: block; position: relative; overflow: hidden; border-radius: 8px; background: rgba(226, 239, 242, .78); }
+
+.cr-skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,.72), transparent); animation: crShimmer 1.25s ease-in-out infinite; }
+
+.cr-skeleton-brand { width: 172px; height: 35px; background: rgba(255,255,255,.2); }
+
+.cr-skeleton-kicker { width: 128px; height: 9px; margin-top: clamp(45px, 8vh, 72px); background: rgba(255,255,255,.24); }
+
+.cr-skeleton-title { width: min(245px, 90%); height: 35px; margin-top: 17px; background: rgba(255,255,255,.32); }
+
+.cr-skeleton-copy { width: min(265px, 95%); height: 30px; margin-top: 12px; background: rgba(255,255,255,.19); }
+
+.cr-skeleton-steps { display: grid; gap: 23px; margin-top: 34px; }
+
+.cr-skeleton-step { display: flex; align-items: center; gap: 13px; }
+
+.cr-skeleton-step-number { width: 33px; height: 33px; flex: 0 0 33px; border-radius: 50%; background: rgba(255,255,255,.26); }
+
+.cr-skeleton-step-copy { display: grid; gap: 7px; width: 65%; }
+
+.cr-skeleton-step-title { height: 10px; width: 88%; background: rgba(255,255,255,.31); }
+
+.cr-skeleton-step-subtitle { height: 7px; width: 52%; background: rgba(255,255,255,.18); }
+
+.cr-skeleton-help { height: 95px; margin-top: auto; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.15); }
+
+.cr-skeleton-main { padding-top: clamp(28px, 4vw, 58px); }
+
+.cr-skeleton-eyebrow { width: 142px; height: 9px; margin-bottom: 16px; background: #e2f2ef; }
+
+.cr-skeleton-heading { width: min(380px, 80%); height: 34px; margin-bottom: 13px; background: #e9edf2; }
+
+.cr-skeleton-description { width: min(570px, 95%); height: 12px; margin-bottom: 35px; background: #edf0f4; }
+
+.cr-skeleton-progress { height: 5px; width: 100%; margin-bottom: 25px; background: #e8edf2; }
+
+.cr-skeleton-card { padding: clamp(20px, 3vw, 30px); border: 1px solid #e6ebf1; border-radius: 17px; background: #fff; box-shadow: 0 12px 32px rgba(20,36,61,.035); }
+
+.cr-skeleton-section-title { width: 205px; height: 17px; background: #e6ebf1; }
+
+.cr-skeleton-section-copy { width: 270px; max-width: 85%; height: 10px; margin-top: 10px; background: #eef1f5; }
+
+.cr-skeleton-fields { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 23px 18px; margin-top: 29px; }
+
+.cr-skeleton-field { display: grid; gap: 9px; }
+
+.cr-skeleton-label { width: 90px; height: 9px; background: #e9edf2; }
+
+.cr-skeleton-input { height: 42px; border-radius: 9px; background: #f0f3f6; }
+
+.cr-skeleton-action { width: 145px; height: 42px; margin: 28px 0 0 auto; background: #d7f0ec; }
+
+.cr-section-card { animation: crSectionEnter .42s cubic-bezier(.2,.75,.25,1) both; }
+
+.cr-field input:hover, .cr-field select:hover { border-color: #b7dcd7; }
+
+.cr-choice { position: relative; }
+
+.cr-choice:active { transform: scale(.97); }
+
+.cr-chip { animation: crChipEnter .22s ease both; }
+
+.cr-button { position: relative; overflow: hidden; }
+
+.cr-button::after { content: ""; position: absolute; inset: 0; transform: translateX(-120%); background: linear-gradient(110deg, transparent 25%, rgba(255,255,255,.2), transparent 75%); transition: transform .55s ease; pointer-events: none; }
+
+.cr-button-primary:hover::after { transform: translateX(120%); }
+
+.cr-button:active { transform: translateY(1px) scale(.99); }
+
+.cr-progress-track span { position: relative; }
+
+.cr-progress-track span::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent); animation: crProgressShine 2.4s ease-in-out infinite; }
+
+.cr-status:not(.success) { padding: 11px 13px; border: 1px solid #f5d7a7; border-radius: 10px; background: #fff9ed; animation: crStatusIn .25s ease both; }
+
+.cr-status.success { padding: 11px 13px; border: 1px solid #b7e9df; border-radius: 10px; background: #effcf8; animation: crStatusIn .25s ease both; }
+
+.cr-success-card { animation: crSuccessIn .4s cubic-bezier(.2,.75,.25,1) both; }
+
+.cr-upload-box.is-dragging { transform: scale(1.01); box-shadow: 0 0 0 4px #12b7a61a; }
+
+@keyframes crShimmer { 100% { transform: translateX(100%); } }
+
+@keyframes crPageEnter { from { opacity: 0; } to { opacity: 1; } }
+
+@keyframes crSectionEnter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+@keyframes crChipEnter { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
+
+@keyframes crProgressShine { 0%, 100% { opacity: 0; transform: translateX(-30%); } 45% { opacity: .7; } }
+
+@keyframes crStatusIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+@keyframes crSuccessIn { from { opacity: 0; transform: translateY(8px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+@media (max-width: 760px) { .cr-skeleton-sidebar { min-height: 280px; height: auto; } .cr-skeleton-steps { grid-template-columns: repeat(5, minmax(0,1fr)); gap: 8px; } .cr-skeleton-step { flex-direction: column; align-items: flex-start; gap: 6px; } .cr-skeleton-step-copy { width: 100%; } .cr-skeleton-help { display: none; } }
+
+@media (max-width: 520px) { .cr-skeleton-fields { grid-template-columns: minmax(0,1fr); gap: 17px; } }
+
+@media (prefers-reduced-motion: reduce) { .candidate-registration, .cr-section-card, .cr-chip, .cr-status, .cr-success-card, .cr-skeleton::after, .cr-progress-track span::after { animation: none !important; } .cr-button::after { display: none; } }
+
+
+
+/* =========================================
+
+   HORIZONTAL REGISTRATION STEPPER
+
+\========================================= */
+
+
+
+.candidate-registration {
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-height: 100vh;
+
+  width: 100%;
+
+  overflow-x: clip;
+
+  background: #f4f7fb;
+
+}
+
+
+
+.candidate-registration .cr-sidebar {
+
+  position: relative;
+
+  top: auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  width: 100%;
+
+  height: auto;
+
+  min-height: 0;
+
+  padding: 0;
+
+  overflow: visible;
+
+  color: #14243d;
+
+  background: #fff;
+
+  border-bottom: 1px solid #e6ebf2;
+
+  box-shadow: 0 4px 18px rgba(20, 36, 61, 0.04);
+
+}
+
+
+
+.candidate-registration .cr-sidebar::after {
+
+  display: none;
+
+}
+
+
+
+.cr-registration-topbar {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 16px;
+
+  width: 100%;
+
+  padding: 17px clamp(20px, 5vw, 76px);
+
+}
+
+
+
+.cr-registration-topbar .cr-brand {
+
+  color: #14243d;
+
+  font-size: 17px;
+
+  text-decoration: none;
+
+}
+
+
+
+.cr-registration-topbar .cr-brand-mark {
+
+  border: 1px solid #dce9ee;
+
+}
+
+
+
+/* Light-red Exit button */
+
+.candidate-registration .cr-exit-button {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  min-height: 38px;
+
+  padding: 8px 15px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 10px;
+
+  background: #fff1f2;
+
+  color: #dc5a65;
+
+  font: inherit;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+
+    background 0.2s ease,
+
+    border-color 0.2s ease,
+
+    transform 0.2s ease;
+
+}
+
+
+
+.candidate-registration .cr-exit-button span {
+
+  font-size: 19px;
+
+  line-height: 1;
+
+}
+
+
+
+.candidate-registration .cr-exit-button:hover {
+
+  background: #ffe4e6;
+
+  border-color: #fda4af;
+
+  transform: translateY(-1px);
+
+}
+
+
+
+.candidate-registration .cr-exit-button:focus-visible {
+
+  outline: 3px solid #fda4af;
+
+  outline-offset: 3px;
+
+}
+
+
+
+/* Three/five-step horizontal progress navigation */
+
+.candidate-registration .cr-step-list {
+
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+
+  gap: 0;
+
+  width: 100%;
+
+  margin: 0;
+
+  padding: 0 clamp(12px, 4vw, 55px);
+
+  overflow: visible;
+
+  background: #f8fafc;
+
+  border-top: 1px solid #edf1f5;
+
+}
+
+
+
+.candidate-registration .cr-step-list::before {
+
+  display: none;
+
+}
+
+
+
+.candidate-registration .cr-step-link {
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  min-width: 0;
+
+  min-height: 67px;
+
+  padding: 12px 10px;
+
+  border: 0;
+
+  border-bottom: 3px solid transparent;
+
+  border-radius: 0;
+
+  background: transparent;
+
+  color: #8793a7;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+
+    background 0.25s ease,
+
+    color 0.25s ease,
+
+    border-color 0.25s ease;
+
+}
+
+
+
+.candidate-registration .cr-step-link:hover {
+
+  transform: none;
+
+  background: #eff8ff;
+
+}
+
+
+
+.candidate-registration .cr-step-link.is-current {
+
+  border-bottom-color: #398bea;
+
+  background: linear-gradient(90deg, #e5f5ff, #eef4ff);
+
+  color: #2468b4;
+
+}
+
+
+
+.candidate-registration .cr-step-number {
+
+  flex: 0 0 30px;
+
+  width: 30px;
+
+  height: 30px;
+
+  border: 1px solid #d7dfeb;
+
+  border-radius: 50%;
+
+  background: #e8edf5;
+
+  color: #718096;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  transition:
+
+    background 0.25s ease,
+
+    color 0.25s ease,
+
+    box-shadow 0.25s ease;
+
+}
+
+
+
+.candidate-registration .cr-step-number.current {
+
+  border-color: #398bea;
+
+  background: #398bea;
+
+  color: #fff;
+
+  box-shadow: 0 3px 12px rgba(57, 139, 234, 0.24);
+
+}
+
+
+
+.candidate-registration .cr-step-number.completed {
+
+  border-color: #0d9488;
+
+  background: #0d9488;
+
+  color: #fff;
+
+}
+
+
+
+.candidate-registration .cr-step-copy {
+
+  display: block;
+
+  min-width: 0;
+
+}
+
+
+
+.candidate-registration .cr-step-copy strong {
+
+  display: block;
+
+  overflow-wrap: anywhere;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  line-height: 1.4;
+
+}
+
+
+
+.candidate-registration .cr-step-copy small {
+
+  display: block;
+
+  margin-top: 3px;
+
+  color: #8995a8;
+
+  font-size: 11px;
+
+  line-height: 1.3;
+
+}
+
+
+
+.candidate-registration .cr-step-link.is-current .cr-step-copy small {
+
+  color: #367bc5;
+
+}
+
+
+
+.candidate-registration .cr-step-link.is-completed .cr-step-copy strong {
+
+  color: #087c73;
+
+}
+
+
+
+/* Main form area */
+
+.candidate-registration .cr-main {
+
+  display: flex;
+
+  flex-direction: column;
+
+  width: min(100%, 1120px);
+
+  max-width: 1120px;
+
+  min-width: 0;
+
+  min-height: auto;
+
+  margin: 0 auto;
+
+  padding: 38px clamp(18px, 4vw, 50px) 48px;
+
+  overflow: visible;
+
+  background: transparent;
+
+}
+
+
+
+.candidate-registration .cr-page-header {
+
+  align-items: center;
+
+  margin-bottom: 25px;
+
+}
+
+
+
+.candidate-registration .cr-page-header h2 {
+
+  margin-top: 8px;
+
+  font-size: clamp(27px, 3vw, 35px);
+
+}
+
+
+
+.candidate-registration .cr-page-header p {
+
+  max-width: 680px;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+
+}
+
+
+
+/* Hide the previous sidebar decoration */
+
+.candidate-registration .cr-sidebar-intro,
+
+.candidate-registration .cr-sidebar-orb,
+
+.candidate-registration .cr-help-card,
+
+.candidate-registration .cr-sidebar-bottom {
+
+  display: none;
+
+}
+
+
+
+/* Stable form grid and input dimensions */
+
+.candidate-registration .cr-form,
+
+.candidate-registration .cr-section-card,
+
+.candidate-registration .cr-form-grid,
+
+.candidate-registration .cr-field {
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+}
+
+
+
+.candidate-registration .cr-form-grid.two {
+
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  align-items: start;
+
+  gap: 22px 20px;
+
+}
+
+
+
+.candidate-registration .cr-field {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: stretch;
+
+  gap: 8px;
+
+}
+
+
+
+.candidate-registration .cr-field > label {
+
+  display: block;
+
+  min-height: 18px;
+
+  line-height: 1.4;
+
+}
+
+
+
+.candidate-registration .cr-field input,
+
+.candidate-registration .cr-field select {
+
+  display: block;
+
+  width: 100%;
+
+  max-width: 100%;
+
+  height: 46px;
+
+  min-height: 46px;
+
+  margin: 0;
+
+  padding: 0 14px;
+
+  border: 1px solid #d9e1eb;
+
+  border-radius: 9px;
+
+  background: #f8fafc;
+
+  color: #14243d;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  line-height: normal;
+
+  box-sizing: border-box;
+
+}
+
+
+
+.candidate-registration .cr-field input::placeholder {
+
+  color: #9aa7b8;
+
+  opacity: 1;
+
+}
+
+
+
+.candidate-registration .cr-field input:focus,
+
+.candidate-registration .cr-field select:focus {
+
+  border-color: #60a5fa;
+
+  outline: none;
+
+  background: #fff;
+
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.13);
+
+}
+
+
+
+.candidate-registration .cr-phone-input,
+
+.candidate-registration .cr-suffix-input {
+
+  display: flex;
+
+  align-items: center;
+
+  width: 100%;
+
+  min-width: 0;
+
+  height: 46px;
+
+  box-sizing: border-box;
+
+}
+
+
+
+.candidate-registration .cr-phone-input input,
+
+.candidate-registration .cr-suffix-input input {
+
+  flex: 1;
+
+  width: 100%;
+
+  min-width: 0;
+
+  height: 100%;
+
+  min-height: 0;
+
+  padding-left: 10px;
+
+  border: 0;
+
+  background: transparent;
+
+  box-shadow: none;
+
+}
+
+
+
+.candidate-registration .cr-phone-input:focus-within,
+
+.candidate-registration .cr-suffix-input:focus-within {
+
+  border-color: #60a5fa;
+
+  background: #fff;
+
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.13);
+
+}
+
+
+
+.candidate-registration .cr-field input:focus-visible,
+
+.candidate-registration .cr-field select:focus-visible {
+
+  outline: none;
+
+}
+
+
+
+.candidate-registration .cr-button:disabled {
+
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+}
+
+
+
+@media (max-width: 680px) {
+
+  .candidate-registration .cr-step-list {
+
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    padding: 0 6px;
+
+  }
+
+
+
+  .candidate-registration .cr-step-link {
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    padding: 10px 3px;
+
+    text-align: center;
+
+  }
+
+
+
+  .candidate-registration .cr-step-copy strong {
+
+    font-size: 10px;
+
+    line-height: 1.3;
+
+  }
+
+
+
+  .candidate-registration .cr-step-copy small {
+
+    display: none;
+
+  }
+
+
+
+  .candidate-registration .cr-step-number {
+
+    flex-basis: 28px;
+
+    width: 28px;
+
+    height: 28px;
+
+  }
+
+
+
+  .candidate-registration .cr-form-grid.two {
+
+    grid-template-columns: minmax(0, 1fr);
+
+    gap: 17px;
+
+  }
+
+
+
+  .candidate-registration .cr-span-2 {
+
+    grid-column: auto;
+
+  }
+
+
+
+  .candidate-registration .cr-main {
+
+    padding: 25px 16px 100px;
+
+  }
+
+
+
+  .candidate-registration .cr-registration-topbar {
+
+    padding: 14px 16px;
+
+  }
+
+
+
+  .candidate-registration .cr-page-header {
+
+    gap: 12px;
+
+  }
+
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .cr-help-floating {
+
+    animation: none;
+
+  }
+
+}
+
+
+
+/* Skeleton layout for horizontal registration */
+
+.candidate-registration.cr-loading-shell {
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-height: 100vh;
+
+  background: #f4f7fb;
+
+}
+
+
+
+.cr-loading-shell .cr-skeleton-sidebar {
+
+  width: 100%;
+
+  height: auto;
+
+  min-height: 0;
+
+  padding: 18px clamp(20px, 5vw, 76px);
+
+  overflow: hidden;
+
+  background: #fff;
+
+  border-bottom: 1px solid #e6ebf2;
+
+}
+
+
+
+.cr-loading-shell .cr-skeleton-sidebar > .cr-skeleton-brand {
+
+  width: 170px;
+
+  height: 36px;
+
+  margin: 0 0 20px;
+
+  background: #e8eef4;
+
+}
+
+
+
+.cr-loading-shell .cr-skeleton-sidebar .cr-skeleton-kicker,
+
+.cr-loading-shell .cr-skeleton-sidebar .cr-skeleton-title,
+
+.cr-loading-shell .cr-skeleton-sidebar .cr-skeleton-copy,
+
+.cr-loading-shell .cr-skeleton-sidebar .cr-skeleton-help {
+
+  display: none;
+
+}
+
+
+
+.cr-loading-shell .cr-skeleton-steps {
+
+  display: grid;
+
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin: 0;
+
+}
+
+
+
+.cr-loading-shell .cr-skeleton-step {
+
+  min-width: 0;
+
+}
+
+
+
+.cr-loading-shell .cr-skeleton-main {
+
+  width: min(100%, 1120px);
+
+  margin: 0 auto;
+
+  padding: 38px 28px;
+
+  background: transparent;
+
+}
+
+
+
+.cr-loading-shell .cr-skeleton-card {
+
+  min-height: 300px;
+
+}
+
+
+
+@media (max-width: 680px) {
+
+  .cr-loading-shell .cr-skeleton-steps {
+
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    gap: 6px;
+
+  }
+
+
+
+  .cr-loading-shell .cr-skeleton-step {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 7px;
+
+  }
+
+
+
+  .cr-loading-shell .cr-skeleton-step-copy {
+
+    width: 100%;
+
+  }
+
+
+
+  .cr-loading-shell .cr-skeleton-main {
+
+    padding: 25px 16px;
+
+  }
+
+}
+
+
+
+/* ===== FINAL FIX: Registration support card ===== */
+
+
+
+main.candidate-registration > .cr-help-floating {
+
+  position: fixed !important;
+
+  right: 24px !important;
+
+  bottom: 24px !important;
+
+  left: auto !important;
+
+  top: auto !important;
+
+  z-index: 9999 !important;
+
+
+
+  display: flex !important;
+
+  flex-direction: row !important;
+
+  align-items: center !important;
+
+  justify-content: flex-start !important;
+
+  gap: 12px !important;
+
+
+
+  width: max-content !important;
+
+  max-width: calc(100vw - 32px) !important;
+
+  height: auto !important;
+
+  margin: 0 !important;
+
+  padding: 14px 18px !important;
+
+
+
+  overflow: visible !important;
+
+  border: 1px solid #dce8ed !important;
+
+  border-radius: 14px !important;
+
+  background: #ffffff !important;
+
+  color: #14243d !important;
+
+  box-shadow: 0 8px 30px rgba(20, 36, 61, 0.13) !important;
+
+
+
+  font-family: Inter, system-ui, sans-serif !important;
+
+  animation: crHelpEnter 0.35s ease-out both;
+
+}
+
+
+
+main.candidate-registration > .cr-help-floating .cr-help-icon {
+
+  display: grid !important;
+
+  flex: 0 0 38px !important;
+
+  width: 38px !important;
+
+  height: 38px !important;
+
+  margin: 0 !important;
+
+  padding: 0 !important;
+
+  place-items: center !important;
+
+  border-radius: 11px !important;
+
+  background: #e5f8f4 !important;
+
+  color: #087c73 !important;
+
+}
+
+
+
+main.candidate-registration > .cr-help-floating .cr-help-floating-copy {
+
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  gap: 4px !important;
+
+  min-width: 0 !important;
+
+}
+
+
+
+main.candidate-registration > .cr-help-floating .cr-help-floating-copy strong {
+
+  display: block !important;
+
+  color: #14243d !important;
+
+  font-size: 13px !important;
+
+  font-weight: 700 !important;
+
+}
+
+
+
+main.candidate-registration > .cr-help-floating .cr-help-floating-copy span {
+
+  display: block !important;
+
+  color: #718096 !important;
+
+  font-size: 11px !important;
+
+}
+
+
+
+main.candidate-registration > .cr-help-floating > a {
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  gap: 6px !important;
+
+  margin: 0 0 0 4px !important;
+
+  padding: 0 !important;
+
+  border: 0 !important;
+
+  background: transparent !important;
+
+  color: #087c73 !important;
+
+  font-size: 12px !important;
+
+  font-weight: 700 !important;
+
+  text-decoration: none !important;
+
+  white-space: nowrap !important;
+
+}
+
+
+
+main.candidate-registration > .cr-help-floating > a:hover {
+
+  color: #065f58 !important;
+
+  text-decoration: underline !important;
+
+}
+
+
+
+@keyframes crHelpEnter {
+
+  from {
+
+    opacity: 0;
+
+    transform: translateY(10px);
+
+  }
+
+
+
+  to {
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+  }
+
+}
+
+
+
+/* Keep the card compact on small screens */
+
+@media (max-width: 520px) {
+
+  main.candidate-registration > .cr-help-floating {
+
+    right: 12px !important;
+
+    bottom: 12px !important;
+
+    gap: 9px !important;
+
+    padding: 10px 12px !important;
+
+  }
+
+
+
+  main.candidate-registration > .cr-help-floating .cr-help-icon {
+
+    display: none !important;
+
+  }
+
+
+
+  main.candidate-registration > .cr-help-floating .cr-help-floating-copy span {
+
+    display: none !important;
+
+  }
+
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  main.candidate-registration > .cr-help-floating {
+
+    animation: none !important;
+
+  }
+
+}
+
+
+
+/* Center the registration content */
+
+.candidate-registration > .cr-main {
+
+  width: 100%;
+
+  max-width: 1160px;
+
+  min-width: 0;
+
+  margin: 0 auto;
+
+  padding: 38px 28px 100px;
+
+  background: transparent;
+
+}
+
+
+
+.candidate-registration > .cr-main .cr-section-card {
+
+  width: 100%;
+
+  max-width: 100%;
+
+}
+
+
+
+@media (max-width: 760px) {
+
+  .candidate-registration > .cr-main {
+
+    padding: 26px 16px 100px;
+
+  }
+
+}
+/* Inline validation feedback */
+.cr-field-error {
+  display: block;
+  margin-top: 5px;
+  color: #c62828;
+  font-size: 12px;
+  line-height: 1.45;
+}
+ 
+.candidate-registration .cr-field input[aria-invalid="true"],
+.candidate-registration .cr-field select[aria-invalid="true"] {
+  border-color: #dc6262;
+  box-shadow: 0 0 0 2px rgba(220, 98, 98, 0.12);
+}
+ 
+/* Inputs wrapped in a bordered box (mobile, percentage, CGPA, experience) */
+.cr-phone-input:has(input[aria-invalid="true"]),
+.cr-suffix-input:has(input[aria-invalid="true"]) {
+  border-color: #dc6262;
+  box-shadow: 0 0 0 2px rgba(220, 98, 98, 0.12);
+}
+ 
+.candidate-registration .cr-phone-input input[aria-invalid="true"],
+.candidate-registration .cr-suffix-input input[aria-invalid="true"] {
+  border: 0;
+  box-shadow: none;
+}
+ 
+.cr-field-hint {
+  display: block;
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+ 
+.cr-choice-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+ 
+.cr-choice.is-active {
+  background: #e5faf6;
+  border-color: #35cfc0;
+  color: #008f83;
+}
+ 
+/* Chips: only the × removes */
+.cr-chip { cursor: default; }
+.cr-chip-remove {
+  padding: 0; border: 0; background: transparent;
+  color: inherit; font-size: 15px; line-height: 1; cursor: pointer;
+}
+.cr-chip-remove:hover { color: #c62828; }
+ 
+/* Suggestions */
+.cr-suggestions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: -6px; }
+.cr-suggestions-label { color: #718096; font-size: 12px; }
+.cr-suggestion {
+  padding: 5px 11px; border: 1px dashed #9fd9d2; border-radius: 999px;
+  background: #fff; color: #087c73; font: inherit; font-size: 12px; cursor: pointer;
+  transition: background .2s ease;
+}
+.cr-suggestion:hover { background: #e6faf6; }
+ 
+/* Job preference checkboxes */
+.cr-checkbox-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.cr-checkbox {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border: 1px solid #d9e1eb; border-radius: 9px;
+  background: #f8fafc; font-size: 13px; cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+}
+.cr-checkbox.is-checked { border-color: #35cfc0; background: #e5faf6; color: #087c73; font-weight: 600; }
+ 
+/* Needed because ".cr-field input" would otherwise stretch the checkbox */
+.candidate-registration .cr-field .cr-checkbox input[type="checkbox"] {
+  width: 18px; height: 18px; min-height: 0; flex: 0 0 18px;
+  padding: 0; margin: 0; accent-color: #078f83;
+}
+ 
+/* Tag fields (Skills / Certification): input + Add button, suggestions, chips */
+.cr-tag-entry { display: flex; gap: 10px; align-items: stretch; }
+.cr-tag-entry input { flex: 1; min-width: 0; }
+.cr-tag-add {
+  flex: 0 0 auto; padding: 0 20px; border: 1px solid #12b7a6; border-radius: 9px;
+  background: #e5faf6; color: #087c73; font: inherit; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: background .2s ease, opacity .2s ease;
+}
+.cr-tag-add:hover:not(:disabled) { background: #d4f6ef; }
+.cr-tag-add:disabled { opacity: .45; cursor: not-allowed; }
+.cr-field .cr-suggestions, .cr-field .cr-chips { margin-top: 0; }
+ 
+/* ===== Tag box: chips live INSIDE the input ===== */
+.cr-tag-entry { align-items: flex-start; }
+ 
+.cr-tag-box {
+  flex: 1; min-width: 0;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  min-height: 46px; padding: 6px 12px;
+  border: 1px solid #d9e1eb; border-radius: 9px; background: #f8fafc;
+  cursor: text; transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.cr-tag-box:focus-within {
+  border-color: #60a5fa; background: #fff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.13);
+}
+.cr-tag-box.is-invalid {
+  border-color: #dc6262; box-shadow: 0 0 0 2px rgba(220, 98, 98, 0.12);
+}
+ 
+/* Beat ".candidate-registration .cr-field input" so the inner input is borderless */
+.candidate-registration .cr-tag-box input.cr-tag-input,
+.candidate-registration .cr-tag-box input.cr-tag-input:focus,
+.candidate-registration .cr-tag-box input.cr-tag-input:hover {
+  flex: 1 1 160px; width: auto; min-width: 140px;
+  height: 32px; min-height: 0; padding: 0 4px;
+  border: 0; border-radius: 0; background: transparent; box-shadow: none;
+}
+ 
+.cr-tag-add { height: 46px; }
+.cr-tag-box .cr-chip { margin: 0; }
+ 
+/* =====================================================================
+   CHEVRON STEPPER  (arrow-style registration steps)
+   Append at the very end of CandidateRegistration.css
+   ===================================================================== */
+ 
+.candidate-registration .cr-step-list {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 16px clamp(16px, 5vw, 76px);
+  background: #fff;
+  border-top: 1px solid #edf1f5;
+}
+ 
+/* Base = upcoming step */
+.candidate-registration .cr-step-list .cr-step-link {
+  --cr-notch: 22px;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 56px;
+  margin-left: calc(var(--cr-notch) * -1 + 4px); /* 4px white gap between arrows */
+  padding: 0 calc(var(--cr-notch) + 4px) 0 calc(var(--cr-notch) + 12px);
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  border-bottom: 0;
+  border-radius: 0;
+  background: #e9eef5;
+  color: #7b8799;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--cr-notch)) 0,
+    100% 50%,
+    calc(100% - var(--cr-notch)) 100%,
+    0 100%,
+    var(--cr-notch) 50%
+  );
+  transition: background .25s ease, color .25s ease, filter .25s ease;
+}
+ 
+/* First arrow: flat, rounded left edge */
+.candidate-registration .cr-step-list .cr-step-link:first-child {
+  margin-left: 0;
+  padding-left: 18px;
+  border-radius: 10px 0 0 10px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--cr-notch)) 0,
+    100% 50%,
+    calc(100% - var(--cr-notch)) 100%,
+    0 100%
+  );
+}
+ 
+.candidate-registration .cr-step-list .cr-step-link:hover { background: #dde5ef; }
+ 
+/* Completed */
+.candidate-registration .cr-step-list .cr-step-link.is-completed {
+  background: linear-gradient(90deg, #10a392, #0d9488);
+  color: #fff;
+}
+.candidate-registration .cr-step-list .cr-step-link.is-completed:hover {
+  background: linear-gradient(90deg, #10a392, #0d9488);
+  filter: brightness(1.06);
+}
+ 
+/* Current */
+.candidate-registration .cr-step-list .cr-step-link.is-current {
+  background: linear-gradient(90deg, #08776f, #0b8f84);
+  color: #fff;
+}
+ 
+/* Number / check circles */
+.candidate-registration .cr-step-list .cr-step-number {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: #fff;
+  color: #8a96a8;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: none;
+}
+.candidate-registration .cr-step-list .cr-step-number.completed {
+  background: #4fd8b4;
+  color: #fff;
+}
+.candidate-registration .cr-step-list .cr-step-number.current {
+  background: #fff;
+  color: #08776f;
+  box-shadow: none;
+}
+ 
+/* Labels inherit the segment colour */
+.candidate-registration .cr-step-list .cr-step-link .cr-step-copy strong {
+  color: inherit;
+  font-size: 13px;
+  font-weight: 600;
+}
+.candidate-registration .cr-step-list .cr-step-link.is-current .cr-step-copy strong { font-weight: 700; }
+ 
+/* Mobile: numbers only, current step shows its label */
+@media (max-width: 680px) {
+  .candidate-registration .cr-step-list { padding: 12px 10px; }
+ 
+  .candidate-registration .cr-step-list .cr-step-link {
+    --cr-notch: 12px;
+    flex-direction: row;
+    min-height: 46px;
+    gap: 8px;
+    padding: 0 calc(var(--cr-notch) + 2px) 0 calc(var(--cr-notch) + 8px);
+    text-align: left;
+  }
+  .candidate-registration .cr-step-list .cr-step-link:first-child { padding-left: 10px; }
+ 
+  .candidate-registration .cr-step-list .cr-step-copy { display: none; }
+  .candidate-registration .cr-step-list .cr-step-link.is-current { flex: 3 1 0; }
+  .candidate-registration .cr-step-list .cr-step-link.is-current .cr-step-copy { display: block; }
+  .candidate-registration .cr-step-list .cr-step-link .cr-step-copy strong { font-size: 12px; }
+}
+ 
