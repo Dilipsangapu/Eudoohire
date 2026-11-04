@@ -1,7 +1,7 @@
 
 import { techPillHTML } from "../components/TechnologyIcon.jsx";
 import { toast } from "../components/Toast.jsx";
-import { csrfHeaders } from "../services/api.js";
+import { csrfHeaders, RAZORPAY_KEY_ID } from "../services/api.js";
 
 export function initUnpaidDashboard() {
   const ac = new AbortController();
@@ -27,7 +27,7 @@ export function initUnpaidDashboard() {
 }
 
 function initUnpaidDashboardInner() {
-    
+
   // Track document-level listeners so React can remove them on unmount.
   const _docListeners = [];
   const onDoc = (type, fn, opts) => {
@@ -40,11 +40,11 @@ function initUnpaidDashboardInner() {
   function escapeHTML(str) {
     if (!str) return "";
     return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
   }
 
   // =========================================================================
@@ -341,12 +341,12 @@ function initUnpaidDashboardInner() {
     pricingModalCloseBtn.addEventListener('click', () => closeModal(pricingModal));
   }
 
- 
+
   // ==================== PREMIUM PAYMENT CHECKOUT ====================
 
   const paymentCheckout = document.getElementById("paymentCheckout");
   const pricingCardsGrid = document.querySelector(
-    "#pricingModal .pricing-cards-grid"
+      "#pricingModal .pricing-cards-grid"
   );
   const pricingNoticeBox = document.getElementById("pricingNoticeBox");
   const paymentBackBtn = document.getElementById("paymentBackBtn");
@@ -357,7 +357,7 @@ function initUnpaidDashboardInner() {
   const paymentPayBtn = document.getElementById("paymentPayBtn");
 
   const paymentSuccessMessage = document.getElementById(
-    "paymentSuccessMessage"
+      "paymentSuccessMessage"
   );
   const paymentDoneBtn = document.getElementById("paymentDoneBtn");
   const pricingUpgradeBasicBtn = document.getElementById("pricingUpgradeBasicBtn");
@@ -411,7 +411,7 @@ function initUnpaidDashboardInner() {
     }
 
     const orderSummary = paymentCheckout.querySelector(
-      ".payment-order-summary"
+        ".payment-order-summary"
     );
 
     if (orderSummary) {
@@ -445,7 +445,7 @@ function initUnpaidDashboardInner() {
     }
 
     const orderSummary = paymentCheckout.querySelector(
-      ".payment-order-summary"
+        ".payment-order-summary"
     );
 
     if (orderSummary) {
@@ -493,8 +493,8 @@ function initUnpaidDashboardInner() {
         if (res.status === 401) {
           try {
             sessionStorage.setItem(
-              "euodoo-pending-toast",
-              JSON.stringify({ type: "error", message: "Your login session has expired. Redirecting you to login..." }),
+                "euodoo-pending-toast",
+                JSON.stringify({ type: "error", message: "Your login session has expired. Redirecting you to login..." }),
             );
           } catch (_) {}
           window.location.href = "/login";
@@ -507,7 +507,7 @@ function initUnpaidDashboardInner() {
       const orderData = await res.json();
       const orderId = orderData.gatewayOrderId;
       const amountPaise = orderData.amountPaise || 49900;
-      const keyId = orderData.keyId || "rzp_test_38I5IEufjhiOFj";
+      const keyId = orderData.keyId || RAZORPAY_KEY_ID;
       const planDesc = "Premium Career Pro Upgrade";
 
       // 2. Load Razorpay Checkout SDK if needed
@@ -542,12 +542,12 @@ function initUnpaidDashboardInner() {
           try {
             // 4. Verify payment on Spring Boot backend
             const vRes = await fetch(
-              `/api/payments/verify?orderId=${encodeURIComponent(response.razorpay_order_id)}&paymentId=${encodeURIComponent(response.razorpay_payment_id)}&signature=${encodeURIComponent(response.razorpay_signature)}`,
-              {
-                method: "POST",
-                credentials: "include",
-                headers: { "Accept": "application/json" }
-              }
+                `/api/payments/verify?orderId=${encodeURIComponent(response.razorpay_order_id)}&paymentId=${encodeURIComponent(response.razorpay_payment_id)}&signature=${encodeURIComponent(response.razorpay_signature)}`,
+                {
+                  method: "POST",
+                  credentials: "include",
+                  headers: { "Accept": "application/json" }
+                }
             );
 
             if (!vRes.ok) {
@@ -753,23 +753,23 @@ function initUnpaidDashboardInner() {
     }
   });
 
- 
 
-if (localStorage.getItem(STORAGE_KEYS.READ_NOTIFS) === "true") {
-  document
-    .querySelectorAll(".hrm-unpaid .notif-item.unread")
-    .forEach((item) => {
-      item.classList.remove("unread");
-    });
 
-  if (notificationBadge) {
-    notificationBadge.style.display = "none";
+  if (localStorage.getItem(STORAGE_KEYS.READ_NOTIFS) === "true") {
+    document
+        .querySelectorAll(".hrm-unpaid .notif-item.unread")
+        .forEach((item) => {
+          item.classList.remove("unread");
+        });
+
+    if (notificationBadge) {
+      notificationBadge.style.display = "none";
+    }
+
+    if (unreadNotifCount) {
+      unreadNotifCount.textContent = "0 unread updates";
+    }
   }
-
-  if (unreadNotifCount) {
-    unreadNotifCount.textContent = "0 unread updates";
-  }
-}
 
 
 
@@ -940,7 +940,7 @@ if (localStorage.getItem(STORAGE_KEYS.READ_NOTIFS) === "true") {
       currentProfile.location = setLocation.value.trim() || 'Bengaluru, India';
       currentProfile.skills = setSkills.value.trim() || '';
       currentProfile.summary = setBio.value.trim() || '';
-      
+
       // Calculate new profile strength based on filled fields
       let score = 45;
       if (currentProfile.skills.length > 20) score += 20;
@@ -1000,15 +1000,15 @@ if (localStorage.getItem(STORAGE_KEYS.READ_NOTIFS) === "true") {
     if (usageAtsBar) usageAtsBar.style.width = `${percent}%`;
     if (usageAtsHint) {
       usageAtsHint.textContent = remaining > 0
-        ? `${remaining} free check${remaining === 1 ? '' : 's'} remaining in current free cycle`
-        : 'Free checks exhausted. Upgrade for unlimited analysis.';
+          ? `${remaining} free check${remaining === 1 ? '' : 's'} remaining in current free cycle`
+          : 'Free checks exhausted. Upgrade for unlimited analysis.';
     }
 
     if (atsChecksRemainingPill) {
       atsChecksRemainingPill.className = 'badge-quota-pill';
       atsChecksRemainingPill.innerHTML = remaining <= 0
-        ? '<i class="fa-solid fa-lock"></i> 0 Free Checks Left'
-        : `<i class="fa-solid fa-bolt"></i> <span id="atsChecksRemainingCount">${remaining}</span> Free Checks Left`;
+          ? '<i class="fa-solid fa-lock"></i> 0 Free Checks Left'
+          : `<i class="fa-solid fa-bolt"></i> <span id="atsChecksRemainingCount">${remaining}</span> Free Checks Left`;
     }
   }
 
@@ -1037,7 +1037,7 @@ if (localStorage.getItem(STORAGE_KEYS.READ_NOTIFS) === "true") {
     if (!iso) return 'Unknown date';
     const d = new Date(iso);
     return isNaN(d) ? 'Unknown date'
-      : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
   }
 
   async function loadAtsHistory() {
@@ -1081,7 +1081,7 @@ if (localStorage.getItem(STORAGE_KEYS.READ_NOTIFS) === "true") {
   async function viewSavedAtsResult(id) {
     try {
       const res = await fetch('/api/candidate/ats-evaluations/' + encodeURIComponent(id),
-        { credentials: 'include' });
+          { credentials: 'include' });
       if (!res.ok) {
         showToast('Could not open the saved result.', 'warning');
         return;
@@ -1101,7 +1101,7 @@ if (localStorage.getItem(STORAGE_KEYS.READ_NOTIFS) === "true") {
     if (scoreStatusText) {
       const s = data.score ?? 0;
       scoreStatusText.textContent =
-        s >= 80 ? 'High ATS Match' : s >= 65 ? 'Moderate Match' : 'Needs Improvement';
+          s >= 80 ? 'High ATS Match' : s >= 65 ? 'Moderate Match' : 'Needs Improvement';
     }
     if (scoreAnalysisDesc) scoreAnalysisDesc.textContent = data.summary || 'Review the details below.';
 
@@ -1129,14 +1129,14 @@ if (localStorage.getItem(STORAGE_KEYS.READ_NOTIFS) === "true") {
       const ed = b.education || {};
       const cp = b.certificationsProjects || {};
       const row = (label, value, ok) =>
-        `<div class="breakdown-item"><span>${label}</span><strong class="${ok ? 'text-success' : 'text-warning'}">${value}</strong></div>`;
+          `<div class="breakdown-item"><span>${label}</span><strong class="${ok ? 'text-success' : 'text-warning'}">${value}</strong></div>`;
       breakdownGrid.innerHTML =
-        row('Required Skills', req.applicable ? `${Math.round(req.score ?? 0)}/100` : 'Not applicable', (req.score ?? 0) >= 70 || !req.applicable) +
-        row('Experience', exp.applicable
-          ? `${Math.round(exp.score ?? 0)}/100 (${exp.yearsFound ?? 0} yr found / ${exp.yearsRequired ?? 0} yr required)`
-          : 'Not applicable', (exp.score ?? 0) >= 70 || !exp.applicable) +
-        row('Education', ed.applicable ? `${Math.round(ed.score ?? 0)}/100` : 'Not applicable', (ed.score ?? 0) >= 70 || !ed.applicable) +
-        row('Certifications & Projects', `${Math.round(cp.score ?? 0)}/100`, (cp.score ?? 0) >= 70);
+          row('Required Skills', req.applicable ? `${Math.round(req.score ?? 0)}/100` : 'Not applicable', (req.score ?? 0) >= 70 || !req.applicable) +
+          row('Experience', exp.applicable
+              ? `${Math.round(exp.score ?? 0)}/100 (${exp.yearsFound ?? 0} yr found / ${exp.yearsRequired ?? 0} yr required)`
+              : 'Not applicable', (exp.score ?? 0) >= 70 || !exp.applicable) +
+          row('Education', ed.applicable ? `${Math.round(ed.score ?? 0)}/100` : 'Not applicable', (ed.score ?? 0) >= 70 || !ed.applicable) +
+          row('Certifications & Projects', `${Math.round(cp.score ?? 0)}/100`, (cp.score ?? 0) >= 70);
     }
 
     if (suggestionsList) {
@@ -1331,7 +1331,7 @@ if (localStorage.getItem(STORAGE_KEYS.READ_NOTIFS) === "true") {
     await fetchAtsEntitlement();
     if (atsEntitlementLoaded && atsChecksRemaining <= 0) {
       showUpgradeModal('Unlimited ATS Resume Checks',
-        'You have used all free ATS checks for this cycle. Upgrade to Premium for unmetered checks, line-by-line keyword audits, and ATS parse validation.');
+          'You have used all free ATS checks for this cycle. Upgrade to Premium for unmetered checks, line-by-line keyword audits, and ATS parse validation.');
       return;
     }
     openAtsChecker();
@@ -1340,7 +1340,7 @@ if (localStorage.getItem(STORAGE_KEYS.READ_NOTIFS) === "true") {
     await fetchAtsEntitlement();
     if (atsEntitlementLoaded && atsChecksRemaining <= 0) {
       showUpgradeModal('Unlimited ATS Resume Checks',
-        'You have used all free ATS checks for this cycle. Upgrade to Premium for unmetered checks, line-by-line keyword audits, and ATS parse validation.');
+          'You have used all free ATS checks for this cycle. Upgrade to Premium for unmetered checks, line-by-line keyword audits, and ATS parse validation.');
       return;
     }
     openAtsChecker();
@@ -1352,7 +1352,7 @@ if (localStorage.getItem(STORAGE_KEYS.READ_NOTIFS) === "true") {
       await fetchAtsEntitlement();
       if (atsEntitlementLoaded && atsChecksRemaining <= 0) {
         showUpgradeModal('Unlimited ATS Resume Checks',
-          'You have used all free ATS checks for this cycle. Upgrade to Premium for unmetered checks, line-by-line keyword audits, and ATS parse validation.');
+            'You have used all free ATS checks for this cycle. Upgrade to Premium for unmetered checks, line-by-line keyword audits, and ATS parse validation.');
         return;
       }
       openAtsChecker();
@@ -1423,7 +1423,7 @@ National Institute of Technology (NIT) — Graduated 2023`;
       if (atsChecksRemaining <= 0) {
         closeModal(atsModal);
         showUpgradeModal('Unlimited ATS Resume Checks',
-          'You have exhausted your free quota. Upgrade to run unlimited ATS checks.');
+            'You have exhausted your free quota. Upgrade to run unlimited ATS checks.');
         return;
       }
 
@@ -1462,7 +1462,7 @@ National Institute of Technology (NIT) — Graduated 2023`;
             await fetchAtsEntitlement();
             closeModal(atsModal);
             showUpgradeModal('Unlimited ATS Resume Checks',
-              data.message || 'You have used all free ATS checks. Upgrade your plan to continue.');
+                data.message || 'You have used all free ATS checks. Upgrade your plan to continue.');
             return;
           }
           throw new Error((data && data.message) || 'Could not complete the ATS evaluation.');
@@ -1514,7 +1514,7 @@ National Institute of Technology (NIT) — Graduated 2023`;
     templateCards.forEach(card => {
       const cardCategory = card.getAttribute('data-category');
       const cardName = card.getAttribute('data-name').toLowerCase();
-const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '').toLowerCase();
+      const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '').toLowerCase();
       const matchesCat = (category === 'all' || cardCategory === category);
       const matchesSearch = (!query || cardName.includes(query) || cardSummary.includes(query) || cardCategory.includes(query));
 
@@ -1583,7 +1583,7 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
     localStorage.setItem(STORAGE_KEYS.ACTIVE_TEMPLATE, activeTemplate);
     if (currentEditingTemplateName) currentEditingTemplateName.textContent = templateName;
     if (previewTemplatePill) previewTemplatePill.textContent = `${templateName} Layout`;
-    
+
     // Fill with current profile or draft
     renderProfile();
     openModal(resumeEditorModal);
@@ -1628,7 +1628,7 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
       };
 
       localStorage.setItem(STORAGE_KEYS.SAVED_DRAFT, JSON.stringify(draftData));
-      
+
       // Update table metadata
       const tableDoc1Edited = document.getElementById('tableDoc1Edited');
       if (tableDoc1Edited) tableDoc1Edited.textContent = `Just now (${draftData.savedAt})`;
@@ -1727,7 +1727,7 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
     templateCards.forEach(card => {
       const name = card.getAttribute('data-name').toLowerCase();
       const cat = card.getAttribute('data-category').toLowerCase();
-     const desc = (card.querySelector('.template-cat-sub')?.textContent || '').toLowerCase();
+      const desc = (card.querySelector('.template-cat-sub')?.textContent || '').toLowerCase();
       if (name.includes(q) || cat.includes(q) || desc.includes(q)) {
         card.style.display = 'flex';
         totalMatches++;
@@ -1839,7 +1839,7 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
     jobModalCloseBtn.addEventListener('click', () => closeModal(jobPreviewModal));
   }
 
-  
+
   if (openQuestionsModalBtn) {
     openQuestionsModalBtn.addEventListener('click', () => openModal(questionsModal));
   }
@@ -1861,14 +1861,14 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
     });
   });
 
-  
+
   const navPortfolioBuilder = document.getElementById('nav-portfolio-builder');
   if (navPortfolioBuilder) {
     navPortfolioBuilder.addEventListener('click', (e) => {
       e.preventDefault();
       showUpgradeModal(
-        'Portfolio Website Builder & Publisher',
-        'Build and publish a live personal portfolio site with your own domain, auto-SSL, and global CDN — exclusive to Premium Career Pro candidates.'
+          'Portfolio Website Builder & Publisher',
+          'Build and publish a live personal portfolio site with your own domain, auto-SSL, and global CDN — exclusive to Premium Career Pro candidates.'
       );
     });
   }
@@ -1876,8 +1876,8 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
   if (tablePreviewPortfolioBtn) {
     tablePreviewPortfolioBtn.addEventListener('click', () => {
       showUpgradeModal(
-        'Portfolio Website Builder & Publisher',
-        'Publish your portfolio online and share a live link with recruiters. Upgrade to Premium to activate.'
+          'Portfolio Website Builder & Publisher',
+          'Publish your portfolio online and share a live link with recruiters. Upgrade to Premium to activate.'
       );
     });
   }
@@ -1953,9 +1953,9 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
     if (isNaN(date)) return "—";
     const now = new Date();
     const sameDay =
-      date.getFullYear() === now.getFullYear() &&
-      date.getMonth() === now.getMonth() &&
-      date.getDate() === now.getDate();
+        date.getFullYear() === now.getFullYear() &&
+        date.getMonth() === now.getMonth() &&
+        date.getDate() === now.getDate();
     if (sameDay) {
       return `Today, ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
     }
@@ -1980,8 +1980,8 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
           uploadedCount: typeof data.uploadedCount === "number" ? data.uploadedCount : 0,
           lastUpdated: data.lastUpdated || null,
           lastUpdatedFormatted:
-            data.lastUpdatedFormatted ||
-            (data.lastUpdated ? formatUnpaidResumeDate(data.lastUpdated) : "None"),
+              data.lastUpdatedFormatted ||
+              (data.lastUpdated ? formatUnpaidResumeDate(data.lastUpdated) : "None"),
         };
         renderUnpaidResumeStatsUI();
       }
@@ -2162,17 +2162,17 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
       const tr = document.createElement("tr");
       const isCreated = (item.source || "").toUpperCase() === "CREATED";
       const sourceBadge = isCreated
-        ? '<span class="badge-source-created">✦ Created</span>'
-        : '<span class="badge-source-uploaded">⬆ Uploaded</span>';
+          ? '<span class="badge-source-created">✦ Created</span>'
+          : '<span class="badge-source-uploaded">⬆ Uploaded</span>';
 
       const statusBadge = item.active
-        ? '<span class="badge-status-active">● Active Primary</span>'
-        : '<span class="badge-status-inactive">○ Stored</span>';
+          ? '<span class="badge-status-active">● Active Primary</span>'
+          : '<span class="badge-status-inactive">○ Stored</span>';
 
       const title = item.resumeTitle || item.originalFilename || "Resume";
       const createdDate = formatUnpaidResumeDate(item.uploadedAt || item.createdAt);
       const updatedDate = formatUnpaidResumeDate(
-        item.updatedAt || item.uploadedAt || item.createdAt,
+          item.updatedAt || item.uploadedAt || item.createdAt,
       );
 
       tr.innerHTML = `
@@ -2210,7 +2210,7 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
         </td>
       `;
 
-            resumeHistoryTbody.appendChild(tr);
+      resumeHistoryTbody.appendChild(tr);
     });
   }
 
@@ -2234,24 +2234,24 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
   // non-fatal so the dashboard still works in offline/cached scenarios.
   function loadUserProfile() {
     fetch('/api/candidate/profile', { credentials: 'include' })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        if (!data) return;
-        currentProfile = {
-          ...currentProfile,
-          fullName: data.fullName || currentProfile.fullName,
-          role: data.headline || currentProfile.role,
-          email: data.email || currentProfile.email,
-          phone: data.phone || currentProfile.phone,
-          location: data.location || currentProfile.location,
-          skills: Array.isArray(data.skills)
-            ? data.skills.join(', ')
-            : data.skills || currentProfile.skills,
-        };
-        localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(currentProfile));
-        renderProfile();
-      })
-      .catch(() => {});
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          if (!data) return;
+          currentProfile = {
+            ...currentProfile,
+            fullName: data.fullName || currentProfile.fullName,
+            role: data.headline || currentProfile.role,
+            email: data.email || currentProfile.email,
+            phone: data.phone || currentProfile.phone,
+            location: data.location || currentProfile.location,
+            skills: Array.isArray(data.skills)
+                ? data.skills.join(', ')
+                : data.skills || currentProfile.skills,
+          };
+          localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(currentProfile));
+          renderProfile();
+        })
+        .catch(() => {});
   }
 
   // Recommended Job Matches — real active jobs from MongoDB, display-only chips
@@ -2327,24 +2327,24 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
       const items = (data && data.content) || [];
       if (!items.length) return;
       const escapeHtml = (v) => String(v ?? '')
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
       list.innerHTML = '';
       items.forEach((n) => {
         const type = String(n.type || '').toUpperCase();
         const iconCls = /APPROV|SUCCESS|VERIFIED/.test(type) ? 'success'
-          : /WARN|REJECT|EXPIR|FAIL/.test(type) ? 'warning' : 'info';
+            : /WARN|REJECT|EXPIR|FAIL/.test(type) ? 'warning' : 'info';
         const time = n.createdAt
-          ? new Date(n.createdAt).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
-          : '';
+            ? new Date(n.createdAt).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
+            : '';
         const item = document.createElement('div');
         item.className = 'notif-item' + (n.read ? '' : ' unread');
         item.innerHTML =
-          `<div class="notif-icon ${iconCls}"><i class="fa-solid fa-bell"></i></div>` +
-          `<div class="notif-content">` +
+            `<div class="notif-icon ${iconCls}"><i class="fa-solid fa-bell"></i></div>` +
+            `<div class="notif-content">` +
             `<div class="notif-text">${escapeHtml(n.message || n.title || '')}</div>` +
             `<div class="notif-time">${escapeHtml(time)}</div>` +
-          `</div>`;
+            `</div>`;
         list.appendChild(item);
       });
     } catch (e) {
@@ -2356,7 +2356,7 @@ const cardSummary = (card.querySelector('.template-cat-sub')?.textContent || '')
   loadUnpaidResumeStats();
 
 
-    // 15. INITIALIZATION
+  // 15. INITIALIZATION
   // =========================================================================
   renderProfile();
   loadUserProfile();

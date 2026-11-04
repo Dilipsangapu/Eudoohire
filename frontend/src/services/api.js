@@ -2,9 +2,19 @@
  * Centralized API Service for Euodoo Hire frontend.
  * Communicates with the Spring Boot backend via REST APIs using JSON.
  * Handles base URL configuration, credentials (JSESSIONID cookie), and CSRF tokens.
+ *
+ * Environment configuration:
+ *   Development (.env.development): VITE_API_BASE_URL="" (Vite proxy forwards /api/* to localhost:8080)
+ *   Production  (.env.production):  VITE_API_BASE_URL=https://eudoohire-production.up.railway.app
  */
 
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
+
+/**
+ * Returns the Razorpay public key ID from the environment.
+ * This is the key_id (safe to expose in frontend) — the secret lives only on the backend.
+ */
+export const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID || "";
 
 /**
  * The single user-facing message for every failed sign-in attempt (wrong
@@ -16,7 +26,7 @@ export const GENERIC_LOGIN_ERROR = "Invalid credentials. Please check your detai
 
 /** Shown once when an authenticated session is lost mid-use. */
 export const SESSION_EXPIRED_MESSAGE =
-  "Your session has expired. Please sign in again.";
+    "Your session has expired. Please sign in again.";
 
 /**
  * Session-expiry detection wiring: once the app has held an authenticated
@@ -96,7 +106,7 @@ async function request(endpoint, options = {}) {
     response = await fetch(url, fetchOptions);
   } catch (netErr) {
     throw new Error(
-      "Unable to connect to the server. Please check your internet connection or verify the backend is running."
+        "Unable to connect to the server. Please check your internet connection or verify the backend is running."
     );
   }
 
@@ -134,9 +144,9 @@ async function request(endpoint, options = {}) {
       notifySessionExpired();
     }
     const message =
-      (data && typeof data === "object" && (data.message || data.error)) ||
-      (typeof data === "string" && data.length < 200 ? data : null) ||
-      `Request failed with status ${response.status}`;
+        (data && typeof data === "object" && (data.message || data.error)) ||
+        (typeof data === "string" && data.length < 200 ? data : null) ||
+        `Request failed with status ${response.status}`;
     const error = new Error(message);
     error.status = response.status;
     error.data = data;
@@ -947,8 +957,8 @@ export const adminApi = {
   },
   async rejectCandidate(userId, reason = "Rejected by admin") {
     return request(
-      `/api/admin/data/candidates/${encodeURIComponent(userId)}/reject?reason=${encodeURIComponent(reason)}`,
-      { method: "POST" }
+        `/api/admin/data/candidates/${encodeURIComponent(userId)}/reject?reason=${encodeURIComponent(reason)}`,
+        { method: "POST" }
     );
   },
 
@@ -960,8 +970,8 @@ export const adminApi = {
   },
   async rejectRecruiter(userId, reason = "Rejected by admin") {
     return request(
-      `/api/admin/data/recruiters/${encodeURIComponent(userId)}/reject?reason=${encodeURIComponent(reason)}`,
-      { method: "POST" }
+        `/api/admin/data/recruiters/${encodeURIComponent(userId)}/reject?reason=${encodeURIComponent(reason)}`,
+        { method: "POST" }
     );
   },
 
@@ -973,8 +983,8 @@ export const adminApi = {
   },
   async rejectCompany(companyId, reason = "Rejected by admin") {
     return request(
-      `/api/admin/data/companies/${encodeURIComponent(companyId)}/reject?reason=${encodeURIComponent(reason)}`,
-      { method: "POST" }
+        `/api/admin/data/companies/${encodeURIComponent(companyId)}/reject?reason=${encodeURIComponent(reason)}`,
+        { method: "POST" }
     );
   },
 
@@ -998,8 +1008,8 @@ export const adminApi = {
   },
   async rejectPortfolio(id, note = "") {
     return request(
-      `/api/admin/data/portfolio-requests/${encodeURIComponent(id)}/reject?note=${encodeURIComponent(note)}`,
-      { method: "POST" }
+        `/api/admin/data/portfolio-requests/${encodeURIComponent(id)}/reject?note=${encodeURIComponent(note)}`,
+        { method: "POST" }
     );
   },
   async approveResume(id) {
@@ -1009,8 +1019,8 @@ export const adminApi = {
   },
   async rejectResume(id, note = "") {
     return request(
-      `/api/admin/data/resume-requests/${encodeURIComponent(id)}/reject?note=${encodeURIComponent(note)}`,
-      { method: "POST" }
+        `/api/admin/data/resume-requests/${encodeURIComponent(id)}/reject?note=${encodeURIComponent(note)}`,
+        { method: "POST" }
     );
   },
 
