@@ -28,7 +28,9 @@ public class AgencyResponse {
     private String panNumber;
     private String officialEmail;
     private String contactNumber;
+    private String contactCountryCode;
     private String alternateContactNumber;
+    private String alternateContactCountryCode;
     private String website;
     private String linkedin;
     private AgencyRepresentative representative;

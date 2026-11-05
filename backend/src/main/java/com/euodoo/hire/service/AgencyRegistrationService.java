@@ -77,7 +77,9 @@ public class AgencyRegistrationService {
                 .panNumber(request.getPanNumber() != null ? request.getPanNumber().trim() : null)
                 .officialEmail(email)
                 .contactNumber(request.getContactNumber())
+                .contactCountryCode(request.getContactCountryCode())
                 .alternateContactNumber(request.getAlternateContactNumber())
+                .alternateContactCountryCode(request.getAlternateContactCountryCode())
                 .website(request.getWebsite())
                 .linkedin(effectiveLinkedin)
                 .representative(request.getRepresentative())
@@ -146,7 +148,9 @@ public class AgencyRegistrationService {
         if (request.getGstNumber() != null) agency.setGstNumber(request.getGstNumber().trim());
         if (request.getPanNumber() != null) agency.setPanNumber(request.getPanNumber().trim());
         if (request.getContactNumber() != null) agency.setContactNumber(request.getContactNumber());
+        if (request.getContactCountryCode() != null) agency.setContactCountryCode(request.getContactCountryCode());
         if (request.getAlternateContactNumber() != null) agency.setAlternateContactNumber(request.getAlternateContactNumber());
+        if (request.getAlternateContactCountryCode() != null) agency.setAlternateContactCountryCode(request.getAlternateContactCountryCode());
         if (request.getWebsite() != null) agency.setWebsite(request.getWebsite());
         if (request.getLinkedin() != null) agency.setLinkedin(request.getLinkedin());
         if (request.getRepresentative() != null) agency.setRepresentative(request.getRepresentative());

@@ -42,7 +42,11 @@ public class AgencyDraftRequest {
 
     private String contactNumber;
 
+    private String contactCountryCode;
+
     private String alternateContactNumber;
+
+    private String alternateContactCountryCode;
 
     private String website;
 

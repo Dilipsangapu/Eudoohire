@@ -107,9 +107,13 @@ export default function AgencyLoginPage() {
       if (
         status === 403 ||
         data?.error === "ACCOUNT_NOT_ACTIVE" ||
+        data?.error === "ACCOUNT_LOCKED" ||
         data?.status === "PENDING_APPROVAL" ||
         err?.message?.includes("PENDING_APPROVAL") ||
-        err?.message?.includes("administrator must approve")
+        err?.message?.includes("ACCOUNT_LOCKED") ||
+        err?.message?.includes("locked or pending approval") ||
+        err?.message?.includes("administrator must approve") ||
+        (liveStatus && liveStatus.registrationStatus && liveStatus.registrationStatus !== "APPROVED" && liveStatus.registrationStatus !== "REJECTED")
       ) {
         setIsPendingApproval(true);
         setAlert(

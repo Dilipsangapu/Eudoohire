@@ -15,6 +15,8 @@ public class AgencyRepresentative {
     private String designation;
     private String officialEmail;
     private String mobileNumber;
+    private String mobileCountryCode;
     private String alternateMobileNumber;
+    private String alternateMobileCountryCode;
     private String linkedin;
 }

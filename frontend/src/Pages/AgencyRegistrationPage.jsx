@@ -17,12 +17,16 @@ const initial = {
   website: "",
   email: "",
   phone: "",
+  phoneCode: "+91",
   altPhone: "",
+  altPhoneCode: "+91",
   repName: "",
   designation: "Owner / Founder",
   repEmail: "",
   repMobile: "",
+  repMobileCode: "+91",
   repAltMobile: "",
+  repAltMobileCode: "+91",
   linkedin: "",
   address1: "",
   address2: "",
@@ -107,6 +111,46 @@ const passwordChecks = [
 
 const countryOptions = Country.getAllCountries().map((c) => ({ value: c.isoCode, label: c.name }));
 
+/* ---------- Phone number helpers ---------- */
+const countryCodes = [
+  { iso: "IN", code: "+91" },
+  { iso: "US", code: "+1" },
+  { iso: "GB", code: "+44" },
+  { iso: "AE", code: "+971" },
+  { iso: "AU", code: "+61" },
+  { iso: "SG", code: "+65" },
+  { iso: "SA", code: "+966" },
+  { iso: "QA", code: "+974" },
+  { iso: "DE", code: "+49" },
+  { iso: "NP", code: "+977" },
+  { iso: "BD", code: "+880" },
+  { iso: "LK", code: "+94" },
+  { iso: "PK", code: "+92" },
+];
+
+// phone field -> its country code field
+const phoneCodeKey = {
+  phone: "phoneCode",
+  altPhone: "altPhoneCode",
+  repMobile: "repMobileCode",
+  repAltMobile: "repAltMobileCode",
+};
+
+const phoneLabels = {
+  phone: "contact number",
+  altPhone: "alternate contact number",
+  repMobile: "direct mobile number",
+  repAltMobile: "alternate mobile number",
+};
+
+// digits only, max 10; also handles pasted "+91 98765 43210"
+const cleanPhone = (raw, code) => {
+  const digits = raw.replace(/\D/g, "");
+  const stripped =
+    code === "+91" && digits.length > 10 && digits.startsWith("91") ? digits.slice(2) : digits;
+  return stripped.slice(0, 10);
+};
+
 function playTone() {
   try {
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -129,16 +173,23 @@ function playTone() {
   }
 }
 
-const validateField = (key, value) => {
+const validateField = (key, value, all) => {
   const v = String(value || "").trim();
+
+  // Phone numbers: +91 must start with 6-9, other countries just need 10 digits
+  if (phoneCodeKey[key] && v) {
+    const india = all?.[phoneCodeKey[key]] === "+91";
+    const ok = india ? /^[6-9]\d{9}$/.test(v) : /^\d{10}$/.test(v);
+    if (!ok) {
+      return india
+        ? `Enter a valid 10-digit ${phoneLabels[key]} starting with 6, 7, 8 or 9.`
+        : `Enter a valid 10-digit ${phoneLabels[key]}.`;
+    }
+  }
 
   const rules = {
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     repEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    phone: /^[6-9]\d{9}$/,
-    altPhone: /^[6-9]\d{9}$/,
-    repMobile: /^[6-9]\d{9}$/,
-    repAltMobile: /^[6-9]\d{9}$/,
     pin: /^\d{6}$/,
     pan: /^[A-Z]{5}\d{4}[A-Z]$/,
     website: /^(https?:\/\/)?(www\.)?[\w-]+(\.[\w-]+)+([/?#][^\s]*)?$/i,
@@ -153,14 +204,6 @@ const validateField = (key, value) => {
         ? "6-digit PIN code"
         : key === "pan"
         ? "PAN number (e.g. ABCDE1234F)"
-        : key === "repMobile"
-        ? "10-digit direct mobile number (starting with 6-9)"
-        : key === "repAltMobile"
-        ? "10-digit alternate mobile number (starting with 6-9)"
-        : key === "altPhone"
-        ? "10-digit alternate phone number (starting with 6-9)"
-        : key === "phone"
-        ? "10-digit contact number (starting with 6-9)"
         : key === "repEmail"
         ? "representative email"
         : key === "website"
@@ -257,19 +300,29 @@ export default function AgencyRegistrationPage() {
         return;
       }
 
-      const error = validateField(field.key, value);
+      const error = validateField(field.key, value, data);
       if (error) {
         toast.error(error);
         return;
       }
     }
 
-    if (step === 0 && data.altPhone?.trim() && data.altPhone.trim() === data.phone.trim()) {
+    if (
+      step === 0 &&
+      data.altPhone?.trim() &&
+      data.altPhone.trim() === data.phone.trim() &&
+      data.altPhoneCode === data.phoneCode
+    ) {
       toast.error("Alternate contact number must be different from the contact number.");
       return;
     }
 
-    if (step === 1 && data.repAltMobile?.trim() && data.repAltMobile.trim() === data.repMobile.trim()) {
+    if (
+      step === 1 &&
+      data.repAltMobile?.trim() &&
+      data.repAltMobile.trim() === data.repMobile.trim() &&
+      data.repAltMobileCode === data.repMobileCode
+    ) {
       toast.error("Alternate mobile number must be different from the direct mobile number.");
       return;
     }
@@ -342,7 +395,9 @@ export default function AgencyRegistrationPage() {
         officialEmail: data.email.trim().toLowerCase(),
         password: data.password,
         contactNumber: data.phone.trim(),
+        contactCountryCode: data.phoneCode,
         alternateContactNumber: data.altPhone?.trim() || null,
+        alternateContactCountryCode: data.altPhone?.trim() ? data.altPhoneCode : null,
         website: data.website?.trim() || null,
         linkedin: data.linkedin?.trim() || null,
         representative: {
@@ -350,7 +405,9 @@ export default function AgencyRegistrationPage() {
           designation: data.designation.trim(),
           officialEmail: data.repEmail.trim().toLowerCase(),
           mobileNumber: data.repMobile.trim(),
+          mobileCountryCode: data.repMobileCode,
           alternateMobileNumber: data.repAltMobile?.trim() || null,
+          alternateMobileCountryCode: data.repAltMobile?.trim() ? data.repAltMobileCode : null,
           representativeId: data.repId?.trim() || null,
           linkedin: data.linkedin?.trim() || null,
         },
@@ -601,7 +658,44 @@ export default function AgencyRegistrationPage() {
                     {f.required && <span className="asterisk"> *</span>}
                   </label>
 
-                  {f.type === "select" ? (
+                  {phoneCodeKey[f.key] ? (
+                    /* Phone: country code + 10-digit number */
+                    <div className="phone-input-group">
+                      <select
+                        className="agency-registration-input phone-code"
+                        aria-label={`${f.label} country code`}
+                        value={data[phoneCodeKey[f.key]]}
+                        onChange={(e) => {
+                          const code = e.target.value;
+                          setData((d) => ({
+                            ...d,
+                            [phoneCodeKey[f.key]]: code,
+                            [f.key]: cleanPhone(d[f.key], code),
+                          }));
+                        }}
+                      >
+                        {countryCodes.map((c) => (
+                          <option key={c.iso} value={c.code}>
+                            {c.iso} {c.code}
+                          </option>
+                        ))}
+                      </select>
+                      <input
+                        className="agency-registration-input"
+                        id={f.key}
+                        type="tel"
+                        inputMode="numeric"
+                        maxLength={10}
+                        autoComplete="tel-national"
+                        value={data[f.key]}
+                        onChange={(e) =>
+                          update(f.key, cleanPhone(e.target.value, data[phoneCodeKey[f.key]]))
+                        }
+                        placeholder="Enter 10-digit number"
+                        required={f.required}
+                      />
+                    </div>
+                  ) : f.type === "select" ? (
                     <select
                       className="agency-registration-input"
                       id={f.key}
@@ -752,7 +846,7 @@ export default function AgencyRegistrationPage() {
               {submitting
                 ? "Submitting..."
                 : step === 3
-                ? "Submit Registration"
+                ? "Submit"
                 : "Continue"}
               <span aria-hidden="true"> →</span>
             </button>

@@ -11,6 +11,7 @@ import com.euodoo.hire.exception.AgencyNotFoundException;
 import com.euodoo.hire.service.AgencyMapper;
 import com.euodoo.hire.model.Agency;
 import com.euodoo.hire.model.CandidateSubmission;
+import com.euodoo.hire.model.User;
 import com.euodoo.hire.repository.AgencyRepository;
 import com.euodoo.hire.repository.CandidateSubmissionRepository;
 import com.euodoo.hire.model.AccountStatus;
@@ -83,22 +84,33 @@ public class AdminAgencyManagementService {
         Agency saved = agencyRepository.save(agency);
 
         // Update corresponding primary user account status
+        User primaryUser = null;
         if (saved.getRegisteredUserId() != null) {
-            userRepository.findById(saved.getRegisteredUserId()).ifPresent(u -> {
-                if (status == AgencyRegistrationStatus.APPROVED) {
-                    u.setAccountStatus(AccountStatus.ACTIVE);
-                    u.setApprovedAt(Instant.now());
-                    u.setReviewedByAdminId(adminUserId);
-                } else if (status == AgencyRegistrationStatus.REJECTED) {
-                    u.setAccountStatus(AccountStatus.REJECTED);
-                    u.setRejectedAt(Instant.now());
-                    u.setRejectionReason(remarks);
-                    u.setReviewedByAdminId(adminUserId);
-                } else if (status == AgencyRegistrationStatus.SUSPENDED) {
-                    u.setAccountStatus(AccountStatus.DISABLED);
-                }
-                userRepository.save(u);
-            });
+            primaryUser = userRepository.findById(saved.getRegisteredUserId()).orElse(null);
+        }
+        if (primaryUser == null && saved.getOfficialEmail() != null) {
+            primaryUser = userRepository.findByEmail(saved.getOfficialEmail().toLowerCase().trim()).orElse(null);
+        }
+
+        if (primaryUser != null) {
+            if (status == AgencyRegistrationStatus.APPROVED) {
+                primaryUser.setAccountStatus(AccountStatus.ACTIVE);
+                primaryUser.setApprovedAt(Instant.now());
+                primaryUser.setReviewedByAdminId(adminUserId);
+            } else if (status == AgencyRegistrationStatus.REJECTED) {
+                primaryUser.setAccountStatus(AccountStatus.REJECTED);
+                primaryUser.setRejectedAt(Instant.now());
+                primaryUser.setRejectionReason(remarks);
+                primaryUser.setReviewedByAdminId(adminUserId);
+            } else if (status == AgencyRegistrationStatus.SUSPENDED) {
+                primaryUser.setAccountStatus(AccountStatus.DISABLED);
+            }
+            userRepository.save(primaryUser);
+
+            if (saved.getRegisteredUserId() == null) {
+                saved.setRegisteredUserId(primaryUser.getId());
+                saved = agencyRepository.save(saved);
+            }
         }
 
         auditService.log(adminUserId, "CLIENT_ADMIN", "Agency", saved.getId(),

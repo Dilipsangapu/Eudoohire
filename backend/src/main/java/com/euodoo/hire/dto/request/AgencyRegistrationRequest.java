@@ -48,7 +48,11 @@ public class AgencyRegistrationRequest {
     @NotBlank(message = "Contact number is required")
     private String contactNumber;
 
+    private String contactCountryCode;
+
     private String alternateContactNumber;
+
+    private String alternateContactCountryCode;
 
     private String website;
 

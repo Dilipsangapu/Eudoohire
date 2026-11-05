@@ -603,3 +603,29 @@
     font-size: 23px;
   }
 }
+.agency-auth-brand-content h1 {
+  letter-spacing: -.025em;
+  color: #fff;
+  margin: 10px 76px 12px;
+  font-size: clamp(28px, 2.8vw, 40px);
+  font-weight: 800;
+  line-height: 1.18;
+}
+
+.agency-brand-top {
+  z-index: 1;
+  flex-direction: column;
+  gap: 33px;
+  display: flex;
+  margin-left: 47px;
+}
+
+.agency-auth-benefits {
+  z-index: 1;
+  flex-direction: column;
+  gap: 12px;
+  margin: 24px 48px 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
