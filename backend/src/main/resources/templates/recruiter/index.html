@@ -465,7 +465,27 @@
         .input-wrap svg{position:absolute;left:9px;top:50%;translate:0 -50%;width:14px;height:14px;color:var(--mut);pointer-events:none}
         .input-wrap input{padding-left:30px!important}
         .filters input,.filters select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--ink);transition:all .2s;font-size:12px}
+        .filters select, #sort, .jobmodal select, #pct, #atsJobSel {
+            cursor: pointer;
+            background-color: #fff;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            padding-right: 24px !important;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            position: relative;
+            z-index: 2;
+        }
+        .filters select:hover, #sort:hover, .jobmodal select:hover, #pct:hover, #atsJobSel:hover {
+            border-color: #cbd5e1;
+        }
         .filters input:focus,.filters select:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 2px rgba(15,148,136,.18)}
+        .f-group {
+            position: relative;
+            min-width: 0;
+        }
         .rowtools{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid var(--line);color:var(--mut);font-size:12px;flex-wrap:wrap;gap:8px}
         .link-reset{
             position:relative;overflow:hidden;background:none;border:0;color:var(--brand-d);font-weight:700;
@@ -720,7 +740,14 @@
             50%{transform:translateY(-8px) rotate(4deg)}
         }
 
-        @media(max-width:1050px){.cards{grid-template-columns:1fr 1fr}.filters{grid-template-columns:1fr 1fr}}
+        @media(max-width:1050px){
+            .cards{grid-template-columns:1fr 1fr}
+            .filters{grid-template-columns:1fr 1fr;gap:10px}
+            .filters .f-group:first-child{grid-column:1/-1}
+        }
+        @media(max-width:640px){
+            .filters{grid-template-columns:1fr;gap:8px}
+        }
         @media(max-width:768px){.viz{display:none}.banner h2{font-size:23px}.foot-bar{flex-direction:column;align-items:flex-start}}
     </style>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -996,12 +1023,36 @@
                     <input id="q" placeholder="e.g. ET003, Rohan, Java">
                 </div>
             </div>
-            <div class="f-group"><label>Tech stack</label><select id="fStack"></select></div>
-            <div class="f-group"><label>Experience</label><select id="fExp"><option value="">Any</option><option value="0-2">0–2 yrs</option><option value="3-5">3–5 yrs</option><option value="6-9">6–9 yrs</option><option value="10-99">10+ yrs</option></select></div>
-            <div class="f-group"><label>Notice period</label><select id="fNot"><option value="">Any</option><option value="15">≤ 15 days</option><option value="30">≤ 30 days</option><option value="60">≤ 60 days</option></select></div>
-            <div class="f-group"><label>Expected salary</label><select id="fSal"><option value="">Any</option><option value="0-10">Up to ₹10L</option><option value="10-20">₹10–20L</option><option value="20-30">₹20–30L</option><option value="30-999">₹30L+</option></select></div>
-            <div class="f-group"><label>Location</label><select id="fLoc"></select></div>
-            <div class="f-group"><label>Work mode</label><select id="fMode"><option value="">Any</option><option>WFO</option><option>WFH</option><option>Hybrid</option></select></div>
+            <div class="f-group"><label>Tech stack</label><select id="fStack"><option value="">All</option></select></div>
+            <div class="f-group"><label>Experience</label><select id="fExp">
+                <option value="">All</option>
+                <option value="0-2">0 &ndash; 2 yrs</option>
+                <option value="3-5">3 &ndash; 5 yrs</option>
+                <option value="6-9">6 &ndash; 9 yrs</option>
+                <option value="10-99">10+ yrs</option>
+            </select></div>
+            <div class="f-group"><label>Notice period</label><select id="fNot">
+                <option value="">All</option>
+                <option value="0">Immediate</option>
+                <option value="15">&le; 15 days</option>
+                <option value="30">&le; 30 days</option>
+                <option value="60">&le; 60 days</option>
+                <option value="90">&le; 90 days</option>
+            </select></div>
+            <div class="f-group"><label>Expected salary</label><select id="fSal">
+                <option value="">All</option>
+                <option value="0-10">Up to &#8377;10L</option>
+                <option value="10-20">&#8377;10 &ndash; 20L</option>
+                <option value="20-30">&#8377;20 &ndash; 30L</option>
+                <option value="30-999">&#8377;30L+</option>
+            </select></div>
+            <div class="f-group"><label>Location</label><select id="fLoc"><option value="">All</option></select></div>
+            <div class="f-group"><label>Work mode</label><select id="fMode">
+                <option value="">All</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="WFH">Remote / WFH</option>
+                <option value="WFO">Onsite / WFO</option>
+            </select></div>
         </div>
 
         <div class="rowtools">
@@ -1247,16 +1298,48 @@
     }
 
     // Filtering
-    const inRange=(v,r)=>{if(!r)return true;const[a,b]=r.split("-").map(Number);return v>=a&&v<=b};
+    const inRange = (v, r) => {
+        if (!r) return true;
+        const parts = r.split("-").map(Number);
+        if (parts.length !== 2) return true;
+        const val = Number(v != null ? v : 0);
+        return val >= parts[0] && val <= parts[1];
+    };
     function list(){
-        let l=cands.slice();
-        if(state.tab==="short")l=l.filter(c=>state.short.has(c.id));
-        if(state.tab==="fav")l=l.filter(c=>state.fav.has(c.id));
-        const q=$("#q").value.trim().toLowerCase(),st=$("#fStack").value,ex=$("#fExp").value,nt=$("#fNot").value,sa=$("#fSal").value,lo=$("#fLoc").value,mo=$("#fMode").value;
-        l=l.filter(c=>(!q||(c.name+c.id+(c.skills||[]).join(" ")).toLowerCase().includes(q))&&(!st||c.stack===st)&&inRange(c.exp,ex)&&(!nt||c.notice<=+nt)&&inRange(c.sal,sa)&&(!lo||c.loc===lo)&&(!mo||c.mode===mo));
-        const s=$("#sort").value;
-        const key={new:(a,b)=>b.order-a.order,exp:(a,b)=>b.exp-a.exp,sal:(a,b)=>b.sal-a.sal,not:(a,b)=>a.notice-b.notice}[s] || ((a,b)=>b.order-a.order);
-        return l.sort((a,b)=>(b.prem-a.prem)||key(a,b));
+        let l = cands.slice();
+        if(state.tab === "short") l = l.filter(c => state.short.has(c.id));
+        if(state.tab === "fav") l = l.filter(c => state.fav.has(c.id));
+        const q = ($("#q")?.value || "").trim().toLowerCase();
+        const st = $("#fStack")?.value || "";
+        const ex = $("#fExp")?.value || "";
+        const nt = $("#fNot")?.value || "";
+        const sa = $("#fSal")?.value || "";
+        const lo = $("#fLoc")?.value || "";
+        const mo = $("#fMode")?.value || "";
+
+        l = l.filter(c => {
+            const matchQ = !q || (c.name + " " + c.id + " " + (c.skills || []).join(" ") + " " + (c.headline || "") + " " + (c.loc || "")).toLowerCase().includes(q);
+            const matchStack = !st || c.stack === st || (c.skills && c.skills.some(s => s.toLowerCase() === st.toLowerCase()));
+            const matchExp = inRange(c.exp, ex);
+            const matchNotice = !nt || (nt === "0" ? (Number(c.notice) === 0) : (Number(c.notice) <= Number(nt)));
+            const matchSal = inRange(c.sal, sa);
+            const matchLoc = !lo || c.loc === lo;
+            const matchMode = !mo || (c.mode && (
+                c.mode.toLowerCase() === mo.toLowerCase() ||
+                (mo === "WFH" && (c.mode.toLowerCase().includes("remote") || c.mode.toLowerCase().includes("wfh"))) ||
+                (mo === "WFO" && (c.mode.toLowerCase().includes("onsite") || c.mode.toLowerCase().includes("wfo"))) ||
+                (mo === "Hybrid" && c.mode.toLowerCase().includes("hybrid"))
+            ));
+            return matchQ && matchStack && matchExp && matchNotice && matchSal && matchLoc && matchMode;
+        });
+        const s = $("#sort")?.value || "new";
+        const key = {
+            new: (a, b) => b.order - a.order,
+            exp: (a, b) => b.exp - a.exp,
+            sal: (a, b) => b.sal - a.sal,
+            not: (a, b) => a.notice - b.notice
+        }[s] || ((a, b) => b.order - a.order);
+        return l.sort((a, b) => (b.prem - a.prem) || key(a, b));
     }
 
     function updateChip(id,val){
@@ -2000,6 +2083,9 @@
             if (res.ok) jobs = await res.json();
             if (!Array.isArray(jobs)) jobs = [];
         } catch (err) { /* job list unavailable — the select will show why */ }
+        if ((!jobs || !jobs.length) && state.jobs && state.jobs.length) {
+            jobs = state.jobs;
+        }
 
         const jobOptions = jobs.length
             ? jobs.map(j => `<option value="${esc(j.id)}">${esc(j.title)} · ${esc(j.status || '')}</option>`).join("")
@@ -2094,7 +2180,12 @@
       <button class="btn p" data-a="pay" data-id="${c.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Pay fee &amp; notify admin</button>
     </div>
   </div>`);
-        $("#pct").onchange=e=>$("#feeV").textContent=fmt(feeOf(c,+e.target.value));
+        const pctEl = $("#pct");
+        if (pctEl) {
+            const updateFee = e => $("#feeV").textContent = fmt(feeOf(c, +e.target.value));
+            pctEl.onchange = updateFee;
+            pctEl.oninput = updateFee;
+        }
     }
 
     // Interaction events
@@ -2440,12 +2531,33 @@
         spawnSparks(e.clientX,e.clientY,"#0f9488");
     });
 
-    // Filters
-    ["#q","#fStack","#fExp","#fNot","#fSal","#fLoc","#fMode","#sort"].forEach(s=>$(s).addEventListener("input",()=>{if(s==="#fStack")state.stack=$(s).value;render()}));
-    $("#reset").onclick=e=>{
-        ["#q","#fStack","#fExp","#fNot","#fSal","#fLoc","#fMode"].forEach(s=>$(s).value="");
-        $("#sort").value="new";state.stack="";render();
-        spawnSparks(e.clientX,e.clientY,"#0f9488");
+    // Filters & Sorting event listeners: listen to BOTH "change" and "input"
+    const filterSelectors = ["#q", "#fStack", "#fExp", "#fNot", "#fSal", "#fLoc", "#fMode", "#sort"];
+    filterSelectors.forEach(sel => {
+        const el = $(sel);
+        if (!el) return;
+        ["change", "input"].forEach(evtName => {
+            el.addEventListener(evtName, () => {
+                if (sel === "#fStack") {
+                    state.stack = el.value;
+                    document.querySelectorAll(".card.stack").forEach(card => {
+                        card.classList.toggle("on", card.dataset.s === $("#fStack").value);
+                    });
+                }
+                render();
+            });
+        });
+    });
+
+    $("#reset").onclick = e => {
+        filterSelectors.forEach(sel => {
+            const el = $(sel);
+            if (el) el.value = (sel === "#sort" ? "new" : "");
+        });
+        state.stack = "";
+        document.querySelectorAll(".card.stack").forEach(card => card.classList.remove("on"));
+        render();
+        spawnSparks(e.clientX, e.clientY, "#0f9488");
         toast("Filters reset to default");
     };
 
@@ -2722,8 +2834,31 @@
             // Setup filter options dynamically from real candidates
             const stacks = [...new Set(cands.map(c => c.stack))].filter(Boolean);
             const locs = [...new Set(cands.map(c => c.loc))].filter(Boolean).sort();
-            if ($("#fStack")) $("#fStack").innerHTML = '<option value="">All</option>' + stacks.map(s => `<option>${esc(s)}</option>`).join("");
-            if ($("#fLoc")) $("#fLoc").innerHTML = '<option value="">All</option>' + locs.map(s => `<option>${esc(s)}</option>`).join("");
+            const modes = [...new Set(cands.map(c => c.mode))].filter(Boolean).sort();
+
+            const curStack = $("#fStack")?.value || state.stack || "";
+            const curLoc = $("#fLoc")?.value || "";
+            const curMode = $("#fMode")?.value || "";
+            const curExp = $("#fExp")?.value || "";
+            const curNot = $("#fNot")?.value || "";
+            const curSal = $("#fSal")?.value || "";
+
+            if ($("#fStack")) {
+                $("#fStack").innerHTML = '<option value="">All</option>' + stacks.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
+                if (curStack) $("#fStack").value = curStack;
+            }
+            if ($("#fLoc")) {
+                $("#fLoc").innerHTML = '<option value="">All</option>' + locs.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
+                if (curLoc) $("#fLoc").value = curLoc;
+            }
+            if ($("#fMode") && modes.length) {
+                const allModes = [...new Set([...modes, "Hybrid", "WFH", "WFO"])];
+                $("#fMode").innerHTML = '<option value="">All</option>' + allModes.map(m => `<option value="${esc(m)}">${m === 'WFH' ? 'Remote / WFH' : (m === 'WFO' ? 'Onsite / WFO' : esc(m))}</option>`).join("");
+                if (curMode) $("#fMode").value = curMode;
+            }
+            if ($("#fExp") && curExp) $("#fExp").value = curExp;
+            if ($("#fNot") && curNot) $("#fNot").value = curNot;
+            if ($("#fSal") && curSal) $("#fSal").value = curSal;
 
             render();
         } catch(err) {

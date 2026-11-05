@@ -38,6 +38,7 @@ public class RecruiterProfile {
     private String companyId;
 
     private String designation;
+    private String department;
     private String phone;
     private String linkedInUrl;
 

@@ -6,6 +6,54 @@ import "./LoginPage.css";
 import "./RecruiterLoginPage.css";
 import "./RecruiterRegistrationPage.css";
 
+const countryCodes = [
+    { iso: "IN", code: "+91" },
+    { iso: "US", code: "+1" },
+    { iso: "GB", code: "+44" },
+    { iso: "AE", code: "+971" },
+    { iso: "AU", code: "+61" },
+    { iso: "SG", code: "+65" },
+    { iso: "SA", code: "+966" },
+    { iso: "QA", code: "+974" },
+    { iso: "DE", code: "+49" },
+    { iso: "NP", code: "+977" },
+    { iso: "BD", code: "+880" },
+    { iso: "LK", code: "+94" },
+    { iso: "PK", code: "+92" },
+];
+
+// digits only, max 10; also handles pasted "+91 98765 43210"
+const cleanPhone = (raw, code) => {
+    const digits = raw.replace(/\D/g, "");
+    const stripped =
+        code === "+91" && digits.length > 10 && digits.startsWith("91")
+            ? digits.slice(2)
+            : digits;
+    return stripped.slice(0, 10);
+};
+
+const passwordChecks = [
+    { label: "At least 8 characters", test: (p) => p.length >= 8 },
+    { label: "One uppercase letter (A-Z)", test: (p) => /[A-Z]/.test(p) },
+    { label: "One lowercase letter (a-z)", test: (p) => /[a-z]/.test(p) },
+    { label: "One number (0-9)", test: (p) => /\d/.test(p) },
+    { label: "One symbol (e.g. @ # $ % !)", test: (p) => /[^A-Za-z0-9\s]/.test(p) },
+];
+
+function EyeIcon({ visible }) {
+    return visible ? (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+            <path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.1 3.8M6.2 6.2C3.5 8.1 2 12 2 12s3.5 7 10 7a10 10 0 0 0 4-.8" />
+        </svg>
+    ) : (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" />
+            <circle cx="12" cy="12" r="2.5" />
+        </svg>
+    );
+}
+
 const initialForm = {
     name: "",
     designation: "",
@@ -17,13 +65,16 @@ const initialForm = {
     cin: "",
     workEmail: "",
     phone: "",
+    phoneCode: "+91",
     password: "",
+    confirmPassword: "",
 };
 
 export default function RecruiterRegistrationPage() {
     const navigate = useNavigate();
     const [form, setForm] = useState(initialForm);
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
@@ -37,6 +88,10 @@ export default function RecruiterRegistrationPage() {
         }));
     }
 
+    const passwordResults = passwordChecks.map((c) => ({ ...c, ok: c.test(form.password) }));
+    const passwordValid = passwordResults.every((c) => c.ok);
+    const passwordsMismatch = form.confirmPassword && form.password !== form.confirmPassword;
+
     async function handleSubmit(event) {
         event.preventDefault();
         setError("");
@@ -47,15 +102,39 @@ export default function RecruiterRegistrationPage() {
             return;
         }
 
-        if (!form.password || form.password.length < 8) {
-            setError("Password must be at least 8 characters.");
+        // Phone is optional, but must be valid when entered
+        if (form.phone.trim()) {
+            const india = form.phoneCode === "+91";
+            const ok = india ? /^[6-9]\d{9}$/.test(form.phone) : /^\d{10}$/.test(form.phone);
+            if (!ok) {
+                setError(
+                    india
+                        ? "Enter a valid 10-digit phone number starting with 6, 7, 8 or 9."
+                        : "Enter a valid 10-digit phone number."
+                );
+                return;
+            }
+        }
+
+        if (!passwordValid) {
+            const missing = passwordResults.filter((c) => !c.ok).map((c) => c.label.toLowerCase());
+            setError(`Password needs: ${missing.join(", ")}.`);
+            return;
+        }
+
+        if (form.password !== form.confirmPassword) {
+            setError("Passwords do not match.");
             return;
         }
 
         try {
             setIsSubmitting(true);
+            // confirmPassword and phoneCode are UI-only; phone goes out as e.g. "+919876543210"
+            // eslint-disable-next-line no-unused-vars
+            const { confirmPassword, phoneCode, ...rest } = form;
             const payload = {
-                ...form,
+                ...rest,
+                phone: form.phone ? `${phoneCode}${form.phone}` : "",
                 email: form.workEmail.trim(),
                 name: form.name.trim() || form.companyName.trim() + " Recruiter",
             };
@@ -65,6 +144,7 @@ export default function RecruiterRegistrationPage() {
                 res?.message ||
                 "Recruiter registration submitted successfully! Your account and company profile are under review."
             );
+            setForm(initialForm);
         } catch (err) {
             setError(err.message || "Failed to register recruiter account.");
             toast.error(err.message || "Failed to register recruiter account.");
@@ -303,7 +383,6 @@ export default function RecruiterRegistrationPage() {
                             </select>
                         </div>
 
-
                         <div className="recruiter-registration-field">
                             <label className="login-label" htmlFor="companyName">
                                 Company name
@@ -356,7 +435,7 @@ export default function RecruiterRegistrationPage() {
                                 required
                             />
                             <small className="recruiter-registration-hint">
-                                Enter your company's Corporate Identification Number.
+                                Corporate Identification Number
                             </small>
                         </div>
 
@@ -381,16 +460,44 @@ export default function RecruiterRegistrationPage() {
                             <label className="login-label" htmlFor="phone">
                                 Phone number
                             </label>
-                            <input
-                                className="recruiter-registration-input"
-                                id="phone"
-                                name="phone"
-                                type="tel"
-                                placeholder="+1 (555) 000-0000"
-                                value={form.phone}
-                                onChange={handleChange}
-                                autoComplete="tel"
-                            />
+                            <div className="phone-input-group">
+                                <select
+                                    className="recruiter-registration-input phone-code"
+                                    aria-label="Country code"
+                                    value={form.phoneCode}
+                                    onChange={(e) => {
+                                        const code = e.target.value;
+                                        setForm((prev) => ({
+                                            ...prev,
+                                            phoneCode: code,
+                                            phone: cleanPhone(prev.phone, code),
+                                        }));
+                                    }}
+                                >
+                                    {countryCodes.map((c) => (
+                                        <option key={c.iso} value={c.code}>
+                                            {c.iso} {c.code}
+                                        </option>
+                                    ))}
+                                </select>
+                                <input
+                                    className="recruiter-registration-input"
+                                    id="phone"
+                                    name="phone"
+                                    type="tel"
+                                    inputMode="numeric"
+                                    maxLength={10}
+                                    placeholder="10-digit number"
+                                    value={form.phone}
+                                    onChange={(e) =>
+                                        setForm((prev) => ({
+                                            ...prev,
+                                            phone: cleanPhone(e.target.value, prev.phoneCode),
+                                        }))
+                                    }
+                                    autoComplete="tel-national"
+                                />
+                            </div>
                         </div>
 
                         <div className="recruiter-registration-field">
@@ -403,7 +510,7 @@ export default function RecruiterRegistrationPage() {
                                     id="password"
                                     name="password"
                                     type={showPassword ? "text" : "password"}
-                                    placeholder="Minimum 8 characters"
+                                    placeholder="Create a strong password"
                                     value={form.password}
                                     onChange={handleChange}
                                     autoComplete="new-password"
@@ -416,19 +523,55 @@ export default function RecruiterRegistrationPage() {
                                     onClick={() => setShowPassword((v) => !v)}
                                     aria-label={showPassword ? "Hide password" : "Show password"}
                                 >
-                                    {showPassword ? (
-                                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                                            <path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8" />
-                                            <path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.1 3.8M6.2 6.2C3.5 8.1 2 12 2 12s3.5 7 10 7a10 10 0 0 0 4-.8" />
-                                        </svg>
-                                    ) : (
-                                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                                            <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" />
-                                            <circle cx="12" cy="12" r="2.5" />
-                                        </svg>
-                                    )}
+                                    <EyeIcon visible={showPassword} />
                                 </button>
                             </div>
+                        </div>
+
+                        <div className="recruiter-registration-field">
+                            <label className="login-label" htmlFor="confirmPassword">
+                                Re-enter password
+                            </label>
+                            <div className="login-input-wrap">
+                                <input
+                                    className="recruiter-registration-input"
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    placeholder="Re-enter your password"
+                                    value={form.confirmPassword}
+                                    onChange={handleChange}
+                                    autoComplete="new-password"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="login-eye"
+                                    onClick={() => setShowConfirmPassword((v) => !v)}
+                                    aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                                >
+                                    <EyeIcon visible={showConfirmPassword} />
+                                </button>
+                            </div>
+                            {passwordsMismatch && (
+                                <small className="recruiter-registration-hint" style={{ color: "#dc2626" }}>
+                                    Passwords do not match.
+                                </small>
+                            )}
+                        </div>
+
+                        <div className="recruiter-registration-field full-width">
+                            <ul className="password-rules" aria-live="polite">
+                                <li className="rules-title">Your password must have:</li>
+                                {passwordResults.map((c) => (
+                                    <li
+                                        key={c.label}
+                                        className={c.ok ? "ok" : form.password ? "bad" : "idle"}
+                                    >
+                                        <span aria-hidden="true">{c.ok ? "✓" : "○"}</span> {c.label}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
 

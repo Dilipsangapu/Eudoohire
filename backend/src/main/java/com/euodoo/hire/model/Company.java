@@ -36,6 +36,9 @@ public class Company {
     private String description;
     private String website;
     private String industry;
+    private String companyType;
+    private String companySize;
+    private String cin;
     private String headquarters;
 
     // --- Contact ---

@@ -148,8 +148,9 @@ export default function AgencyLoginPage() {
       {/* Home button */}
       <button
         type="button"
-        className="admin-home-button"
+        className="agency-home-button"
         aria-label="Go to home page"
+        title="Back to home"
         onClick={() => navigate("/")}
       >
         <svg
@@ -159,6 +160,7 @@ export default function AgencyLoginPage() {
           strokeWidth="1.8"
           strokeLinecap="round"
           strokeLinejoin="round"
+          aria-hidden="true"
         >
           <path d="m3 10 9-7 9 7" />
           <path d="M5 9v12h14V9" />
@@ -167,53 +169,98 @@ export default function AgencyLoginPage() {
       </button>
 
       {/* Left branding panel */}
-      <section className="login-brand-panel">
-        <div className="agency-brand-top">
-          <Link to="/" className="agency-auth-logo">
+      <section className="agency-brand-panel" aria-label="Euodoo Hire Agency introduction">
+        <header className="agency-brand-header">
+          <Link to="/" className="agency-auth-logo" aria-label="Euodoo Hire home">
             <span className="agency-auth-logo-badge">E</span>
             <strong>
               Euodoo<em>Hire</em>
             </strong>
           </Link>
+        </header>
 
-          <span className="agency-auth-pill">JOB CONSULTANCY</span>
+        <div className="agency-brand-center">
+          <div className="agency-auth-pill">
+            <span className="pill-dot" aria-hidden="true" />
+            JOB CONSULTANCY PORTAL
+          </div>
 
-          <div className="agency-auth-brand-content">
+          <div className="agency-brand-hero">
             <h1>
               Welcome back to
               <br />
               your agency portal
             </h1>
-
             <p>
-              Log in to manage candidates, submissions and placements.
+              Log in to manage candidates, track client submissions, and fulfill live enterprise requirements seamlessly.
             </p>
+          </div>
+
+          {/* Floating decorative metric pill */}
+          <div className="agency-brand-floating-chip" aria-hidden="true">
+            <span className="chip-icon">⚡</span>
+            <div className="chip-text">
+              <strong>Verified Agency Network</strong>
+              <small>Real-time candidate submission pipeline</small>
+            </div>
           </div>
         </div>
 
-        <ul className="agency-auth-benefits">
-          <li>
-            <span className="check-icon">✓</span>
-            Manage your candidate pool
-          </li>
-          <li>
-            <span className="check-icon">✓</span>
-            Track every submission
-          </li>
-          <li>
-            <span className="check-icon">✓</span>
-            Access live requirements
-          </li>
-        </ul>
+        <div className="agency-brand-footer">
+          <ul className="agency-auth-benefits">
+            <li>
+              <span className="check-icon" aria-hidden="true">
+                <svg viewBox="0 0 16 16" fill="currentColor">
+                  <path fillRule="evenodd" d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 1 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z" />
+                </svg>
+              </span>
+              <span>Manage your dedicated candidate pool</span>
+            </li>
+            <li>
+              <span className="check-icon" aria-hidden="true">
+                <svg viewBox="0 0 16 16" fill="currentColor">
+                  <path fillRule="evenodd" d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 1 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z" />
+                </svg>
+              </span>
+              <span>Track every interview & placement status</span>
+            </li>
+            <li>
+              <span className="check-icon" aria-hidden="true">
+                <svg viewBox="0 0 16 16" fill="currentColor">
+                  <path fillRule="evenodd" d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 1 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z" />
+                </svg>
+              </span>
+              <span>Access active mandates from top employers</span>
+            </li>
+          </ul>
 
+          <div className="agency-brand-meta">
+            <span className="agency-meta-dot" aria-hidden="true" />
+            <span>Trusted recruitment consultancy platform</span>
+          </div>
+        </div>
+
+        {/* Decorative background ambient elements */}
         <div className="login-orb-one" aria-hidden="true" />
         <div className="login-orb-two" aria-hidden="true" />
+        <div className="login-grid-pattern" aria-hidden="true" />
       </section>
 
       {/* Right login section */}
       <section className="agency-form-panel">
         <div className="agency-login-card">
+          {/* Mobile-only brand header */}
+          <div className="agency-mobile-brand">
+            <Link to="/" className="agency-auth-logo">
+              <span className="agency-auth-logo-badge">E</span>
+              <strong>
+                Euodoo<em>Hire</em>
+              </strong>
+            </Link>
+          </div>
+
           <header className="form-header">
+            <span className="form-eyebrow">OFFICIAL CONSULTANCY ACCESS</span>
             <h2 className="form-title">Agency Login</h2>
             <p className="form-subtitle">
               Enter your registered official email and password to continue.
@@ -226,7 +273,20 @@ export default function AgencyLoginPage() {
                 Email Address <span className="required-star">*</span>
               </label>
 
-              <div className="input-wrapper">
+              <div className="input-wrapper with-icon">
+                <svg
+                  className="input-field-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <polyline points="3 7 12 13 21 7" />
+                </svg>
                 <input
                   id="agency-login-email"
                   className="form-input"
@@ -242,12 +302,13 @@ export default function AgencyLoginPage() {
               {/* Live Status indicator when typing */}
               {liveStatus && (
                 <div
-                  className={`agency-live-status-pill ${liveStatus.registrationStatus === "APPROVED"
+                  className={`agency-live-status-pill ${
+                    liveStatus.registrationStatus === "APPROVED"
                       ? "approved"
                       : liveStatus.registrationStatus === "REJECTED"
                         ? "rejected"
                         : "pending"
-                    }`}
+                  }`}
                 >
                   {liveStatus.registrationStatus === "APPROVED" && (
                     <span>
@@ -274,7 +335,20 @@ export default function AgencyLoginPage() {
                 Password <span className="required-star">*</span>
               </label>
 
-              <div className="input-wrapper password-input-wrapper">
+              <div className="input-wrapper with-icon password-input-wrapper">
+                <svg
+                  className="input-field-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
                 <input
                   id="agency-login-password"
                   className="form-input"
@@ -294,7 +368,6 @@ export default function AgencyLoginPage() {
                   aria-pressed={showPassword}
                 >
                   {showPassword ? (
-                    /* eye-off: password is visible, click to hide */
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
                       <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
@@ -302,7 +375,6 @@ export default function AgencyLoginPage() {
                       <path d="m1 1 22 22" />
                     </svg>
                   ) : (
-                    /* eye: password is hidden, click to show */
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                       <circle cx="12" cy="12" r="3" />
@@ -319,7 +391,7 @@ export default function AgencyLoginPage() {
                   checked={remember}
                   onChange={(e) => setRemember(e.target.checked)}
                 />
-                Remember me
+                <span>Remember me</span>
               </label>
 
               <Link className="forgot-link-btn" to="/agency-forgot-password">
@@ -328,14 +400,21 @@ export default function AgencyLoginPage() {
             </div>
 
             <button className="submit-btn" type="submit" disabled={loading}>
-              {loading ? "Signing in..." : "Login"}
+              {loading ? (
+                <span className="submit-spinner-wrap">
+                  <span className="submit-spinner" aria-hidden="true" />
+                  Signing in...
+                </span>
+              ) : (
+                <span>Login</span>
+              )}
             </button>
 
             {/* Prominent Under Admin Review Banner */}
             {isPendingApproval ? (
               <div className="agency-approval-card" role="alert">
                 <div className="agency-approval-badge">
-                  <span className="approval-dot"></span> Under Admin Review
+                  <span className="approval-dot" aria-hidden="true" /> Under Admin Review
                 </div>
                 <h4 className="agency-approval-title">
                   Agency Registration Awaiting Administrator Verification
@@ -359,7 +438,7 @@ export default function AgencyLoginPage() {
             <div className="form-footer">
               <span className="footer-text">New to Euodoo Hire?</span>
               <Link className="register-link-btn" to="/agency-register">
-                Register Now
+                Register as an Agency →
               </Link>
             </div>
           </form>

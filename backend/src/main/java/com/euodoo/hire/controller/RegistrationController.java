@@ -76,7 +76,7 @@ public class RegistrationController {
 
         User user = authService.registerRecruiter(
                 name, email, password,
-                designation, request.phone());
+                designation, request.department(), request.phone());
 
         // Create or link company if companyName provided
         if (request.companyName() != null && !request.companyName().isBlank()) {

@@ -1,13 +1,13 @@
 /* ==========================================================================
    EUODOO HIRE - Agency Login Stylesheet
-   Modern Teal / Emerald Theme with Clean 50/50 Split Viewport
+   Modern Premium Split-Screen Authentication Design
    ========================================================================== */
 
 .agency-login-page {
   min-height: 100vh;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(440px, 1fr);
   background: #f8fafc;
   color: #0f172a;
   font-family: 'Plus Jakarta Sans', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -15,97 +15,108 @@
   box-sizing: border-box;
 }
 
-/* Home Button */
-.agency-login-page .admin-home-button {
+.agency-login-page *,
+.agency-login-page *::before,
+.agency-login-page *::after {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   TOP-RIGHT HOME BUTTON
+   ========================================================================== */
+.agency-login-page .agency-home-button {
   position: fixed;
   top: 24px;
-  right: 24px;
-  z-index: 50;
-  display: flex;
+  right: 28px;
+  z-index: 100;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   color: #008777;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.agency-login-page .admin-home-button:hover {
-  background: #f0fdfa;
-  border-color: #99e6dc;
+.agency-login-page .agency-home-button:hover {
+  background: #008777;
+  border-color: #008777;
+  color: #ffffff;
   transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 135, 119, 0.22);
 }
 
-.agency-login-page .admin-home-button svg {
+.agency-login-page .agency-home-button:active {
+  transform: translateY(0);
+}
+
+.agency-login-page .agency-home-button svg {
   width: 20px;
   height: 20px;
 }
 
 /* ==========================================================================
-   LEFT BRAND PANEL
+   LEFT BRANDING PANEL
    ========================================================================== */
-.agency-login-page .login-brand-panel {
+.agency-login-page .agency-brand-panel {
   position: relative;
   isolation: isolate;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
-  height: 100%;
-  padding: clamp(32px, 5vw, 64px);
-  box-sizing: border-box;
+  padding: clamp(32px, 4.5vw, 64px);
   color: #ffffff;
-  background: linear-gradient(145deg, #009e8c 0%, #007f71 45%, #005a50 100%);
+  background: linear-gradient(145deg, #028071 0%, #006b5e 48%, #014c43 100%);
   overflow: hidden;
 }
 
-/* Radial circles background effect */
-.agency-login-page .login-brand-panel::before {
-  content: "";
+/* Dot grid background texture */
+.agency-login-page .login-grid-pattern {
   position: absolute;
-  inset: -100px;
+  inset: 0;
   z-index: -1;
-  opacity: 0.2;
-  background-image: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.8) 0, transparent 40%),
-                    radial-gradient(circle at 70% 80%, rgba(167, 243, 208, 0.5) 0, transparent 50%),
-                    repeating-radial-gradient(circle at 25% 45%, transparent 0, transparent 40px, rgba(255, 255, 255, 0.1) 41px, transparent 42px);
+  opacity: 0.15;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(circle at 40% 50%, black 40%, transparent 85%);
   pointer-events: none;
 }
 
-/* Floating soft glows */
+/* Ambient glow orbs */
 .agency-login-page .login-orb-one {
   position: absolute;
-  top: -80px;
-  right: -80px;
-  width: 320px;
-  height: 320px;
+  top: -90px;
+  right: -90px;
+  width: 360px;
+  height: 360px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(2, 186, 157, 0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(167, 243, 208, 0.22) 0%, rgba(20, 184, 166, 0.08) 50%, transparent 70%);
   pointer-events: none;
 }
 
 .agency-login-page .login-orb-two {
   position: absolute;
-  bottom: -60px;
-  left: -60px;
-  width: 280px;
-  height: 280px;
+  bottom: -80px;
+  left: -80px;
+  width: 320px;
+  height: 320px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 229, 189, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(5, 150, 105, 0.25) 0%, transparent 70%);
   pointer-events: none;
 }
 
 /* Brand header */
-.agency-brand-top {
+.agency-brand-header {
+  position: relative;
+  z-index: 2;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  z-index: 1;
+  align-items: center;
 }
 
 .agency-auth-logo {
@@ -114,133 +125,235 @@
   gap: 12px;
   text-decoration: none;
   color: #ffffff;
+  transition: opacity 0.2s ease;
+}
+
+.agency-auth-logo:hover {
+  opacity: 0.92;
 }
 
 .agency-auth-logo-badge {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 12px;
   background: #ffffff;
   color: #008777;
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 800;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
 }
 
 .agency-auth-logo strong {
   font-size: 22px;
-  font-weight: 750;
+  font-weight: 800;
   letter-spacing: -0.02em;
+  color: #ffffff;
 }
 
 .agency-auth-logo em {
   font-style: normal;
   color: #a7f3d0;
-  font-weight: 700;
-  margin-left: 4px;
+  font-weight: 750;
+  margin-left: 3px;
+}
+
+/* Brand Center Hero */
+.agency-brand-center {
+  position: relative;
+  z-index: 2;
+  margin-block: auto;
+  padding: 36px 0;
+  max-width: 520px;
 }
 
 .agency-auth-pill {
-  align-self: flex-start;
   display: inline-flex;
   align-items: center;
+  gap: 8px;
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
   font-size: 11px;
   font-weight: 750;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.3px;
   text-transform: uppercase;
-  color: #ffffff;
+  color: #a7f3d0;
+  margin-bottom: 18px;
 }
 
-.agency-auth-brand-content h1 {
-  margin: 10px 0 12px 0;
-  font-size: clamp(28px, 2.8vw, 40px);
+.agency-auth-pill .pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
+}
+
+.agency-brand-hero h1 {
+  margin: 0 0 14px 0;
+  font-size: clamp(30px, 3.2vw, 42px);
   line-height: 1.18;
-  font-weight: 800;
-  letter-spacing: -0.025em;
+  font-weight: 850;
+  letter-spacing: -0.03em;
   color: #ffffff;
 }
 
-.agency-auth-brand-content p {
+.agency-brand-hero p {
   margin: 0;
-  max-width: 440px;
+  max-width: 460px;
   font-size: 15px;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
 }
 
-/* Benefits Checklist at bottom */
+/* Floating decorative chip */
+.agency-brand-floating-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 26px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+}
+
+.agency-brand-floating-chip .chip-icon {
+  font-size: 18px;
+}
+
+.agency-brand-floating-chip .chip-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.agency-brand-floating-chip .chip-text strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.agency-brand-floating-chip .chip-text small {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Brand Footer */
+.agency-brand-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 20px;
+}
+
 .agency-auth-benefits {
   list-style: none;
   padding: 0;
-  margin: 24px 0 0 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  z-index: 1;
+  gap: 11px;
 }
 
 .agency-auth-benefits li {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 14.5px;
+  font-size: 14px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(255, 255, 255, 0.94);
 }
 
-.agency-auth-benefits li .check-icon {
+.agency-auth-benefits .check-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 700;
+  background: rgba(52, 211, 153, 0.22);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  color: #a7f3d0;
   flex-shrink: 0;
 }
 
+.agency-auth-benefits .check-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.agency-brand-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.72);
+  padding-top: 4px;
+}
+
+.agency-meta-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 6px rgba(52, 211, 153, 0.6);
+}
+
 /* ==========================================================================
-   RIGHT FORM PANEL
+   RIGHT FORM PANEL & CARD
    ========================================================================== */
 .agency-login-page .agency-form-panel {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  height: 100%;
   padding: clamp(24px, 4vw, 48px);
-  box-sizing: border-box;
-  background: #f8fafc;
+  background: linear-gradient(145deg, #f8fafc 0%, #f0fdfa 100%);
   overflow-y: auto;
 }
 
-.agency-login-page .agency-login-card {
+.agency-mobile-brand {
+  display: none;
+  margin-bottom: 24px;
+}
+
+.agency-mobile-brand .agency-auth-logo strong {
+  color: #0f172a;
+}
+
+.agency-mobile-brand .agency-auth-logo em {
+  color: #008777;
+}
+
+.agency-mobile-brand .agency-auth-logo-badge {
+  background: #008777;
+  color: #ffffff;
+}
+
+.agency-login-card {
   width: 100%;
   max-width: 440px;
   margin: auto;
-  padding: 38px 36px 32px;
-  border-radius: 20px;
+  padding: clamp(32px, 4.5vw, 42px) clamp(26px, 3.8vw, 36px);
+  border-radius: 22px;
   background: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 12px 36px -4px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.03);
-  box-sizing: border-box;
-  animation: agencyFadeUp 0.4s ease-out;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 20px 48px -10px rgba(15, 23, 42, 0.08), 0 4px 14px rgba(0, 135, 119, 0.03);
+  animation: agencyFadeUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes agencyFadeUp {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -252,12 +365,22 @@
   margin-bottom: 22px;
 }
 
+.agency-login-card .form-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #008777;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
 .agency-login-card .form-title {
   margin: 0 0 6px 0;
   font-size: 26px;
   font-weight: 800;
   color: #0f172a;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
 .agency-login-card .form-subtitle {
@@ -267,7 +390,7 @@
   line-height: 1.5;
 }
 
-/* Form layout */
+/* Form controls */
 .agency-login-card .login-form {
   display: flex;
   flex-direction: column;
@@ -278,13 +401,12 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin: 0;
 }
 
 .agency-login-card .form-label {
   display: block;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 650;
   color: #1e293b;
 }
 
@@ -297,14 +419,29 @@
   width: 100%;
 }
 
+.agency-login-card .input-field-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #94a3b8;
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.agency-login-card .input-wrapper:focus-within .input-field-icon {
+  color: #008777;
+}
+
 .agency-login-card .form-input {
-  box-sizing: border-box;
   display: block;
   width: 100%;
-  height: 46px;
-  padding: 10px 14px;
+  height: 48px;
+  padding: 11px 14px 11px 44px;
   border: 1.5px solid #dbe2ea;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #ffffff;
   color: #0f172a;
   font-family: inherit;
@@ -315,15 +452,16 @@
 
 .agency-login-card .form-input::placeholder {
   color: #94a3b8;
+  font-size: 13.5px;
 }
 
 .agency-login-card .form-input:focus {
-  border-color: #009e8c;
-  box-shadow: 0 0 0 3px rgba(0, 158, 140, 0.15);
+  border-color: #008777;
+  box-shadow: 0 0 0 3.5px rgba(0, 135, 119, 0.12);
 }
 
 .agency-login-card .password-input-wrapper .form-input {
-  padding-right: 52px;
+  padding-right: 50px;
 }
 
 .agency-login-card .password-toggle-btn {
@@ -334,8 +472,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -346,18 +484,18 @@
 }
 
 .agency-login-card .password-toggle-btn svg {
-  width: 20px;
-  height: 20px;
-}
-
-.agency-login-card .password-toggle-btn:focus-visible {
-  outline: 2px solid #009e8c;
-  outline-offset: 1px;
+  width: 19px;
+  height: 19px;
 }
 
 .agency-login-card .password-toggle-btn:hover {
   color: #0f172a;
   background: #f1f5f9;
+}
+
+.agency-login-card .password-toggle-btn:focus-visible {
+  outline: 2px solid #008777;
+  outline-offset: 1px;
 }
 
 /* Live Status Pill */
@@ -395,7 +533,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: -2px;
+  margin-top: 2px;
   font-size: 13px;
 }
 
@@ -405,6 +543,7 @@
   gap: 8px;
   color: #475569;
   font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
   user-select: none;
 }
@@ -413,20 +552,20 @@
   width: 16px;
   height: 16px;
   border-radius: 4px;
-  accent-color: #009e8c;
+  accent-color: #008777;
   cursor: pointer;
 }
 
 .agency-login-card .forgot-link-btn {
   color: #008777;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 650;
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
 .agency-login-card .forgot-link-btn:hover {
-  color: #006658;
+  color: #005a50;
   text-decoration: underline;
 }
 
@@ -436,40 +575,65 @@
   height: 48px;
   margin-top: 4px;
   border: 0;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #00ad99 0%, #008577 100%);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #009e8c 0%, #00786b 100%);
   color: #ffffff;
   font-family: inherit;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 750;
+  letter-spacing: 0.01em;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0, 142, 126, 0.28);
+  box-shadow: 0 4px 16px rgba(0, 135, 119, 0.28);
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.agency-login-card .submit-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(0, 142, 126, 0.36);
-  background: linear-gradient(135deg, #02baa5 0%, #008f80 100%);
+.agency-login-card .submit-btn:hover:not(:disabled) {
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 22px rgba(0, 135, 119, 0.35);
+  background: linear-gradient(135deg, #02ad9a 0%, #008274 100%);
 }
 
-.agency-login-card .submit-btn:active {
+.agency-login-card .submit-btn:active:not(:disabled) {
   transform: translateY(0);
 }
 
 .agency-login-card .submit-btn:disabled {
-  opacity: 0.7;
+  opacity: 0.72;
   cursor: not-allowed;
   transform: none;
 }
 
+.submit-spinner-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.submit-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: agencySpin 0.75s linear infinite;
+}
+
+@keyframes agencySpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Alerts and Banner */
 .agency-login-card .form-alert {
-  padding: 10px 14px;
-  border-radius: 8px;
+  padding: 11px 14px;
+  border-radius: 10px;
   font-size: 13px;
   line-height: 1.5;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .agency-login-card .form-alert.error {
@@ -496,7 +660,7 @@
   background: #fffbeb;
   border: 1px solid #fde68a;
   border-left: 4px solid #f59e0b;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 14px 16px;
   text-align: left;
 }
@@ -551,7 +715,9 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  margin-top: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
   color: #64748b;
   font-size: 13.5px;
 }
@@ -560,72 +726,52 @@
   color: #008777;
   font-weight: 700;
   text-decoration: none;
-  transition: color 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .agency-login-card .register-link-btn:hover {
-  color: #006658;
+  color: #005a50;
   text-decoration: underline;
+  transform: translateX(2px);
 }
 
-/* Responsive adjustments */
+/* ==========================================================================
+   RESPONSIVE LAYOUT
+   ========================================================================== */
 @media (max-width: 900px) {
   .agency-login-page {
     grid-template-columns: 1fr;
   }
 
-  .agency-login-page .login-brand-panel {
-    min-height: auto;
-    padding: 40px 24px;
-  }
-
-  .agency-login-page .login-brand-panel::before {
+  .agency-login-page .agency-brand-panel {
     display: none;
   }
 
-  .agency-auth-benefits {
-    margin-top: 20px;
+  .agency-mobile-brand {
+    display: block;
   }
 
   .agency-login-page .agency-form-panel {
-    min-height: auto;
-    padding: 36px 20px 48px;
+    min-height: 100vh;
+    padding: 32px 20px 48px;
   }
 }
 
 @media (max-width: 480px) {
   .agency-login-card {
     padding: 28px 20px 24px;
-    border-radius: 16px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
   }
 
   .agency-login-card .form-title {
     font-size: 23px;
   }
-}
-.agency-auth-brand-content h1 {
-  letter-spacing: -.025em;
-  color: #fff;
-  margin: 10px 76px 12px;
-  font-size: clamp(28px, 2.8vw, 40px);
-  font-weight: 800;
-  line-height: 1.18;
-}
 
-.agency-brand-top {
-  z-index: 1;
-  flex-direction: column;
-  gap: 33px;
-  display: flex;
-  margin-left: 47px;
-}
-
-.agency-auth-benefits {
-  z-index: 1;
-  flex-direction: column;
-  gap: 12px;
-  margin: 24px 48px 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
+  .agency-login-page .agency-home-button {
+    top: 16px;
+    right: 16px;
+    width: 38px;
+    height: 38px;
+  }
 }

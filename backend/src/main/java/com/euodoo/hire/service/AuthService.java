@@ -89,6 +89,11 @@ public class AuthService {
      */
     public User registerRecruiter(String name, String email, String password,
                                    String designation, String phone) {
+        return registerRecruiter(name, email, password, designation, null, phone);
+    }
+
+    public User registerRecruiter(String name, String email, String password,
+                                   String designation, String department, String phone) {
         String normalizedEmail = normalizeEmail(email);
         assertEmailNotTaken(normalizedEmail);
 
@@ -107,6 +112,7 @@ public class AuthService {
         RecruiterProfile profile = RecruiterProfile.builder()
                 .userId(saved.getId())
                 .designation(designation)
+                .department(department)
                 .phone(phone)
                 .approvalStatus(ApprovalStatus.PENDING)
                 .build();
@@ -130,6 +136,9 @@ public class AuthService {
                             .name(companyName.trim())
                             .website(website)
                             .industry(industry)
+                            .companyType(industry)
+                            .companySize(companySize)
+                            .cin(cin)
                             .contactEmail(website)
                             .approvalStatus(ApprovalStatus.PENDING)
                             .authorizedRecruiterIds(new ArrayList<>(List.of(recruiterUserId)))
