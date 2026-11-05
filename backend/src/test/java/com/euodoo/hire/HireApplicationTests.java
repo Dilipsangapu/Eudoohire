@@ -1,6 +1,7 @@
 package com.euodoo.hire;
 
 import com.euodoo.hire.config.SecurityConfigBeanTest;
+import com.euodoo.hire.controller.AgencyRegistrationControllerTest;
 import com.euodoo.hire.controller.AuthRestControllerTest;
 import com.euodoo.hire.controller.FileControllerTest;
 import com.euodoo.hire.model.UserValidationTest;
@@ -39,6 +40,7 @@ import org.springframework.test.context.TestPropertySource;
         ResumePdfServiceTest.class,
         SubscriptionServiceTest.class,
         PaymentServiceTest.class,
+        AgencyRegistrationControllerTest.class,
         AgencyDocumentServiceTest.class,
         AgencyRegistrationServiceTest.class,
         AgencyWorkflowIntegrationTest.class,

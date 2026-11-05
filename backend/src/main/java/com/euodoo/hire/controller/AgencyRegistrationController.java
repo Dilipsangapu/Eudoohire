@@ -6,6 +6,7 @@ import com.euodoo.hire.dto.response.AgencyResponse;
 import com.euodoo.hire.exception.BusinessException;
 import com.euodoo.hire.service.AgencyRegistrationService;
 import com.euodoo.hire.service.AgencySecurityUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import tools.jackson.databind.json.JsonMapper;
+
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/api/agencies")
@@ -36,18 +40,43 @@ public class AgencyRegistrationController {
 
     @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AgencyResponse> registerMultipart(
-            @RequestParam(value = "data", required = false) String dataString,
-            @RequestPart(value = "data", required = false) AgencyRegistrationRequest dataPart,
-            @RequestPart(value = "request", required = false) AgencyRegistrationRequest requestPart,
             @RequestPart(value = "incorporationFile", required = false) MultipartFile incorporationFile,
-            @RequestPart(value = "gstFile", required = false) MultipartFile gstFile) throws Exception {
-        AgencyRegistrationRequest request = dataPart != null ? dataPart : requestPart;
-        if (request == null && dataString != null && !dataString.isBlank()) {
-            request = JSON_MAPPER.readValue(dataString, AgencyRegistrationRequest.class);
+            @RequestPart(value = "gstFile", required = false) MultipartFile gstFile,
+            HttpServletRequest httpRequest) throws Exception {
+
+        String dataString = null;
+        if (httpRequest instanceof MultipartHttpServletRequest multipartRequest) {
+            // First check if "data" was sent as a regular form field / text parameter
+            dataString = multipartRequest.getParameter("data");
+            // If not found as parameter, check if it was uploaded as a blob/file part
+            if (dataString == null || dataString.isBlank()) {
+                MultipartFile dataFile = multipartRequest.getFile("data");
+                if (dataFile != null && !dataFile.isEmpty()) {
+                    dataString = new String(dataFile.getBytes(), StandardCharsets.UTF_8);
+                }
+            }
+            // Fallback for "request" field or part name
+            if (dataString == null || dataString.isBlank()) {
+                dataString = multipartRequest.getParameter("request");
+            }
+            if (dataString == null || dataString.isBlank()) {
+                MultipartFile reqFile = multipartRequest.getFile("request");
+                if (reqFile != null && !reqFile.isEmpty()) {
+                    dataString = new String(reqFile.getBytes(), StandardCharsets.UTF_8);
+                }
+            }
+        } else {
+            dataString = httpRequest.getParameter("data");
+            if (dataString == null || dataString.isBlank()) {
+                dataString = httpRequest.getParameter("request");
+            }
         }
-        if (request == null) {
+
+        if (dataString == null || dataString.isBlank()) {
             throw new BusinessException("INVALID_REQUEST", "Registration data is required");
         }
+
+        AgencyRegistrationRequest request = JSON_MAPPER.readValue(dataString, AgencyRegistrationRequest.class);
 
         var violations = validator.validate(request);
         if (!violations.isEmpty()) {

@@ -648,7 +648,7 @@ export const agencyApi = {
   // Registration
   async register(registrationData, files = {}) {
     const formData = new FormData();
-    formData.append("data", new Blob([JSON.stringify(registrationData)], { type: "application/json" }));
+    formData.append("data", JSON.stringify(registrationData));
     if (files.incorporation) {
       formData.append("incorporationFile", files.incorporation);
     }
