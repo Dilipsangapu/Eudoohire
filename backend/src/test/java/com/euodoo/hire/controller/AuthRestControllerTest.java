@@ -169,6 +169,28 @@ public class AuthRestControllerTest {
         assertEquals("/paid-dashboard", body(res).get("redirectUrl"));
     }
 
+    @Test
+    void agencyAdmin_logsInThroughAgencyLogin() {
+        User agencyAdmin = user(Role.AGENCY_ADMIN, null, false);
+        ResponseEntity<Map<String, Object>> res = attemptLogin(agencyAdmin, "agency");
+
+        assertEquals(HttpStatus.OK, res.getStatusCode());
+        assertEquals("/agency/dashboard", body(res).get("redirectUrl"));
+        assertEquals("AGENCY_ADMIN", ((Map<String, Object>) body(res).get("user")).get("role"));
+        assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    @Test
+    void agencyStaff_logsInThroughAgencyLogin() {
+        User agencyStaff = user(Role.AGENCY_STAFF, null, false);
+        ResponseEntity<Map<String, Object>> res = attemptLogin(agencyStaff, "agency");
+
+        assertEquals(HttpStatus.OK, res.getStatusCode());
+        assertEquals("/agency/dashboard", body(res).get("redirectUrl"));
+        assertEquals("AGENCY_STAFF", ((Map<String, Object>) body(res).get("user")).get("role"));
+        assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+
     // ------------------------------------------------------------------
     // Incompatible-role login attempts (must be rejected, no session)
     // ------------------------------------------------------------------
@@ -254,6 +276,17 @@ public class AuthRestControllerTest {
     void paidCandidateCredentials_rejectedOnRecruiterLogin() {
         User candidate = user(Role.CANDIDATE, PlanType.PREMIUM, true);
         ResponseEntity<Map<String, Object>> res = attemptLogin(candidate, "recruiter");
+
+        assertEquals(HttpStatus.UNAUTHORIZED, res.getStatusCode());
+        assertEquals("INVALID_CREDENTIALS", body(res).get("error"));
+        assertEquals(AuthRestController.GENERIC_AUTH_MESSAGE, body(res).get("message"));
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    @Test
+    void agencyCredentials_rejectedOnCandidateLogin() {
+        User agency = user(Role.AGENCY_ADMIN, null, false);
+        ResponseEntity<Map<String, Object>> res = attemptLogin(agency, "candidate");
 
         assertEquals(HttpStatus.UNAUTHORIZED, res.getStatusCode());
         assertEquals("INVALID_CREDENTIALS", body(res).get("error"));

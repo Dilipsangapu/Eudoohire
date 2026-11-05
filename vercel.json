@@ -1,0 +1,50 @@
+{
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/dist",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://eudoohire-production.up.railway.app/api/:path*"
+    },
+    {
+      "source": "/candidate/:path*",
+      "destination": "https://eudoohire-production.up.railway.app/candidate/:path*"
+    },
+    {
+      "source": "/recruiter/:path*",
+      "destination": "https://eudoohire-production.up.railway.app/recruiter/:path*"
+    },
+    {
+      "source": "/client-admin/:path*",
+      "destination": "https://eudoohire-production.up.railway.app/client-admin/:path*"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "https://eudoohire-production.up.railway.app/admin/:path*"
+    },
+    {
+      "source": "/actuator/:path*",
+      "destination": "https://eudoohire-production.up.railway.app/actuator/:path*"
+    },
+    {
+      "source": "/css/:path*",
+      "destination": "https://eudoohire-production.up.railway.app/css/:path*"
+    },
+    {
+      "source": "/js/:path*",
+      "destination": "https://eudoohire-production.up.railway.app/js/:path*"
+    },
+    {
+      "source": "/images/:path*",
+      "destination": "https://eudoohire-production.up.railway.app/images/:path*"
+    },
+    {
+      "source": "/auth/logout",
+      "destination": "https://eudoohire-production.up.railway.app/auth/logout"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
