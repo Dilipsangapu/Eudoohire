@@ -1,0 +1,146 @@
+
+/* Admin login page */
+
+.admin-login-page {
+  min-height: 100vh;
+}
+
+.admin-form-panel {
+  align-items: center;
+  padding: 48px 24px;
+  overflow-y: auto;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 480px;
+  margin: auto;
+  animation: recruiterFadeUp 0.5s ease both;
+}
+
+.admin-login-card h2 {
+  line-height: 1.25;
+}
+
+.admin-security-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 26px 0;
+  padding: 13px 15px;
+  color: #087f73;
+  background: #effaf8;
+  border: 1px solid #d5f0eb;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.admin-security-note svg {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.admin-login-card .login-label {
+  display: block;
+  margin-bottom: 9px;
+}
+
+.admin-login-card .login-input-wrap {
+  margin-bottom: 22px;
+}
+
+.admin-password-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-password-heading .login-label {
+  margin-bottom: 9px;
+}
+
+.admin-login-card .login-submit {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.admin-login-error {
+  margin: -8px 0 16px;
+  color: #dc2626;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.admin-login-footer {
+  margin: 24px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  text-align: center;
+}
+
+.admin-home-button {
+  position: fixed;
+  top: 24px;
+  right: 32px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  color: #009b8b;
+  background: #fff;
+  border: 1px solid #d6efeb;
+  border-radius: 16px;
+  box-shadow: 0 5px 18px rgb(0 120 105 / 8%);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-home-button svg {
+  width: 23px;
+  height: 23px;
+}
+
+.admin-home-button:hover {
+  color: #fff;
+  background: #009b8b;
+  transform: translateY(-2px);
+}
+
+.admin-home-button:focus-visible {
+  outline: 3px solid rgb(0 155 139 / 30%);
+  outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .admin-form-panel {
+    padding: 28px 16px;
+  }
+
+  .admin-login-card {
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-home-button {
+    top: 14px;
+    right: 14px;
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-login-card,
+  .admin-home-button {
+    animation: none;
+    transition: none;
+  }
+}

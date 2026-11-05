@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Client Admin Dashboard | Euodoo Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <script>document.documentElement.classList.add("loading")</script>
+    <link th:href="@{/css/admin.css}" href="/css/admin.css" rel="stylesheet">
+</head>
+<body data-title="Client Admin Dashboard">
+<main class="page mx-auto">
+    <p class="muted mb-3">Central administration area for registrations, companies, hiring matches, and approvals.</p>
+    <div class="strip" role="list">
+        <div class="metric" role="listitem"><i class="bi bi-person-plus"></i>
+            <div>
+                <div class="num" data-ov="regs">0</div>
+                <div class="lbl">New Registrations</div>
+            </div>
+        </div>
+        <div class="metric" role="listitem"><i class="bi bi-hourglass-split"></i>
+            <div>
+                <div class="num" data-ov="regPend">0</div>
+                <div class="lbl">Pending Registrations</div>
+            </div>
+        </div>
+        <div class="metric" role="listitem"><i class="bi bi-person-badge"></i>
+            <div>
+                <div class="num" data-ov="rec">0</div>
+                <div class="lbl">Active Recruiters</div>
+            </div>
+        </div>
+        <div class="metric" role="listitem"><i class="bi bi-buildings"></i>
+            <div>
+                <div class="num" data-ov="co">0</div>
+                <div class="lbl">Active Companies</div>
+            </div>
+        </div>
+        <div class="metric" role="listitem"><i class="bi bi-people"></i>
+            <div>
+                <div class="num" data-ov="hm">0</div>
+                <div class="lbl">Pending Hire Matches</div>
+            </div>
+        </div>
+    </div>
+    <section class="section mt-3">
+        <div class="toolbar"><h2 class="h-sec me-auto">Pending Registrations</h2><a class="btn btn-sm btn-line"
+                                                                                    href="registrations.html">View
+            all</a></div>
+        <div class="tbl-wrap">
+            <table class="tbl">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Registered</th>
+                    <th>Payment</th>
+                    <th>Approval</th>
+                </tr>
+                </thead>
+                <tbody id="ov-pend"></tbody>
+            </table>
+        </div>
+    </section>
+    <section class="section">
+        <div class="row g-5">
+            <div class="col-lg-6"><h2 class="h-sec mb-3">Recruiter Activity</h2>
+                <ul class="timeline">
+                    <li><strong>Kiran Patel</strong> registered <span class="muted">&middot; Nexora Systems &middot; today</span>
+                    </li>
+                    <li><strong>Sunita Rao</strong> shortlisted 3 candidates <span class="muted">&middot; Brightline HR &middot; 2h ago</span>
+                    </li>
+                    <li><strong>Arjun Mehta</strong> submitted a hire request <span class="muted">&middot; Vertex Labs &middot; yesterday</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-6"><h2 class="h-sec mb-3">Needs attention</h2>
+                <div class="rows">
+                    <div class="row-item"><span><span data-ov="hm">0</span> hire matches awaiting review</span><a
+                            class="link" href="hire-matches.html">Review</a>
+                    </div>
+                    <div class="row-item"><span><span data-ov="port">0</span> portfolio changes awaiting approval</span><a
+                            class="link" href="portfolio-approvals.html">Review</a>
+                    </div>
+                    <div class="row-item"><span><span data-ov="res">0</span> resumes awaiting approval</span><a
+                            class="link" href="resume-approvals.html">Review</a>
+                    </div>
+                    <div class="row-item"><span><span data-ov="coVr">0</span> companies need verification</span><a
+                            class="link" href="companies.html">Open</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/admin.js}" src="/js/admin.js"></script>
+</body>
+</html>

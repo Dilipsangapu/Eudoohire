@@ -1,0 +1,194 @@
+
+/* Recruiter login: shares the existing Euodoo Hire login design. */
+
+.recruiter-login-page .login-brand-copy h1 {
+  max-width: 490px;
+  line-height: 1.15;
+  animation: recruiterFadeUp 0.7s ease both;
+}
+
+.recruiter-login-page .login-brand-copy p {
+  max-width: 440px;
+  animation: recruiterFadeUp 0.85s ease both;
+}
+
+.recruiter-login-page .recruiter-login-card {
+  animation: recruiterFadeUp 0.55s ease both;
+}
+
+/* Smooth transitions */
+.recruiter-login-page .login-social,
+.recruiter-login-page .login-submit,
+.recruiter-login-page .login-text-button,
+.recruiter-login-page .recruiter-switch-link button,
+.recruiter-login-page .login-back-link button {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.recruiter-login-page .login-social:hover,
+.recruiter-login-page .login-submit:hover {
+  transform: translateY(-2px);
+}
+
+.recruiter-login-page .login-submit:active,
+.recruiter-login-page .login-social:active {
+  transform: translateY(0);
+}
+
+/* Recruiter switch link */
+.recruiter-login-page .recruiter-switch-link {
+  margin: 22px 0 0;
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.recruiter-login-page .recruiter-switch-link button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #0d9488;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.recruiter-login-page .recruiter-switch-link button:hover {
+  color: #0f766e;
+  text-decoration: underline;
+}
+
+.recruiter-login-page .recruiter-switch-link button:focus-visible {
+  outline: 2px solid #0d9488;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+/* Animation */
+@keyframes recruiterFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive recruiter introduction */
+@media (max-width: 768px) {
+  .recruiter-login-page .login-brand-copy h1,
+  .recruiter-login-page .login-brand-copy p {
+    max-width: 100%;
+  }
+}
+
+/* Home icon at the top-right corner */
+.recruiter-home-button {
+  position: fixed;
+  top: 24px;
+  right: 32px;
+  z-index: 1000;
+
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #009b8b;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #d6efeb;
+  border-radius: 16px;
+
+  box-shadow: 0 5px 18px rgba(0, 120, 105, 0.08);
+  text-decoration: none;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.recruiter-home-button svg {
+  width: 23px;
+  height: 23px;
+}
+
+.recruiter-home-button:hover {
+  color: #ffffff;
+  background: #009b8b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 120, 105, 0.18);
+}
+
+.recruiter-home-button:focus-visible {
+  outline: 3px solid rgba(0, 155, 139, 0.3);
+  outline-offset: 3px;
+}
+
+/* Register as recruiter link */
+.recruiter-register-link {
+  margin-top: 18px;
+  margin-bottom: 0;
+  color: #63748c;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.recruiter-register-link button {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #009b8b;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.recruiter-register-link button:hover {
+  color: #007568;
+  text-decoration: underline;
+}
+
+.recruiter-register-link button:focus-visible {
+  outline: 2px solid #009b8b;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Small screens */
+@media (max-width: 576px) {
+  .recruiter-home-button {
+    top: 14px;
+    right: 14px;
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+  }
+
+  .recruiter-register-link {
+    font-size: 13px;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .recruiter-login-page *,
+  .recruiter-login-page *::before,
+  .recruiter-login-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EuodooCraft – Professional Resume Templates</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@400;700&family=Nunito:wght@400;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/resume.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo"><span class="logo-mark">E</span>EuodooCraft</a>
+      <button class="nav-toggle" aria-label="Open menu">☰</button>
+      <nav class="nav-links">
+        <a href="/dashboard" class="btn btn-outline btn-sm">← Dashboard</a>
+        <a href="index.html">Home</a>
+        <a href="templates.html">Templates</a>
+        <a href="builder.html">Builder</a>
+        <a href="start.html" class="btn btn-primary btn-sm">Create Resume</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="pill">✨ 8 recruiter-approved templates</span>
+          <h1>Build a resume that gets you <span class="hl">hired</span>.</h1>
+          <p>Pick a professionally designed template, fill in your details, and download a polished PDF in minutes. No design skills needed.</p>
+          <div class="hero-cta">
+            <a href="start.html" class="btn btn-primary btn-lg">Create My Resume</a>
+            <a href="templates.html" class="btn btn-outline btn-lg">Browse Templates</a>
+          </div>
+          <ul class="hero-stats">
+            <li><strong>3 min</strong><span>average build time</span></li>
+            <li><strong>ATS</strong><span>friendly layouts</span></li>
+            <li><strong>Free</strong><span>PDF download</span></li>
+          </ul>
+        </div>
+        <div class="hero-visual">
+          <div class="stack-card back thumb" data-template="executive"></div>
+          <div class="stack-card mid thumb" data-template="classic"></div>
+          <div class="stack-card front thumb" data-template="modern"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Steps -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Three steps to your next interview</h2>
+        <div class="steps">
+          <div class="step"><span class="step-num">1</span><h3>Choose a template</h3><p>Browse designs built for every industry and experience level.</p></div>
+          <div class="step"><span class="step-num">2</span><h3>Fill in your details</h3><p>Type once and watch your resume update live as you go.</p></div>
+          <div class="step"><span class="step-num">3</span><h3>Download &amp; apply</h3><p>Export a print-ready A4 PDF and start applying right away.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured templates -->
+    <section class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Popular templates</h2>
+          <a href="templates.html" class="link-arrow">See all templates →</a>
+        </div>
+        <div class="template-grid" id="featuredGrid"></div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section">
+      <div class="container features">
+        <div class="feature"><div class="f-icon">⚡</div><h3>Live preview</h3><p>Every keystroke updates your resume instantly.</p></div>
+        <div class="feature"><div class="f-icon">🎨</div><h3>Custom colors</h3><p>Match your accent color to your personal brand.</p></div>
+        <div class="feature"><div class="f-icon">💾</div><h3>Auto-save</h3><p>Your progress is saved in your browser automatically.</p></div>
+        <div class="feature"><div class="f-icon">🤖</div><h3>ATS-friendly</h3><p>Clean structure that applicant tracking systems can read.</p></div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-band">
+      <div class="container">
+        <h2>Ready to stand out?</h2>
+        <p>Join job seekers building better resumes with ResumeCraft.</p>
+        <a href="start.html" class="btn btn-light btn-lg">Start Building — It's Free</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> EuodooCraft. All rights reserved.</span>
+      <nav><a href="templates.html">Templates</a><a href="builder.html">Builder</a></nav>
+    </div>
+  </footer>
+
+  <script src="/js/templates.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    renderTemplateCards(document.getElementById("featuredGrid"), TEMPLATES.slice(0, 4));
+  </script>
+</body>
+</html>

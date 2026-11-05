@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Euodoo Builder – EuodooCraft</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@400;700&family=Nunito:wght@400;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/resume.css" />
+</head>
+<body class="builder-page">
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo"><span class="logo-mark">E</span>EuodooCraft</a>
+      <button class="nav-toggle" aria-label="Open menu">☰</button>
+      <nav class="nav-links">
+        <a href="/dashboard" class="btn btn-outline btn-sm">← Dashboard</a>
+        <a href="index.html">Home</a>
+        <a href="templates.html">Templates</a>
+        <a href="builder.html">Builder</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="builder">
+    <!-- Editor -->
+    <aside class="editor">
+      <div class="editor-toolbar">
+        <label class="field compact">
+          <span>Template</span>
+          <select id="templateSelect"></select>
+        </label>
+        <label class="field compact color">
+          <span>Accent</span>
+          <input type="color" id="accentInput" />
+        </label>
+      </div>
+
+      <form id="resumeForm" autocomplete="off">
+        <details class="panel" open>
+          <summary>Personal details</summary>
+          <div class="grid-2">
+            <label class="field"><span>Full name</span><input data-field="name" /></label>
+            <label class="field"><span>Job title</span><input data-field="title" /></label>
+            <label class="field"><span>Email</span><input type="email" data-field="email" /></label>
+            <label class="field"><span>Phone</span><input data-field="phone" /></label>
+            <label class="field"><span>Location</span><input data-field="location" /></label>
+            <label class="field"><span>Website / LinkedIn</span><input data-field="website" /></label>
+          </div>
+        </details>
+
+        <details class="panel" open>
+          <summary>Professional summary</summary>
+          <label class="field"><textarea rows="4" data-field="summary" placeholder="2–3 sentences about your experience and strengths"></textarea></label>
+        </details>
+
+        <details class="panel">
+          <summary>Experience</summary>
+          <div id="experienceList" class="repeat-list"></div>
+          <button type="button" class="btn btn-outline btn-sm" data-add="experience">+ Add experience</button>
+        </details>
+
+        <details class="panel">
+          <summary>Education</summary>
+          <div id="educationList" class="repeat-list"></div>
+          <button type="button" class="btn btn-outline btn-sm" data-add="education">+ Add education</button>
+        </details>
+
+        <details class="panel">
+          <summary>Skills &amp; languages</summary>
+          <label class="field"><span>Skills (comma separated)</span><textarea rows="3" data-field="skills"></textarea></label>
+          <label class="field"><span>Languages (comma separated)</span><input data-field="languages" /></label>
+        </details>
+      </form>
+
+      <div class="editor-actions">
+        <button class="btn btn-ghost btn-sm" id="sampleBtn">Load sample</button>
+        <button class="btn btn-ghost btn-sm" id="clearBtn">Clear all</button>
+      </div>
+    </aside>
+
+    <!-- Preview -->
+    <section class="preview">
+      <div class="preview-bar">
+        <div class="bar-left">
+          <button class="btn btn-outline btn-sm" id="uploadBtn">⬆ Upload resume</button>
+          <span class="muted" id="saveStatus">All changes saved</span>
+        </div>
+        <button class="btn btn-primary" id="downloadBtn">⬇ Download PDF</button>
+      </div>
+      <div class="preview-stage" id="previewStage">
+        <div class="scaler" id="scaler">
+          <div id="resumeOut"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <template id="experienceTpl">
+    <div class="repeat-item">
+      <div class="grid-2">
+        <label class="field"><span>Job title</span><input data-key="role" /></label>
+        <label class="field"><span>Company</span><input data-key="company" /></label>
+        <label class="field"><span>Start</span><input data-key="start" placeholder="Jan 2022" /></label>
+        <label class="field"><span>End</span><input data-key="end" placeholder="Present" /></label>
+      </div>
+      <label class="field"><span>Highlights (one per line)</span><textarea rows="3" data-key="details"></textarea></label>
+      <button type="button" class="remove-btn" data-remove>Remove</button>
+    </div>
+  </template>
+
+  <template id="educationTpl">
+    <div class="repeat-item">
+      <div class="grid-2">
+        <label class="field"><span>Degree</span><input data-key="degree" /></label>
+        <label class="field"><span>School</span><input data-key="school" /></label>
+        <label class="field"><span>Year</span><input data-key="year" placeholder="2020 – 2024" /></label>
+        <label class="field"><span>Score / notes</span><input data-key="note" placeholder="CGPA 8.4" /></label>
+      </div>
+      <button type="button" class="remove-btn" data-remove>Remove</button>
+    </div>
+  </template>
+
+  <script src="/js/templates.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/builder.js"></script>
+</body>
+</html>

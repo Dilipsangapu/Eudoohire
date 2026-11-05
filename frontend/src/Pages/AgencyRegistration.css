@@ -1,0 +1,480 @@
+
+/* Agency Registration - Recruiter Registration styling */
+
+.agency-registration-page {
+  min-height: 100vh;
+}
+
+/* Right panel */
+.agency-registration-panel {
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 32px 40px;
+}
+
+/* Main form card */
+.agency-registration-card {
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  padding: 34px 38px;
+  box-sizing: border-box;
+  animation: recruiterFadeUp 0.55s ease both;
+}
+
+.agency-registration-card h2 {
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+
+/* Step progress */
+.agency-stepper {
+  margin: 28px 0 30px;
+  width: 100%;
+}
+
+.agency-stepper .stepper-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.agency-stepper .step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  text-align: center;
+}
+
+.agency-stepper .step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e8eef5;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.agency-stepper .step-item.active .step-indicator,
+.agency-stepper .step-item.completed .step-indicator {
+  background: #008f80;
+  color: #fff;
+}
+
+.agency-stepper .step-label {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.agency-stepper .step-item.active .step-label {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+/* Current section heading */
+.agency-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e8edf3;
+}
+
+.agency-section-heading h3 {
+  margin: 0;
+  color: #17233f;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.agency-section-heading span {
+  color: #64748b;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* Flexible two-column form */
+.agency-registration-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  column-gap: 22px;
+  row-gap: 22px;
+  width: 100%;
+  margin: 0 0 26px;
+}
+
+.agency-registration-field {
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+}
+
+.agency-registration-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.agency-registration-field .login-label {
+  display: block;
+  min-height: 18px;
+  margin: 0;
+  color: #1e293b;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Inputs and dropdowns */
+.agency-registration-input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #dbe2ea;
+  border-radius: 10px;
+  outline: none;
+  background: #fff;
+  color: #1e293b;
+  font: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.agency-registration-input::placeholder {
+  color: #94a3b8;
+}
+
+.agency-registration-input:focus {
+  border-color: #0d9488;
+  box-shadow: 0 0 0 3px rgb(13 148 136 / 12%);
+}
+
+.agency-registration-input:invalid:focus {
+  border-color: #dc2626;
+}
+
+.agency-registration-input[type="file"] {
+  min-height: 48px;
+  padding: 10px;
+  font-size: 13px;
+}
+
+/* Declaration checkbox */
+.agency-registration-field .remember-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.agency-registration-field input[type="checkbox"] {
+  accent-color: #008f80;
+  margin-top: 3px;
+}
+
+/* Alerts */
+.agency-registration-card .form-alert {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Back and Continue buttons */
+.agency-registration-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.agency-registration-actions .agency-continue-btn {
+  width: auto;
+  min-width: 190px;
+  margin: 0;
+}
+
+.agency-back-btn {
+  min-height: 48px;
+  padding: 12px 22px;
+  border: 1px solid #dbe2ea;
+  border-radius: 10px;
+  background: #fff;
+  color: #334155;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.agency-back-btn:hover {
+  background: #f8fafc;
+  border-color: #0d9488;
+}
+
+/* Login link */
+.agency-switch-link {
+  margin: 24px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  text-align: center;
+}
+
+.agency-switch-link a {
+  color: #008f80;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+  .agency-registration-panel {
+    padding: 28px 24px;
+  }
+
+  .agency-registration-card {
+    max-width: 760px;
+    padding: 28px;
+  }
+
+  .agency-registration-fields {
+    column-gap: 18px;
+    row-gap: 20px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .agency-registration-panel {
+    padding: 24px 16px;
+  }
+
+  .agency-registration-card {
+    max-width: 560px;
+    padding: 24px 20px;
+  }
+
+  .agency-registration-fields {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 18px;
+  }
+
+  .agency-registration-field.full-width {
+    grid-column: auto;
+  }
+
+  .agency-stepper .step-label {
+    font-size: 11px;
+  }
+
+  .agency-section-heading h3 {
+    font-size: 16px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .agency-registration-card {
+    padding: 22px 16px;
+  }
+
+  .agency-registration-card h2 {
+    font-size: 24px;
+  }
+
+  .agency-stepper {
+    margin: 22px 0;
+  }
+
+  .agency-stepper .step-indicator {
+    width: 30px;
+    height: 30px;
+  }
+
+  .agency-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .agency-registration-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .agency-registration-actions .agency-continue-btn,
+  .agency-back-btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agency-registration-card,
+  .agency-registration-input,
+  .agency-back-btn {
+    animation: none;
+    transition: none;
+  }
+}
+/* Smooth step transitions */
+.agency-registration-card {
+  animation: recruiterFadeUp 0.55s ease both;
+  transition: box-shadow 0.25s ease;
+}
+
+.agency-registration-fields {
+  animation: recruiterFadeUp 0.35s ease both;
+}
+
+/* Inputs */
+.agency-registration-input {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.agency-registration-input:hover {
+  border-color: #94a3b8;
+}
+
+.agency-registration-input:focus {
+  border-color: #0d9488;
+  box-shadow: 0 0 0 3px rgb(13 148 136 / 12%);
+}
+
+/* Buttons */
+.agency-registration-actions button {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.agency-registration-actions button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgb(0 120 105 / 12%);
+}
+
+.agency-registration-actions button:active {
+  transform: translateY(0);
+}
+
+.agency-registration-actions button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Step progress */
+.agency-stepper .step-indicator {
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.agency-stepper .step-item.active .step-indicator {
+  box-shadow: 0 4px 12px rgb(0 143 128 / 20%);
+  transform: scale(1.05);
+}
+
+/* Success/error notifications */
+.agency-registration-card .form-alert {
+  animation: recruiterFadeUp 0.25s ease both;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .agency-registration-page *,
+  .agency-registration-page *::before,
+  .agency-registration-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+/* Fix Agency Registration split-screen layout */
+.agency-registration-page {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+  overflow: visible;
+}
+
+/* Left branding panel */
+.agency-registration-page .login-brand-panel {
+  display: flex;
+  order: 1;
+  flex: 0 0 50%;
+  width: 50%;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+/* Right registration form panel */
+.agency-registration-page .login-form-panel {
+  display: flex;
+  order: 2;
+  flex: 0 0 50%;
+  width: 50%;
+  min-width: 0;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+/* Ensure registration card is visible */
+.agency-registration-page .agency-registration-card {
+  display: block;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+  .agency-registration-page {
+    flex-direction: column;
+  }
+
+  .agency-registration-page .login-brand-panel {
+    display: none;
+  }
+
+  .agency-registration-page .login-form-panel {
+    flex: 1 1 100%;
+    width: 100%;
+    min-height: 100vh;
+    padding: 24px 16px;
+  }
+}

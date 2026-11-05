@@ -1,0 +1,160 @@
+/* ============================================================
+   PDF-render stylesheet for generated resumes (EuodooCraft).
+
+   This mirrors static/css/resume.css (the on-screen stylesheet),
+   adjusted for the OpenHTMLtoPDF CSS 2.1 renderer:
+
+     - CSS Grid / Flexbox  -> table / table-cell / inline-block
+     - color-mix() / gradients / var(--accent) -> literal colors
+       substituted at render time (@@*_@@ placeholders)
+     - page geometry kept identical to the on-screen A4 preview
+       (794 x 1123 px @ 96dpi)
+
+   The resume HTML markup itself is NOT changed — only styling.
+   ============================================================ */
+
+@page {
+  size: 794px 1123px;
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+
+.resume {
+  box-sizing: border-box;
+  width: 794px;
+  background: #fff;
+  color: #1f2937;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+  text-align: left;
+}
+.resume *, .resume *::before, .resume *::after { box-sizing: border-box; }
+.resume h1, .resume h2, .resume h3, .resume p { margin: 0; }
+.resume ul { margin: 4px 0 0; padding-left: 18px; }
+.resume li { margin-bottom: 2px; }
+
+/* Fonts (registered TTFs; serif templates use Noto Serif, sans use Noto Sans) */
+.resume.f-serif   { font-family: "Merriweather", serif; font-size: 12.5px; }
+.resume.f-rounded { font-family: "Nunito", sans-serif; font-size: 13.5px; }
+.resume.f-mono .r-name, .resume.f-mono .r-h { font-family: "JetBrains Mono", monospace; }
+
+/* Common blocks */
+.r-name { font-size: 34px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; }
+.r-title { font-size: 16px; color: @@ACCENT@@; font-weight: 600; margin-top: 4px; }
+.r-contact { margin-top: 10px; color: #6b7280; font-size: 12px; }
+.r-contact span { display: inline-block; margin-right: 16px; }
+.r-section { margin-top: 22px; }
+.r-h {
+  font-size: 12.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em;
+  color: @@ACCENT@@; padding-bottom: 6px; margin-bottom: 10px; border-bottom: 1.5px solid @@ACCENT@@;
+  page-break-after: avoid;
+}
+.r-item { margin-bottom: 12px; page-break-inside: avoid; }
+.r-item-head { display: table; width: 100%; }
+.r-item-head strong { font-size: 13.5px; display: table-cell; text-align: left; vertical-align: baseline; }
+.r-item-head .r-date { color: #6b7280; font-size: 12px; white-space: nowrap; display: table-cell; text-align: right; vertical-align: baseline; }
+.r-sub { color: #6b7280; font-weight: 600; font-size: 12.5px; }
+.r-chips { margin-top: 6px; }
+.r-chip {
+  display: inline-block; padding: 3px 10px; margin: 0 6px 6px 0;
+  border-radius: 4px; background: @@ACCENT_TINT12@@; color: #1f2937; font-size: 12px;
+  white-space: nowrap;
+}
+.r-list-plain { list-style: none; padding: 0; margin: 0; }
+.r-list-plain li { margin-bottom: 6px; }
+
+/* ---- Layout: single column ---- */
+.l-single { padding: 56px 60px; }
+.l-single .r-header { padding-bottom: 6px; }
+
+/* ---- Layout: sidebar (grid -> table) ---- */
+.l-sidebar { display: table; table-layout: fixed; width: 794px; }
+.l-sidebar .r-side {
+  display: table-cell; width: 33%; vertical-align: top;
+  min-height: 1123px;
+  background: @@ACCENT@@; color: #fff; padding: 48px 28px;
+}
+.l-sidebar .r-main { display: table-cell; width: 67%; vertical-align: top; padding: 48px 40px; }
+.l-sidebar .r-avatar {
+  width: 96px; height: 96px; border-radius: 50%;
+  text-align: center; line-height: 92px;
+  font-size: 34px; font-weight: 800;
+  background: rgba(255,255,255,0.13); border: 3px solid rgba(255,255,255,0.53);
+  margin-bottom: 28px; overflow: hidden;
+}
+.l-sidebar .r-side .r-h { color: #fff; border-color: rgba(255,255,255,0.45); }
+.l-sidebar .r-side .r-avatar + .r-section { margin-top: 0; }
+.l-sidebar .r-side .r-chip { background: rgba(255,255,255,0.16); color: #fff; margin-right: 5px; }
+.l-sidebar .r-side .r-list-plain { font-size: 12px; }
+.l-sidebar .r-side .r-list-plain small { display: block; color: rgba(255,255,255,0.72); text-transform: uppercase; letter-spacing: .08em; font-size: 10px; }
+
+/* ---- Layout: header band ---- */
+.l-header .r-band { background: @@ACCENT@@; color: #fff; padding: 48px 56px 40px; }
+.l-header .r-band .r-title { color: rgba(255,255,255,0.85); }
+.l-header .r-band .r-contact { color: rgba(255,255,255,0.85); }
+.l-header .r-band .r-contact span { margin-right: 16px; }
+.l-header .r-body { display: table; table-layout: fixed; width: 794px; }
+.l-header .r-body > div:first-child { display: table-cell; width: 65%; vertical-align: top; padding: 18px 36px 48px 56px; }
+.l-header .r-body > div:last-child  { display: table-cell; width: 35%; vertical-align: top; padding: 18px 56px 48px 0; }
+
+/* ================== Template themes ================== */
+/* Classic – centered, serif, thin rules */
+.tpl-classic .r-header { text-align: center; }
+.tpl-classic .r-contact { text-align: center; }
+.tpl-classic .r-contact span { margin-right: 10px; }
+.tpl-classic .r-contact span:last-child { margin-right: 0; }
+.tpl-classic .r-title { color: #6b7280; font-weight: 400; font-style: italic; }
+.tpl-classic .r-h { color: #1f2937; border-bottom: 1px solid #cbd5e1; text-align: center; letter-spacing: .2em; }
+.tpl-classic .r-name { font-weight: 700; }
+
+/* Modern – sidebar, rounded chips, accent bar before section heads */
+.tpl-modern .r-name { font-size: 36px; }
+.tpl-modern .r-main .r-h { border: 0; padding: 0; padding-left: 14px; border-left: 4px solid @@ACCENT@@; border-bottom: 0; }
+.tpl-modern .r-chip { border-radius: 999px; }
+
+/* Executive – header band, serif */
+.tpl-executive .r-name { font-size: 38px; letter-spacing: .02em; }
+.tpl-executive .r-h { border-bottom-width: 2px; }
+
+/* Creative – sidebar, rounded font, soft main headings */
+.tpl-creative .r-avatar { border-radius: 24px; }
+.tpl-creative .r-main .r-h { border: 0; background: @@ACCENT_TINT12@@; padding: 6px 12px; border-radius: 8px; display: inline-block; }
+.tpl-creative .r-name { font-size: 40px; color: @@ACCENT@@; }
+.tpl-creative .r-title { color: #1f2937; }
+
+/* Minimal – no color blocks, lots of air */
+.tpl-minimal.l-single { padding: 70px 72px; }
+.tpl-minimal .r-name { font-weight: 400; font-size: 40px; letter-spacing: -0.02em; }
+.tpl-minimal .r-title { color: #6b7280; font-weight: 400; }
+.tpl-minimal .r-h { color: #1f2937; border: 0; font-weight: 600; letter-spacing: .2em; font-size: 11px; }
+.tpl-minimal .r-chip { background: none; padding: 0; margin-left: 0; }
+.tpl-minimal .r-chip:after { content: ""; }
+
+/* Developer – sidebar, mono headings, code-ish chips */
+.tpl-tech .r-side { background: #0f172a; }
+.tpl-tech .r-side .r-h { color: @@ACCENT@@; }
+.tpl-tech .r-avatar { border-color: @@ACCENT@@; color: @@ACCENT@@; background: transparent; }
+.tpl-tech .r-main .r-h { border-bottom-style: dashed; }
+.tpl-tech .r-side .r-chip { font-family: "JetBrains Mono", monospace; font-size: 11px; border: 1px solid @@ACCENT_A60@@; background: transparent; color: #e2e8f0; }
+
+/* Elegant – header band (gradient approximated with solid accent) */
+.tpl-elegant .r-band { background: @@ACCENT@@; text-align: center; }
+.tpl-elegant .r-band .r-contact { text-align: center; }
+.tpl-elegant .r-name { font-weight: 400; letter-spacing: .06em; }
+.tpl-elegant .r-h { border: 0; text-align: left; }
+.tpl-elegant .r-h:after { content: ""; }
+
+/* Fresher – single column, accent top bar, education first */
+.tpl-fresher { border-top: 10px solid @@ACCENT@@; }
+.tpl-fresher .r-header { display: table; width: 100%; }
+.tpl-fresher .r-header .r-header-text { display: table-cell; vertical-align: bottom; }
+.tpl-fresher .r-header .r-contact { display: table-cell; vertical-align: bottom; text-align: right; }
+.tpl-fresher .r-contact span { display: block; margin: 2px 0 0; margin-right: 0; }
+.tpl-fresher .r-header { border-bottom: 1px solid #e5e7eb; page-break-after: avoid; }
+.tpl-fresher .r-h { border: 0; padding: 0; }
