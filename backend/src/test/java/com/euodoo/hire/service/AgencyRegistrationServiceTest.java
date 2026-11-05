@@ -46,6 +46,9 @@ public class AgencyRegistrationServiceTest {
     @Mock
     private AuditService auditService;
 
+    @Mock
+    private AgencyDocumentService agencyDocumentService;
+
     @InjectMocks
     private AgencyRegistrationService registrationService;
 
@@ -110,6 +113,46 @@ public class AgencyRegistrationServiceTest {
         assertEquals("Global Talent Corp", response.getAgencyName());
         assertEquals(AgencyRegistrationStatus.SUBMITTED, response.getRegistrationStatus());
         verify(agencyRepository, times(1)).save(any(Agency.class));
+    }
+
+    @Test
+    @DisplayName("registerAgency: with documents uploads certificates and links to agency")
+    void registerAgency_withDocuments_success() {
+        when(agencyRepository.existsByOfficialEmailIgnoreCase("contact@globaltalent.com")).thenReturn(false);
+        when(userRepository.existsByEmail("contact@globaltalent.com")).thenReturn(false);
+        when(agencyRepository.existsByBusinessRegistrationNumber("CIN123456789")).thenReturn(false);
+        when(passwordEncoder.encode(anyString())).thenReturn("hashed_password");
+
+        User savedUser = User.builder()
+                .id("user-123")
+                .email("contact@globaltalent.com")
+                .role(Role.AGENCY_ADMIN)
+                .build();
+        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+
+        Agency savedAgency = Agency.builder()
+                .id("agency-123")
+                .agencyName("Global Talent Corp")
+                .officialEmail("contact@globaltalent.com")
+                .registrationStatus(AgencyRegistrationStatus.SUBMITTED)
+                .registeredUserId("user-123")
+                .registrationDate(Instant.now())
+                .build();
+        when(agencyRepository.save(any(Agency.class))).thenReturn(savedAgency);
+
+        org.springframework.mock.web.MockMultipartFile incFile = new org.springframework.mock.web.MockMultipartFile(
+                "incorporationFile", "inc.pdf", "application/pdf", "%PDF-1.4 test".getBytes());
+        org.springframework.mock.web.MockMultipartFile gstFile = new org.springframework.mock.web.MockMultipartFile(
+                "gstFile", "gst.pdf", "application/pdf", "%PDF-1.4 test".getBytes());
+
+        AgencyResponse response = registrationService.registerAgency(registrationRequest, incFile, gstFile);
+
+        assertNotNull(response);
+        assertEquals("agency-123", response.getId());
+        verify(agencyDocumentService, times(1)).uploadDocument(
+                eq("agency-123"), eq(com.euodoo.hire.model.AgencyDocumentType.COMPANY_REGISTRATION_CERTIFICATE), eq(incFile), eq("user-123"));
+        verify(agencyDocumentService, times(1)).uploadDocument(
+                eq("agency-123"), eq(com.euodoo.hire.model.AgencyDocumentType.GST_CERTIFICATE), eq(gstFile), eq("user-123"));
     }
 
     @Test

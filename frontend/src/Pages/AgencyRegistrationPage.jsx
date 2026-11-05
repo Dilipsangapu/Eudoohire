@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Country, State, City } from "country-state-city";
 import { toast } from "../components/Toast";
-import { csrfHeaders } from "../services/api";
+import { agencyApi } from "../services/api";
 import "./LoginPage.css";
 import "./RecruiterLoginPage.css";
 import "./AgencyRegistration.css";
@@ -21,12 +22,17 @@ const initial = {
   designation: "Owner / Founder",
   repEmail: "",
   repMobile: "",
+  repAltMobile: "",
   linkedin: "",
   address1: "",
   address2: "",
+  // Names are what we send to the backend; codes only drive the dropdowns
   country: "India",
+  countryCode: "IN",
   state: "",
+  stateCode: "",
   city: "",
+  district: "",
   pin: "",
   officeModel: "Physical Office",
   pan: "",
@@ -64,14 +70,16 @@ const fields = [
     },
     { key: "repEmail", label: "Representative Email", type: "email", required: true },
     { key: "repMobile", label: "Direct Mobile Number", type: "tel", required: true },
+    { key: "repAltMobile", label: "Alternate Mobile Number", type: "tel" },
     { key: "linkedin", label: "LinkedIn Profile URL", type: "url" },
   ],
   [
     { key: "address1", label: "Office Address Line 1", required: true },
     { key: "address2", label: "Office Address Line 2" },
-    { key: "country", label: "Country", required: true },
-    { key: "state", label: "State / Union Territory", required: true },
-    { key: "city", label: "City / District", required: true },
+    { key: "country", label: "Country", geo: true, required: true },
+    { key: "state", label: "State / Union Territory", geo: true, required: true },
+    { key: "city", label: "City", geo: true, required: true },
+    { key: "district", label: "District", required: true }, // manual entry separate from city
     { key: "pin", label: "Postal PIN Code", required: true },
     {
       key: "officeModel",
@@ -88,6 +96,16 @@ const fields = [
     { key: "confirmPassword", label: "Confirm Password", type: "password", required: true },
   ],
 ];
+
+const passwordChecks = [
+  { label: "At least 6 characters", test: (p) => p.length >= 6 },
+  { label: "One uppercase letter (A-Z)", test: (p) => /[A-Z]/.test(p) },
+  { label: "One lowercase letter (a-z)", test: (p) => /[a-z]/.test(p) },
+  { label: "One number (0-9)", test: (p) => /\d/.test(p) },
+  { label: "One symbol (e.g. @ # $ % !)", test: (p) => /[^A-Za-z0-9\s]/.test(p) },
+];
+
+const countryOptions = Country.getAllCountries().map((c) => ({ value: c.isoCode, label: c.name }));
 
 function playTone() {
   try {
@@ -120,24 +138,29 @@ const validateField = (key, value) => {
     phone: /^[6-9]\d{9}$/,
     altPhone: /^[6-9]\d{9}$/,
     repMobile: /^[6-9]\d{9}$/,
+    repAltMobile: /^[6-9]\d{9}$/,
     pin: /^\d{6}$/,
     pan: /^[A-Z]{5}\d{4}[A-Z]$/,
     website: /^(https?:\/\/)?(www\.)?[\w-]+(\.[\w-]+)+([/?#][^\s]*)?$/i,
     linkedin: /^https:\/\/(www\.)?linkedin\.com\/.+/i,
   };
 
-  if (rules[key] && v && !rules[key].test(v)) {
+  const testValue = key === "pan" ? v.toUpperCase() : v;
+
+  if (rules[key] && v && !rules[key].test(testValue)) {
     return `Please enter a valid ${
       key === "pin"
         ? "6-digit PIN code"
         : key === "pan"
         ? "PAN number (e.g. ABCDE1234F)"
         : key === "repMobile"
-        ? "10-digit mobile number"
+        ? "10-digit direct mobile number (starting with 6-9)"
+        : key === "repAltMobile"
+        ? "10-digit alternate mobile number (starting with 6-9)"
         : key === "altPhone"
-        ? "10-digit alternate phone number"
+        ? "10-digit alternate phone number (starting with 6-9)"
         : key === "phone"
-        ? "10-digit contact number"
+        ? "10-digit contact number (starting with 6-9)"
         : key === "repEmail"
         ? "representative email"
         : key === "website"
@@ -160,13 +183,68 @@ export default function AgencyRegistrationPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [data, setData] = useState(initial);
-  const [files, setFiles] = useState({ incorporation: null, gst: null });
+  const [files, setFiles] = useState({ incorporation: null, gstDoc: null });
   const [notice, setNotice] = useState("");
   const [noticeType, setNoticeType] = useState("info");
   const [submitting, setSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const update = (key, value) => setData((d) => ({ ...d, [key]: value }));
+
+  /* ---------- Country / State / City dropdown data ---------- */
+  const stateOptions = useMemo(
+    () =>
+      data.countryCode
+        ? State.getStatesOfCountry(data.countryCode).map((s) => ({ value: s.isoCode, label: s.name }))
+        : [],
+    [data.countryCode]
+  );
+
+  const cityOptions = useMemo(() => {
+    if (!data.countryCode || !data.stateCode) return [];
+    const names = City.getCitiesOfState(data.countryCode, data.stateCode).map((c) => c.name);
+    return [...new Set(names)].sort().map((n) => ({ value: n, label: n }));
+  }, [data.countryCode, data.stateCode]);
+
+  const handleCountry = (code) => {
+    const name = countryOptions.find((c) => c.value === code)?.label || "";
+    setData((d) => ({ ...d, countryCode: code, country: name, stateCode: "", state: "", city: "" }));
+  };
+
+  const handleState = (code) => {
+    const name = stateOptions.find((s) => s.value === code)?.label || "";
+    setData((d) => ({ ...d, stateCode: code, state: name, city: "" }));
+  };
+
+  // Some countries have no state/city data; fall back to a text box so nobody gets blocked
+  const countryHasNoStates = !!data.countryCode && stateOptions.length === 0;
+  const stateHasNoCities = !!data.stateCode && cityOptions.length === 0;
+
+  const getGeoConfig = (key) => {
+    if (key === "country") {
+      return { options: countryOptions, value: data.countryCode, onChange: handleCountry, disabled: false, textFallback: false };
+    }
+    if (key === "state") {
+      return {
+        options: stateOptions,
+        value: data.stateCode,
+        onChange: handleState,
+        disabled: !data.countryCode,
+        textFallback: countryHasNoStates,
+      };
+    }
+    return {
+      options: cityOptions,
+      value: data.city,
+      onChange: (v) => update("city", v),
+      disabled: !data.stateCode && !countryHasNoStates,
+      textFallback: countryHasNoStates || stateHasNoCities,
+    };
+  };
+
+  /* ---------- Password ---------- */
+  const passwordResults = passwordChecks.map((c) => ({ ...c, ok: c.test(data.password) }));
+  const passwordValid = passwordResults.every((c) => c.ok);
 
   const next = async () => {
     setNotice("");
@@ -186,14 +264,51 @@ export default function AgencyRegistrationPage() {
       }
     }
 
+    if (step === 0 && data.altPhone?.trim() && data.altPhone.trim() === data.phone.trim()) {
+      toast.error("Alternate contact number must be different from the contact number.");
+      return;
+    }
+
+    if (step === 1 && data.repAltMobile?.trim() && data.repAltMobile.trim() === data.repMobile.trim()) {
+      toast.error("Alternate mobile number must be different from the direct mobile number.");
+      return;
+    }
+
     if (step === 3) {
       if (!files.incorporation) {
         toast.error("Please upload your Certificate of Incorporation / Registration Proof.");
         return;
       }
 
-      if (data.password.length < 6) {
-        toast.error("Password must be at least 6 characters.");
+      // Check file types and sizes (max 10MB)
+      const allowedExts = ["pdf", "png", "jpg", "jpeg"];
+      const maxSize = 10 * 1024 * 1024; // 10MB
+
+      if (files.incorporation.size > maxSize) {
+        toast.error("Incorporation certificate must be smaller than 10 MB.");
+        return;
+      }
+      const incExt = files.incorporation.name.split(".").pop().toLowerCase();
+      if (!allowedExts.includes(incExt)) {
+        toast.error("Incorporation certificate must be a PDF, PNG, or JPG file.");
+        return;
+      }
+
+      if (files.gstDoc) {
+        if (files.gstDoc.size > maxSize) {
+          toast.error("GST certificate must be smaller than 10 MB.");
+          return;
+        }
+        const gstExt = files.gstDoc.name.split(".").pop().toLowerCase();
+        if (!allowedExts.includes(gstExt)) {
+          toast.error("GST certificate must be a PDF, PNG, or JPG file.");
+          return;
+        }
+      }
+
+      if (!passwordValid) {
+        const missing = passwordResults.filter((c) => !c.ok).map((c) => c.label.toLowerCase());
+        toast.error(`Password needs: ${missing.join(", ")}.`);
         return;
       }
 
@@ -220,59 +335,42 @@ export default function AgencyRegistrationPage() {
         agencyName: data.agencyName.trim(),
         agencyType: mappedType,
         businessRegistrationNumber: data.regNumber.trim(),
-        gstNumber: data.gstDoc ? "GST_DOC_ATTACHED" : "N/A",
+        establishmentYear: data.establishmentYear ? parseInt(data.establishmentYear, 10) : null,
+        officeModel: data.officeModel || "Physical Office",
+        gstNumber: files.gstDoc ? "GST_DOC_ATTACHED" : null,
         panNumber: data.pan.trim().toUpperCase(),
         officialEmail: data.email.trim().toLowerCase(),
         password: data.password,
         contactNumber: data.phone.trim(),
         alternateContactNumber: data.altPhone?.trim() || null,
         website: data.website?.trim() || null,
+        linkedin: data.linkedin?.trim() || null,
         representative: {
           fullName: data.repName.trim(),
           designation: data.designation.trim(),
           officialEmail: data.repEmail.trim().toLowerCase(),
           mobileNumber: data.repMobile.trim(),
+          alternateMobileNumber: data.repAltMobile?.trim() || null,
           representativeId: data.repId?.trim() || null,
+          linkedin: data.linkedin?.trim() || null,
         },
         officeAddress: {
           country: data.country.trim() || "India",
           state: data.state.trim(),
           city: data.city.trim(),
-          district: data.city.trim(),
+          district: data.district.trim(),
           officeAddress: [data.address1, data.address2].filter(Boolean).join(", ").trim(),
           pinCode: data.pin.trim(),
         },
       };
 
       try {
-        const headers = {
-          "Content-Type": "application/json",
-          ...csrfHeaders(),
-        };
-
-        const res = await fetch("/api/agencies/register", {
-          method: "POST",
-          headers,
-          credentials: "include",
-          body: JSON.stringify(requestBody),
-        });
-
-        const resData = await res.json().catch(() => ({}));
-
-        if (!res.ok) {
-          const errMessage = resData.message || resData.error || "Agency registration failed.";
-          toast.error(errMessage);
-          setNotice(errMessage);
-          setNoticeType("error");
-          setSubmitting(false);
-          return;
-        }
-
+        await agencyApi.register(requestBody, files);
         playTone();
         setIsSuccess(true);
         toast.success("Agency registered successfully!");
       } catch (err) {
-        const msg = err?.message || "Network error submitting registration.";
+        const msg = err?.message || "Agency registration failed.";
         toast.error(msg);
         setNotice(msg);
         setNoticeType("error");
@@ -454,47 +552,122 @@ export default function AgencyRegistrationPage() {
           </div>
 
           <div className="agency-registration-fields">
-            {fields[step].map((f) => (
-              <div className="agency-registration-field" key={f.key}>
-                <label className="login-label" htmlFor={f.key}>
-                  {f.label}
-                  {f.required && <span className="asterisk"> *</span>}
-                </label>
+            {fields[step].map((f) => {
+              /* Country / State / City dropdowns */
+              if (f.geo) {
+                const geo = getGeoConfig(f.key);
 
-                {f.type === "select" ? (
-                  <select
-                    className="agency-registration-input"
-                    id={f.key}
-                    value={data[f.key]}
-                    onChange={(e) => update(f.key, e.target.value)}
-                  >
-                    <option value="">Select {f.label.toLowerCase()}</option>
-                    {f.options.map((o) => (
-                      <option key={o} value={o}>
-                        {o}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <input
-                    className="agency-registration-input"
-                    id={f.key}
-                    type={f.type || "text"}
-                    value={data[f.key]}
-                    onChange={(e) => update(f.key, e.target.value)}
-                    placeholder={`Enter ${f.label.toLowerCase()}`}
-                    required={f.required}
-                  />
-                )}
-              </div>
-            ))}
+                return (
+                  <div className="agency-registration-field" key={f.key}>
+                    <label className="login-label" htmlFor={f.key}>
+                      {f.label}
+                      {f.required && <span className="asterisk"> *</span>}
+                    </label>
+
+                    {geo.textFallback && f.key !== "country" ? (
+                      <input
+                        className="agency-registration-input"
+                        id={f.key}
+                        type="text"
+                        value={data[f.key]}
+                        onChange={(e) => update(f.key, e.target.value)}
+                        placeholder={`Enter ${f.label.toLowerCase()}`}
+                      />
+                    ) : (
+                      <select
+                        className="agency-registration-input"
+                        id={f.key}
+                        value={geo.value}
+                        disabled={geo.disabled}
+                        onChange={(e) => geo.onChange(e.target.value)}
+                      >
+                        <option value="">Select {f.label.toLowerCase()}</option>
+                        {geo.options.map((o) => (
+                          <option key={o.value} value={o.value}>
+                            {o.label}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
+                );
+              }
+
+              /* Regular fields */
+              return (
+                <div className="agency-registration-field" key={f.key}>
+                  <label className="login-label" htmlFor={f.key}>
+                    {f.label}
+                    {f.required && <span className="asterisk"> *</span>}
+                  </label>
+
+                  {f.type === "select" ? (
+                    <select
+                      className="agency-registration-input"
+                      id={f.key}
+                      value={data[f.key]}
+                      onChange={(e) => update(f.key, e.target.value)}
+                    >
+                      <option value="">Select {f.label.toLowerCase()}</option>
+                      {f.options.map((o) => (
+                        <option key={o} value={o}>
+                          {o}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      className="agency-registration-input"
+                      id={f.key}
+                      type={f.type || "text"}
+                      value={data[f.key]}
+                      onChange={(e) => update(f.key, e.target.value)}
+                      placeholder={`Enter ${f.label.toLowerCase()}`}
+                      required={f.required}
+                      autoComplete={f.type === "password" ? "new-password" : undefined}
+                    />
+                  )}
+                </div>
+              );
+            })}
 
             {step === 3 && (
               <>
+                {/* Password requirements checklist */}
+                <div className="agency-registration-field full-width">
+                  <ul
+                    aria-live="polite"
+                    style={{
+                      listStyle: "none",
+                      margin: 0,
+                      padding: "0.75rem 1rem",
+                      background: "#f8fafc",
+                      border: "1px solid #e2e8f0",
+                      borderRadius: "10px",
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+                      gap: "4px 16px",
+                      fontSize: "13px",
+                    }}
+                  >
+                    <li style={{ gridColumn: "1 / -1", color: "#475569", fontWeight: 600, marginBottom: "2px" }}>
+                      Your password must have:
+                    </li>
+                    {passwordResults.map((c) => (
+                      <li
+                        key={c.label}
+                        style={{ color: c.ok ? "#059669" : data.password ? "#dc2626" : "#64748b" }}
+                      >
+                        <span aria-hidden="true">{c.ok ? "✓" : "○"}</span> {c.label}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
                 {/* Certificate of Incorporation */}
                 <div className="agency-registration-field">
                   <label className="login-label" htmlFor="incorporation">
-                    Certificate of Incorporation / Registration Proof
+                    Incorporation Certificate / Registration Proof
                     <span className="asterisk"> *</span>
                   </label>
                   <input
@@ -511,7 +684,7 @@ export default function AgencyRegistrationPage() {
                   />
                   {files.incorporation && (
                     <small style={{ color: "#0d9488", marginTop: "4px", display: "block", fontSize: "12px" }}>
-                      Selected: {files.incorporation.name}
+                      Selected: {files.incorporation.name} ({(files.incorporation.size / 1024).toFixed(1)} KB)
                     </small>
                   )}
                 </div>
@@ -535,7 +708,7 @@ export default function AgencyRegistrationPage() {
                   />
                   {files.gstDoc && (
                     <small style={{ color: "#0d9488", marginTop: "4px", display: "block", fontSize: "12px" }}>
-                      Selected: {files.gstDoc.name}
+                      Selected: {files.gstDoc.name} ({(files.gstDoc.size / 1024).toFixed(1)} KB)
                     </small>
                   )}
                 </div>

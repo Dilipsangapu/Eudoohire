@@ -29,7 +29,10 @@ public class AgencyRegistrationRequest {
     @NotBlank(message = "Business registration number is required")
     private String businessRegistrationNumber;
 
-    @NotBlank(message = "GST number is required")
+    private Integer establishmentYear;
+
+    private String officeModel;
+
     private String gstNumber;
 
     @NotBlank(message = "PAN number is required")
@@ -48,6 +51,8 @@ public class AgencyRegistrationRequest {
     private String alternateContactNumber;
 
     private String website;
+
+    private String linkedin;
 
     @Valid
     private AgencyRepresentative representative;

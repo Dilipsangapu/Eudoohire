@@ -21,20 +21,27 @@ export default function AgencyLoginPage() {
   const [isPendingApproval, setIsPendingApproval] = useState(false);
   const [liveStatus, setLiveStatus] = useState(null);
 
-  // Live status lookup when agency enters official email
+  // Live status lookup when agency enters official email (with anti-stale check)
   useEffect(() => {
+    let active = true;
     const clean = email.trim();
     if (!/^\S+@\S+\.\S+$/.test(clean)) {
       setLiveStatus(null);
+      setIsPendingApproval(false);
       return;
     }
+
+    const controller = new AbortController();
     const timer = setTimeout(async () => {
       try {
         const res = await fetch(
-          `/api/agencies/registration-status?identifier=${encodeURIComponent(clean)}`
+          `/api/agencies/registration-status?identifier=${encodeURIComponent(clean)}`,
+          { signal: controller.signal }
         );
+        if (!active) return;
         if (res.ok) {
           const data = await res.json();
+          if (!active) return;
           setLiveStatus(data);
           if (
             data.registrationStatus &&
@@ -44,16 +51,24 @@ export default function AgencyLoginPage() {
             setIsPendingApproval(true);
           } else if (data.registrationStatus === "APPROVED") {
             setIsPendingApproval(false);
+          } else if (data.registrationStatus === "REJECTED") {
+            setIsPendingApproval(false);
           }
         } else {
+          if (active) setLiveStatus(null);
+        }
+      } catch (err) {
+        if (err.name !== "AbortError" && active) {
           setLiveStatus(null);
         }
-      } catch {
-        setLiveStatus(null);
       }
     }, 400);
 
-    return () => clearTimeout(timer);
+    return () => {
+      active = false;
+      controller.abort();
+      clearTimeout(timer);
+    };
   }, [email]);
 
   async function submit(e) {
@@ -92,17 +107,30 @@ export default function AgencyLoginPage() {
       if (
         status === 403 ||
         data?.error === "ACCOUNT_NOT_ACTIVE" ||
-        data?.status === "PENDING_APPROVAL"
+        data?.status === "PENDING_APPROVAL" ||
+        err?.message?.includes("PENDING_APPROVAL") ||
+        err?.message?.includes("administrator must approve")
       ) {
         setIsPendingApproval(true);
         setAlert(
           "Your agency registration is currently under review by the platform administrator. You will be able to log in once approved."
         );
         setAlertType("warning");
+      } else if (
+        data?.status === "REJECTED" ||
+        err?.message?.includes("REJECTED") ||
+        (liveStatus && liveStatus.registrationStatus === "REJECTED")
+      ) {
+        setIsPendingApproval(false);
+        const reason = liveStatus?.rejectionReason ? ` Reason: ${liveStatus.rejectionReason}` : "";
+        setAlert(
+          `Your agency registration was not approved by the administrator.${reason}`
+        );
+        setAlertType("error");
       } else {
         setIsPendingApproval(false);
         setAlert(
-          data?.message || "Invalid agency email or password. Please verify your credentials."
+          data?.message || err?.message || "Invalid agency email or password. Please verify your credentials."
         );
         setAlertType("error");
       }
@@ -210,13 +238,12 @@ export default function AgencyLoginPage() {
               {/* Live Status indicator when typing */}
               {liveStatus && (
                 <div
-                  className={`agency-live-status-pill ${
-                    liveStatus.registrationStatus === "APPROVED"
+                  className={`agency-live-status-pill ${liveStatus.registrationStatus === "APPROVED"
                       ? "approved"
                       : liveStatus.registrationStatus === "REJECTED"
-                      ? "rejected"
-                      : "pending"
-                  }`}
+                        ? "rejected"
+                        : "pending"
+                    }`}
                 >
                   {liveStatus.registrationStatus === "APPROVED" && (
                     <span>
@@ -259,8 +286,24 @@ export default function AgencyLoginPage() {
                   type="button"
                   className="password-toggle-btn"
                   onClick={() => setShowPassword((value) => !value)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-pressed={showPassword}
                 >
-                  {showPassword ? "Hide" : "Show"}
+                  {showPassword ? (
+                    /* eye-off: password is visible, click to hide */
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                      <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+                      <path d="m1 1 22 22" />
+                    </svg>
+                  ) : (
+                    /* eye: password is hidden, click to show */
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
                 </button>
               </div>
             </div>

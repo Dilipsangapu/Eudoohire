@@ -22,12 +22,15 @@ public class AgencyResponse {
     private AgencyType agencyType;
     private String otherAgencyType;
     private String businessRegistrationNumber;
+    private Integer establishmentYear;
+    private String officeModel;
     private String gstNumber;
     private String panNumber;
     private String officialEmail;
     private String contactNumber;
     private String alternateContactNumber;
     private String website;
+    private String linkedin;
     private AgencyRepresentative representative;
     private AgencyAddress officeAddress;
     private Instant registrationDate;

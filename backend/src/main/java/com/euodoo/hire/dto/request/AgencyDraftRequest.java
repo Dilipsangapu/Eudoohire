@@ -26,6 +26,10 @@ public class AgencyDraftRequest {
 
     private String businessRegistrationNumber;
 
+    private Integer establishmentYear;
+
+    private String officeModel;
+
     private String gstNumber;
 
     private String panNumber;
@@ -41,6 +45,8 @@ public class AgencyDraftRequest {
     private String alternateContactNumber;
 
     private String website;
+
+    private String linkedin;
 
     private AgencyRepresentative representative;
 

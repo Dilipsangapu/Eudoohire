@@ -16,4 +16,5 @@ public class AgencyRepresentative {
     private String officialEmail;
     private String mobileNumber;
     private String alternateMobileNumber;
+    private String linkedin;
 }

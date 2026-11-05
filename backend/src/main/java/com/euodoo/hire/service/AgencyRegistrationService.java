@@ -3,6 +3,7 @@ package com.euodoo.hire.service;
 import com.euodoo.hire.dto.request.AgencyDraftRequest;
 import com.euodoo.hire.dto.request.AgencyRegistrationRequest;
 import com.euodoo.hire.dto.response.AgencyResponse;
+import com.euodoo.hire.model.AgencyDocumentType;
 import com.euodoo.hire.model.AgencyRegistrationStatus;
 import com.euodoo.hire.model.AgencyType;
 import com.euodoo.hire.exception.AgencyExceptions.*;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.Map;
@@ -33,8 +35,13 @@ public class AgencyRegistrationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuditService auditService;
+    private final AgencyDocumentService agencyDocumentService;
 
     public AgencyResponse registerAgency(AgencyRegistrationRequest request) {
+        return registerAgency(request, null, null);
+    }
+
+    public AgencyResponse registerAgency(AgencyRegistrationRequest request, MultipartFile incorporationFile, MultipartFile gstFile) {
         String email = request.getOfficialEmail().trim().toLowerCase();
         if (agencyRepository.existsByOfficialEmailIgnoreCase(email) || userRepository.existsByEmail(email)) {
             throw new AgencyAlreadyExistsException("An agency or user account already exists with official email: " + email);
@@ -55,18 +62,24 @@ public class AgencyRegistrationService {
                 .build();
         User savedUser = userRepository.save(user);
 
+        String effectiveLinkedin = request.getLinkedin() != null ? request.getLinkedin().trim() :
+                (request.getRepresentative() != null ? request.getRepresentative().getLinkedin() : null);
+
         // Create Agency record
         Agency agency = Agency.builder()
                 .agencyName(request.getAgencyName().trim())
                 .agencyType(request.getAgencyType() != null ? request.getAgencyType() : AgencyType.RECRUITMENT_AGENCY)
                 .otherAgencyType(request.getOtherAgencyType())
                 .businessRegistrationNumber(request.getBusinessRegistrationNumber() != null ? request.getBusinessRegistrationNumber().trim() : null)
+                .establishmentYear(request.getEstablishmentYear())
+                .officeModel(request.getOfficeModel())
                 .gstNumber(request.getGstNumber() != null ? request.getGstNumber().trim() : null)
                 .panNumber(request.getPanNumber() != null ? request.getPanNumber().trim() : null)
                 .officialEmail(email)
                 .contactNumber(request.getContactNumber())
                 .alternateContactNumber(request.getAlternateContactNumber())
                 .website(request.getWebsite())
+                .linkedin(effectiveLinkedin)
                 .representative(request.getRepresentative())
                 .officeAddress(request.getOfficeAddress())
                 .registrationDate(Instant.now())
@@ -80,6 +93,14 @@ public class AgencyRegistrationService {
         // Update user's agencyId
         savedUser.setAgencyId(savedAgency.getId());
         userRepository.save(savedUser);
+
+        // Upload documents if supplied
+        if (incorporationFile != null && !incorporationFile.isEmpty()) {
+            agencyDocumentService.uploadDocument(savedAgency.getId(), AgencyDocumentType.COMPANY_REGISTRATION_CERTIFICATE, incorporationFile, savedUser.getId());
+        }
+        if (gstFile != null && !gstFile.isEmpty()) {
+            agencyDocumentService.uploadDocument(savedAgency.getId(), AgencyDocumentType.GST_CERTIFICATE, gstFile, savedUser.getId());
+        }
 
         auditService.log(savedUser.getId(), "AGENCY_ADMIN", "Agency", savedAgency.getId(),
                 "AGENCY_REGISTERED", Map.of("email", email, "name", savedAgency.getAgencyName()));
@@ -120,11 +141,14 @@ public class AgencyRegistrationService {
         if (request.getAgencyType() != null) agency.setAgencyType(request.getAgencyType());
         if (request.getOtherAgencyType() != null) agency.setOtherAgencyType(request.getOtherAgencyType());
         if (request.getBusinessRegistrationNumber() != null) agency.setBusinessRegistrationNumber(request.getBusinessRegistrationNumber().trim());
+        if (request.getEstablishmentYear() != null) agency.setEstablishmentYear(request.getEstablishmentYear());
+        if (request.getOfficeModel() != null) agency.setOfficeModel(request.getOfficeModel());
         if (request.getGstNumber() != null) agency.setGstNumber(request.getGstNumber().trim());
         if (request.getPanNumber() != null) agency.setPanNumber(request.getPanNumber().trim());
         if (request.getContactNumber() != null) agency.setContactNumber(request.getContactNumber());
         if (request.getAlternateContactNumber() != null) agency.setAlternateContactNumber(request.getAlternateContactNumber());
         if (request.getWebsite() != null) agency.setWebsite(request.getWebsite());
+        if (request.getLinkedin() != null) agency.setLinkedin(request.getLinkedin());
         if (request.getRepresentative() != null) agency.setRepresentative(request.getRepresentative());
         if (request.getOfficeAddress() != null) agency.setOfficeAddress(request.getOfficeAddress());
 

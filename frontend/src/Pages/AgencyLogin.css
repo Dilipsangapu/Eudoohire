@@ -19,7 +19,7 @@
 .agency-login-page .admin-home-button {
   position: fixed;
   top: 24px;
-  left: 24px;
+  right: 24px;
   z-index: 50;
   display: flex;
   align-items: center;
@@ -27,17 +27,17 @@
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #ffffff;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #008777;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .agency-login-page .admin-home-button:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #f0fdfa;
+  border-color: #99e6dc;
   transform: translateY(-2px);
 }
 
@@ -323,7 +323,7 @@
 }
 
 .agency-login-card .password-input-wrapper .form-input {
-  padding-right: 68px;
+  padding-right: 52px;
 }
 
 .agency-login-card .password-toggle-btn {
@@ -331,16 +331,28 @@
   top: 50%;
   right: 10px;
   transform: translateY(-50%);
-  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
   border: 0;
   background: transparent;
   color: #64748b;
-  font-family: inherit;
-  font-size: 12.5px;
-  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
-  border-radius: 6px;
   transition: color 0.15s ease, background 0.15s ease;
+}
+
+.agency-login-card .password-toggle-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.agency-login-card .password-toggle-btn:focus-visible {
+  outline: 2px solid #009e8c;
+  outline-offset: 1px;
 }
 
 .agency-login-card .password-toggle-btn:hover {

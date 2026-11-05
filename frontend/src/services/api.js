@@ -645,6 +645,24 @@ export const recruiterAgencyApi = {
 // =========================================================================
 
 export const agencyApi = {
+  // Registration
+  async register(registrationData, files = {}) {
+    const formData = new FormData();
+    formData.append("data", new Blob([JSON.stringify(registrationData)], { type: "application/json" }));
+    if (files.incorporation) {
+      formData.append("incorporationFile", files.incorporation);
+    }
+    if (files.gstDoc) {
+      formData.append("gstFile", files.gstDoc);
+    }
+    return request("/api/agencies/register", {
+      method: "POST",
+      body: formData,
+    });
+  },
+  async getRegistrationStatus(identifier) {
+    return request(`/api/agencies/registration-status?identifier=${encodeURIComponent(identifier)}`);
+  },
   // Dashboard
   async getDashboardSummary(agencyId) {
     const q = agencyId ? `?agencyId=${encodeURIComponent(agencyId)}` : "";

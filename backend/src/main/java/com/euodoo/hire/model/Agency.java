@@ -33,6 +33,10 @@ public class Agency {
     @Indexed
     private String businessRegistrationNumber;
 
+    private Integer establishmentYear;
+
+    private String officeModel;
+
     private String gstNumber;
 
     private String panNumber;
@@ -45,6 +49,8 @@ public class Agency {
     private String alternateContactNumber;
 
     private String website;
+
+    private String linkedin;
 
     private AgencyRepresentative representative;
 
