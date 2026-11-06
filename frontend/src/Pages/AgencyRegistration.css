@@ -12,6 +12,13 @@
   padding: 32px 40px;
 }
 
+.agency-registration-page .admin-home-button {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 1000;
+}
+
 /* Main form card */
 .agency-registration-card {
   width: 100%;
@@ -512,3 +519,36 @@
   flex: 1;
   min-width: 0;
 }
+.password-input-wrap {
+  position: relative;
+}
+.password-input-wrap .agency-registration-input {
+  padding-right: 44px;
+  width: 100%;
+}
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+}
+.password-toggle:hover {
+  color: #0d9488;
+}
+   .password-input-wrap input::-ms-reveal,
+   .password-input-wrap input::-ms-clear {
+     display: none;
+   }
+   .agency-registration-page .login-brand-panel {
+     position: sticky;
+     top: 0;
+     height: 100vh;
+     align-self: flex-start;
+   }

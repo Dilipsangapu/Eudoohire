@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./FAQSection.css";
 
-const faqs = [
+const defaultFaqs = [
   {
     question: "How do I create a candidate profile?",
     answer: "Choose Register to create your account, complete your profile with your contact details, skills, education and experience, then save your information so employers can learn more about you."
@@ -47,8 +47,47 @@ function ChevronIcon({ expanded }) {
   );
 }
 
-export default function FAQSection() {
+export default function FAQSection({ faqs: propFaqs = defaultFaqs }) {
+  const faqs = Array.isArray(propFaqs) && propFaqs.length > 0 ? propFaqs : defaultFaqs;
   const [openIndex, setOpenIndex] = useState(0);
+  const buttonRefs = useRef([]);
+
+  const handleContactClick = (event) => {
+    event.preventDefault();
+    const footerElement = document.getElementById("footer") || document.querySelector("footer");
+    if (footerElement) {
+      footerElement.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  };
+
+  const handleKeyDown = (event, index) => {
+    const total = faqs.length;
+    let targetIndex = -1;
+
+    switch (event.key) {
+      case "ArrowDown":
+        targetIndex = (index + 1) % total;
+        break;
+      case "ArrowUp":
+        targetIndex = (index - 1 + total) % total;
+        break;
+      case "Home":
+        targetIndex = 0;
+        break;
+      case "End":
+        targetIndex = total - 1;
+        break;
+      default:
+        return;
+    }
+
+    if (targetIndex >= 0 && buttonRefs.current[targetIndex]) {
+      event.preventDefault();
+      buttonRefs.current[targetIndex].focus();
+    }
+  };
 
   return (
     <section className="euodoo-faq-section" id="faq" aria-labelledby="faq-heading">
@@ -63,7 +102,7 @@ export default function FAQSection() {
           </span>
           <h2 id="faq-heading">Questions? <span>We’re here to help.</span></h2>
           <p>Quick answers to help candidates and recruiters get started with Euodoo Hire.</p>
-          <a className="euodoo-faq-contact" href="#footer">
+          <a className="euodoo-faq-contact" href="#footer" onClick={handleContactClick}>
             Still need help?
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M7 17 17 7M8 7h9v9" />
@@ -78,15 +117,17 @@ export default function FAQSection() {
             const questionId = `faq-question-${index}`;
 
             return (
-              <article className={`euodoo-faq-item${isOpen ? " is-open" : ""}`} key={faq.question}>
+              <article className={`euodoo-faq-item${isOpen ? " is-open" : ""}`} key={faq.question || index}>
                 <h3 className="euodoo-faq-question-heading">
                   <button
+                    ref={(el) => (buttonRefs.current[index] = el)}
                     className="euodoo-faq-question"
                     id={questionId}
                     type="button"
                     aria-expanded={isOpen}
                     aria-controls={answerId}
                     onClick={() => setOpenIndex(isOpen ? -1 : index)}
+                    onKeyDown={(event) => handleKeyDown(event, index)}
                   >
                     <span className="euodoo-faq-number">{String(index + 1).padStart(2, "0")}</span>
                     <span className="euodoo-faq-question-text">{faq.question}</span>

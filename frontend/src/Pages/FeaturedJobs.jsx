@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { publicApi, candidateApi } from "../services/api";
+import { toast } from "../components/Toast";
 import "./FeaturedJobs.css";
+
+const SAVED_JOBS_KEY = "hrm_unpaid_saved_jobs";
 
 function BookmarkIcon({ saved }) {
   return (
@@ -21,61 +24,120 @@ function BookmarkIcon({ saved }) {
   );
 }
 
+function formatSalary(minSalary, maxSalary) {
+  if (minSalary != null && maxSalary != null) {
+    const minLpa = (Number(minSalary) / 100000).toFixed(0);
+    const maxLpa = (Number(maxSalary) / 100000).toFixed(0);
+    return `₹${minLpa}–${maxLpa} LPA`;
+  }
+  if (minSalary != null) {
+    return `From ₹${(Number(minSalary) / 100000).toFixed(0)} LPA`;
+  }
+  if (maxSalary != null) {
+    return `Up to ₹${(Number(maxSalary) / 100000).toFixed(0)} LPA`;
+  }
+  return null;
+}
+
+function formatExperience(minExp, maxExp) {
+  if (minExp != null && maxExp != null) {
+    return minExp === maxExp ? `${minExp} years` : `${minExp}–${maxExp} years`;
+  }
+  if (minExp != null) {
+    return `${minExp}+ years`;
+  }
+  if (maxExp != null) {
+    return `Up to ${maxExp} years`;
+  }
+  return null;
+}
+
+function formatPostedDate(createdAt) {
+  if (!createdAt) return null;
+  const time = new Date(createdAt).getTime();
+  if (Number.isNaN(time)) return null;
+  const dayMs = 24 * 60 * 60 * 1000;
+  const postedDaysAgo = Math.max(0, Math.round((Date.now() - time) / dayMs));
+  if (postedDaysAgo === 0) return "Posted today";
+  if (postedDaysAgo === 1) return "Posted 1 day ago";
+  return `Posted ${postedDaysAgo} days ago`;
+}
+
 export default function FeaturedJobs({ jobs: initialJobs = null }) {
   const navigate = useNavigate();
   const [liveJobs, setLiveJobs] = useState(initialJobs);
-  const [savedJobs, setSavedJobs] = useState([]);
+  const [loading, setLoading] = useState(!initialJobs || initialJobs.length === 0);
+  const [savedJobs, setSavedJobs] = useState(() => {
+    try {
+      const raw = localStorage.getItem(SAVED_JOBS_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
   const [jobQuery, setJobQuery] = useState("");
   const [jobsError, setJobsError] = useState(false);
+  const [applying, setApplying] = useState(false);
 
+  // Sync when initialJobs prop changes
   useEffect(() => {
-    if (initialJobs && initialJobs.length > 0) return;
-    // Only real published jobs from MongoDB. No mock fallback: an empty list
-    // or a failed request is rendered as the honest empty/error state below.
+    if (initialJobs && initialJobs.length > 0) {
+      setLiveJobs(initialJobs);
+      setLoading(false);
+      setJobsError(false);
+      return;
+    }
+
+    let isSubscribed = true;
+    setLoading(true);
     setJobsError(false);
+
     publicApi.getJobs(0, 10)
       .then((res) => {
-        if (res && Array.isArray(res.content)) {
-          const dayMs = 24 * 60 * 60 * 1000;
-          const mapped = res.content.map((j, idx) => {
-            const postedDaysAgo = j.createdAt
-              ? Math.max(0, Math.round((Date.now() - new Date(j.createdAt).getTime()) / dayMs))
-              : null;
-            return {
-              id: j.id,
-              title: j.title,
-              // Real company name resolved from the companies collection
-              // server-side (never a hard-coded brand).
-              company: j.company || null,
-              location: j.location || null,
-              type: j.workMode === "WFH" ? "Remote" : j.workMode === "HYBRID" ? "Hybrid" : "Full-time",
-              salary: j.minSalaryInr ? `₹${(j.minSalaryInr / 100000).toFixed(0)}–${(j.maxSalaryInr / 100000).toFixed(0)} LPA` : null,
-              posted: postedDaysAgo == null
-                ? null
-                : postedDaysAgo === 0
-                  ? "Posted today"
-                  : postedDaysAgo === 1
-                    ? "Posted 1 day ago"
-                    : `Posted ${postedDaysAgo} days ago`,
-              category: Array.isArray(j.techStack) && j.techStack.length ? j.techStack[0] : null,
-              icon: ["↗", "♧", "✿", "＄", "◎", "▥"][idx % 6],
-              tone: ["blue", "cyan", "purple", "green", "orange", "lime"][idx % 6],
-              description: j.description,
-              experience: j.minExperienceYears ? `${j.minExperienceYears}–${j.maxExperienceYears} years` : null,
-            };
-          });
+        if (!isSubscribed) return;
+        const jobList = Array.isArray(res?.content)
+          ? res.content
+          : Array.isArray(res)
+          ? res
+          : [];
+
+        if (jobList.length > 0) {
+          const mapped = jobList.map((j, idx) => ({
+            id: j.id,
+            title: j.title || "Untitled Role",
+            company: j.company || null,
+            location: j.location || null,
+            type: j.workMode === "WFH" ? "Remote" : j.workMode === "HYBRID" ? "Hybrid" : "Full-time",
+            salary: formatSalary(j.minSalaryInr, j.maxSalaryInr),
+            posted: formatPostedDate(j.createdAt),
+            category: Array.isArray(j.techStack) && j.techStack.length ? j.techStack[0] : null,
+            icon: ["↗", "♧", "✿", "＄", "◎", "▥"][idx % 6],
+            tone: ["blue", "cyan", "purple", "green", "orange", "lime"][idx % 6],
+            description: j.description || "No description provided.",
+            experience: formatExperience(j.minExperienceYears, j.maxExperienceYears),
+          }));
           setLiveJobs(mapped);
         } else {
           setLiveJobs([]);
         }
       })
       .catch(() => {
+        if (!isSubscribed) return;
         setLiveJobs([]);
         setJobsError(true);
+      })
+      .finally(() => {
+        if (isSubscribed) {
+          setLoading(false);
+        }
       });
+
+    return () => {
+      isSubscribed = false;
+    };
   }, [initialJobs]);
 
-  const jobs = liveJobs && liveJobs.length > 0 ? liveJobs : [];
+  const jobs = useMemo(() => (liveJobs && liveJobs.length > 0 ? liveJobs : []), [liveJobs]);
   const [selectedId, setSelectedId] = useState(() => jobs[0]?.id ?? null);
 
   useEffect(() => {
@@ -84,49 +146,72 @@ export default function FeaturedJobs({ jobs: initialJobs = null }) {
     }
   }, [jobs, selectedId]);
 
-  const filteredJobs = jobs.filter((job) => {
+  const filteredJobs = useMemo(() => {
     const term = jobQuery.trim().toLowerCase();
-    if (!term) return true;
-    return [job.title, job.company, job.location, job.type, job.category, job.experience]
-      .filter(Boolean)
-      .some((value) => value.toLowerCase().includes(term));
-  });
+    if (!term) return jobs;
+    return jobs.filter((job) =>
+      [job.title, job.company, job.location, job.type, job.category, job.experience]
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(term))
+    );
+  }, [jobs, jobQuery]);
 
-  const selectedJob =
-    filteredJobs.find((job) => job.id === selectedId) ?? filteredJobs[0] ?? null;
+  const selectedJob = useMemo(
+    () => filteredJobs.find((job) => job.id === selectedId) ?? filteredJobs[0] ?? null,
+    [filteredJobs, selectedId]
+  );
 
   const toggleSaved = (jobId) => {
-    setSavedJobs((current) =>
-      current.includes(jobId)
+    setSavedJobs((current) => {
+      const next = current.includes(jobId)
         ? current.filter((id) => id !== jobId)
-        : [...current, jobId]
-    );
+        : [...current, jobId];
+      try {
+        localStorage.setItem(SAVED_JOBS_KEY, JSON.stringify(next));
+      } catch {
+        /* storage unavailable */
+      }
+      return next;
+    });
   };
 
   const handleApply = async (event, targetJob = selectedJob) => {
-    event.preventDefault();
-    event.stopPropagation();
-    event.nativeEvent?.stopImmediatePropagation?.();
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.nativeEvent?.stopImmediatePropagation?.();
+    }
 
-    const email = localStorage.getItem("euodoo-demo-email");
-    if (!email) {
+    if (!targetJob?.id || typeof targetJob.id !== "string") {
       navigate("/login");
       return;
     }
 
     try {
-      if (targetJob && targetJob.id && typeof targetJob.id === "string") {
-        await candidateApi.applyToJob(targetJob.id);
-        window.alert(`Interest registered successfully for ${targetJob.title}!`);
+      setApplying(true);
+      await candidateApi.applyToJob(targetJob.id);
+      if (toast?.success) {
+        toast.success(`Interest registered successfully for ${targetJob.title}!`);
       } else {
-        navigate("/login");
+        window.alert(`Interest registered successfully for ${targetJob.title}!`);
       }
     } catch (err) {
-      if (err.status === 401) {
+      const status = err?.status || err?.statusCode || err?.response?.status;
+      if (status === 401 || status === 403) {
+        if (toast?.info) {
+          toast.info("Please sign in to register interest for this role.");
+        }
         navigate("/login");
       } else {
-        window.alert(err.message || "Please sign in to register interest for this role.");
+        const msg = err?.message || "Please sign in to register interest for this role.";
+        if (toast?.error) {
+          toast.error(msg);
+        } else {
+          window.alert(msg);
+        }
       }
+    } finally {
+      setApplying(false);
     }
   };
 
@@ -142,25 +227,41 @@ export default function FeaturedJobs({ jobs: initialJobs = null }) {
               details.
             </p>
           </div>
-          <span className="fj-total">{jobs.length} opportunities</span>
+          <span className="fj-total">
+            {loading ? "Loading..." : `${jobs.length} opportunities`}
+          </span>
         </div>
 
-            <label className="fj-job-search" aria-label="Search featured jobs">
-                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                  <circle cx="11" cy="11" r="7" />
-                  <path d="m16 16 4 4" />
-                </svg>
-                <input
-                  type="search"
-                  value={jobQuery}
-                  onChange={(event) => setJobQuery(event.target.value)}
-                  placeholder="Search roles, companies, location..."
-                  aria-label="Search roles, companies, or location"
-                />
-                {jobQuery && <button type="button" className="fj-search-clear" onClick={() => setJobQuery("")} aria-label="Clear job search">×</button>}
-              </label>
+        <label className="fj-job-search" aria-label="Search featured jobs">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m16 16 4 4" />
+          </svg>
+          <input
+            type="search"
+            value={jobQuery}
+            onChange={(event) => setJobQuery(event.target.value)}
+            placeholder="Search roles, companies, location..."
+            aria-label="Search roles, companies, or location"
+          />
+          {jobQuery && (
+            <button
+              type="button"
+              className="fj-search-clear"
+              onClick={() => setJobQuery("")}
+              aria-label="Clear job search"
+            >
+              ×
+            </button>
+          )}
+        </label>
 
-        {jobs.length === 0 ? (
+        {loading ? (
+          <div className="fj-empty">
+            <h3>Loading opportunities...</h3>
+            <p>Fetching active jobs from our verified employers.</p>
+          </div>
+        ) : jobs.length === 0 ? (
           <div className="fj-empty">
             {jobsError ? (
               <>
@@ -181,8 +282,6 @@ export default function FeaturedJobs({ jobs: initialJobs = null }) {
                 <h3>Explore roles</h3>
                 <span>{filteredJobs.length} of {jobs.length} jobs</span>
               </div>
-
-          
 
               <div className="fj-job-list">
                 {filteredJobs.map((job) => {
@@ -327,8 +426,9 @@ export default function FeaturedJobs({ jobs: initialJobs = null }) {
                           type="button"
                           className="fj-button fj-button-primary"
                           onClick={handleApply}
+                          disabled={applying}
                         >
-                          Apply Now <span aria-hidden="true">→</span>
+                          {applying ? "Applying..." : "Apply Now"} <span aria-hidden="true">→</span>
                         </button>
                       </div>
                     </div>

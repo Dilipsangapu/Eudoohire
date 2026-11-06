@@ -1,11 +1,10 @@
-
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CategoriesSection.css";
 
 const INITIAL_CATEGORY_COUNT = 6;
 
-const categories = [
+const defaultCategories = [
   { name: "Engineering & Technology", count: "3,240", color: "blue", roles: "Software, Civil, Mechanical, Electrical", icon: "settings" },
   { name: "Design & Creative", count: "1,890", color: "violet", roles: "UI/UX, Graphic Design, Animation", icon: "palette" },
   { name: "Sales & Marketing", count: "2,150", color: "sky", roles: "Digital Marketing, Sales, SEO", icon: "megaphone" },
@@ -60,27 +59,62 @@ function CategoryIcon({ name }) {
   return <svg {...common}>{paths[name] || paths.layers}</svg>;
 }
 
-export default function CategoriesSection() {
+export default function CategoriesSection({ categories: propCategories, onSelectCategory }) {
   const navigate = useNavigate();
+  const searchInputRef = useRef(null);
+
+  const categories = useMemo(() => {
+    return Array.isArray(propCategories) && propCategories.length > 0
+      ? propCategories
+      : defaultCategories;
+  }, [propCategories]);
 
   const [query, setQuery] = useState("");
   const [showAll, setShowAll] = useState(false);
 
   const matchingCategories = useMemo(() => {
     const term = query.trim().toLowerCase();
+    if (!term) return categories;
 
     return categories.filter((item) =>
       `${item.name} ${item.roles}`.toLowerCase().includes(term)
     );
-  }, [query]);
+  }, [categories, query]);
 
-  const visibleCategories =
-    query.trim() || showAll
+  const visibleCategories = useMemo(() => {
+    return query.trim() || showAll
       ? matchingCategories
       : matchingCategories.slice(0, INITIAL_CATEGORY_COUNT);
+  }, [query, showAll, matchingCategories]);
 
-  const handleCategoryClick = () => {
-    navigate("/login");
+  const handleCategoryClick = (category) => {
+    if (typeof onSelectCategory === "function") {
+      onSelectCategory(category);
+      return;
+    }
+
+    const featuredJobsEl = document.getElementById("featured-jobs");
+    if (featuredJobsEl) {
+      featuredJobsEl.scrollIntoView({ behavior: "smooth" });
+      const fjSearchInput = featuredJobsEl.querySelector("input[type='search'], input[type='text']");
+      if (fjSearchInput && category?.name) {
+        const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
+        if (nativeSetter) {
+          nativeSetter.call(fjSearchInput, category.name);
+          fjSearchInput.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+        fjSearchInput.focus();
+      }
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const handleClear = () => {
+    setQuery("");
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
   };
 
   const hasMore =
@@ -124,8 +158,15 @@ export default function CategoriesSection() {
             <CategoryIcon name="chart" />
 
             <input
+              ref={searchInputRef}
+              type="text"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                }
+              }}
               placeholder="Search categories or roles"
               aria-label="Search categories or roles"
             />
@@ -134,7 +175,7 @@ export default function CategoriesSection() {
               <button
                 className="category-clear"
                 type="button"
-                onClick={() => setQuery("")}
+                onClick={handleClear}
                 aria-label="Clear search"
               >
                 ×
@@ -155,9 +196,9 @@ export default function CategoriesSection() {
               role="listitem"
               key={category.name}
               className={`category-tile category-tone-${category.color}`}
-              onClick={handleCategoryClick}
+              onClick={() => handleCategoryClick(category)}
               style={{ "--tile-index": index }}
-              aria-label={`Explore ${category.name}. Continue to login`}
+              aria-label={`Explore ${category.name} opportunities`}
             >
               <span className="category-tile-top">
                 <span className="category-row-icon">
